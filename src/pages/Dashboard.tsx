@@ -52,12 +52,12 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50">
+       <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border">
         <div className="max-w-lg mx-auto flex items-center justify-between px-4 h-14">
           <div className="flex items-center gap-2">
             <span className="text-xl">💼</span>
             <h1 className="font-display font-bold text-lg">
-              <span className="text-gradient-primary">Wage</span>Company
+              <span className="text-foreground">Wage</span><span className="text-primary">Company</span>
             </h1>
           </div>
           <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ const Dashboard = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="rounded-lg p-6 bg-gradient-card border border-border/50"
+          className="rounded-2xl p-6 bg-card border border-border"
         >
           <TapToMine
             mineBalance={mineBalance}

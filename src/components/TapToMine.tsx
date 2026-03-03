@@ -69,12 +69,12 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         <button
           onMouseDown={handleTap}
           disabled={energy <= 0}
-          className="relative w-44 h-44 rounded-full border-2 border-mine-blue/40 flex items-center justify-center tap-shrink select-none disabled:opacity-40 disabled:cursor-not-allowed"
+          className="relative w-44 h-44 rounded-full border-2 border-border flex items-center justify-center tap-shrink select-none disabled:opacity-40 disabled:cursor-not-allowed"
           style={{
             transform: `scale(${scale})`,
             transition: "transform 0.1s",
-            background: "radial-gradient(circle at 40% 35%, hsl(210 90% 60% / 0.3), hsl(185 85% 55% / 0.1), transparent 70%)",
-            boxShadow: energy > 0 ? "0 0 40px hsl(210 90% 60% / 0.25), inset 0 0 30px hsl(210 90% 60% / 0.1)" : "none",
+            background: "radial-gradient(circle at 40% 35%, hsl(145 72% 40% / 0.12), hsl(0 0% 95% / 0.5), transparent 70%)",
+            boxShadow: energy > 0 ? "0 0 40px hsl(145 72% 40% / 0.1), inset 0 0 30px hsl(145 72% 40% / 0.05)" : "none",
           }}
         >
           <div className="flex flex-col items-center gap-1">
@@ -92,7 +92,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
               animate={{ scale: 1.2, y: -50, opacity: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="absolute pointer-events-none text-mine-blue font-display font-bold text-lg"
+              className="absolute pointer-events-none text-primary font-display font-bold text-lg"
               style={{ left: pop.x - 15, top: pop.y - 10 }}
             >
               +{pop.value}

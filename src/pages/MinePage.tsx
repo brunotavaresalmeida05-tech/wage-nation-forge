@@ -42,7 +42,7 @@ const MinePage = () => {
       </header>
 
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none" style={{ background: "radial-gradient(circle at 50% 0%, hsl(210 90% 60% / 0.12), transparent 60%)" }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none bg-gradient-glow" />
 
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-3">
@@ -62,7 +62,7 @@ const MinePage = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="rounded-lg p-8 bg-gradient-card border border-mine-blue/20"
+          className="rounded-2xl p-8 bg-card border border-border"
         >
           <TapToMine
             mineBalance={mineBalance}
