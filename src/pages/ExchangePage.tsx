@@ -20,7 +20,7 @@ const ExchangePage = () => {
       </header>
 
       <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none" style={{ background: "radial-gradient(circle at 50% 0%, hsl(145 80% 50% / 0.08), transparent 60%)" }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 pointer-events-none bg-gradient-glow" />
 
         {/* Rate Info */}
         <div className="rounded-lg p-4 bg-gradient-card border border-border/50 text-center">

@@ -13,8 +13,8 @@ const WalletCard = ({ mineBalance, wageBalance, wageUsdRate }: WalletCardProps) 
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-lg p-5 card-shine"
-      style={{ background: "var(--gradient-card)", boxShadow: "var(--shadow-card)" }}
+      className="rounded-2xl p-5 card-shine bg-card border border-border"
+      style={{ boxShadow: "var(--shadow-card)" }}
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-sm text-muted-foreground font-body uppercase tracking-wider">My Wallet</h3>
