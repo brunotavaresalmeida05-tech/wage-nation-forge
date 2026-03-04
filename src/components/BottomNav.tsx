@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 const navItems = [
   { path: "/", icon: "🏠", label: "Home" },
   { path: "/mine", icon: "⛏️", label: "Mine" },
-  { path: "/exchange", icon: "🔄", label: "Exchange" },
   { path: "/market", icon: "📊", label: "Market" },
+  { path: "/invest", icon: "🏢", label: "Invest" },
   { path: "/profile", icon: "👤", label: "Profile" },
 ];
 
@@ -13,8 +13,8 @@ const BottomNav = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/90 backdrop-blur-xl safe-bottom">
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur-xl safe-bottom">
+      <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-1">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
