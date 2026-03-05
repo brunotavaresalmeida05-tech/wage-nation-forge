@@ -50,6 +50,22 @@ const modules = [
     stats: "Taxa: 2.5%",
     color: "border-border",
   },
+  {
+    title: "Vault Soberano",
+    description: "Staking com APY de 5% a 200% conforme duração do lock",
+    icon: "🏛️",
+    route: "/vault",
+    stats: "Até 200% APY",
+    color: "border-primary/30 bg-primary/5",
+  },
+  {
+    title: "WagePay",
+    description: "Enviar e receber $WAGE via QR e P2P",
+    icon: "💸",
+    route: "/wagepay",
+    stats: "Instantâneo",
+    color: "border-border",
+  },
 ];
 
 const portfolio = [

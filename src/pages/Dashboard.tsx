@@ -128,11 +128,12 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-base">Meu Portfolio</h2>
             <button onClick={() => navigate("/invest")} className="text-xs text-primary font-body tap-shrink">Gerir →</button>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {[
               { label: "Imóveis", value: "3", icon: "🏠", onClick: () => navigate("/real-estate") },
               { label: "Ações", value: "5", icon: "📈", onClick: () => navigate("/sectors") },
               { label: "ETFs", value: "2", icon: "📊", onClick: () => navigate("/etfs") },
+              { label: "Vault", value: "700 $W", icon: "🏛️", onClick: () => navigate("/vault") },
             ].map((item) => (
               <motion.div
                 key={item.label}
@@ -156,6 +157,34 @@ const Dashboard = () => {
           </div>
           <DividendCalendar />
         </section>
+
+        {/* UBI + WagePay Quick Access */}
+        <div className="grid grid-cols-2 gap-3">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            onClick={() => navigate("/ubi")}
+            className="rounded-xl p-4 border-2 border-primary/20 bg-primary/5 text-center cursor-pointer tap-shrink"
+          >
+            <span className="text-2xl block mb-1">🌍</span>
+            <p className="text-xs font-display font-semibold">Renda UBI</p>
+            <p className="text-lg font-display font-bold text-primary">110 $W</p>
+            <p className="text-[9px] text-muted-foreground font-body">/mês • Recolher</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.38 }}
+            onClick={() => navigate("/wagepay")}
+            className="rounded-xl p-4 border border-border bg-gradient-card text-center cursor-pointer tap-shrink"
+          >
+            <span className="text-2xl block mb-1">💸</span>
+            <p className="text-xs font-display font-semibold">WagePay</p>
+            <p className="text-lg font-display font-bold">P2P</p>
+            <p className="text-[9px] text-muted-foreground font-body">Enviar & Receber</p>
+          </motion.div>
+        </div>
 
         {/* Exchange CTA */}
         <motion.div
