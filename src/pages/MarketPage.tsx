@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Activity, Flame, TrendingUp } from "lucide-react";
 import AssetCard from "../components/AssetCard";
 
 const CATEGORIES = ["Todos", "Commodities", "Energia", "Imóveis", "Treasury", "Bonds"];
@@ -21,42 +22,44 @@ const ALL_ASSETS = [
 
 const MarketPage = () => {
   const [activeCategory, setActiveCategory] = useState("Todos");
-
   const filtered = activeCategory === "Todos" ? ALL_ASSETS : ALL_ASSETS.filter((a) => a.category === activeCategory);
 
   return (
-    <div className="min-h-screen pb-20">
-      <header className="sticky top-0 z-40 bg-background/90 backdrop-blur-xl border-b border-border">
-        <div className="max-w-lg mx-auto flex items-center px-4 h-14">
-          <h1 className="font-display font-bold text-lg">📊 Mercado</h1>
+    <div className="min-h-screen pb-20 bg-background">
+      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
+        <div className="max-w-lg mx-auto flex items-center px-5 h-14">
+          <h1 className="font-display font-bold text-base">Mercado</h1>
         </div>
       </header>
 
-      <div className="max-w-lg mx-auto px-4 py-5 space-y-5">
+      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Market Overview */}
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2.5">
           {[
-            { label: "Market Cap", value: "$2.4M", color: "text-gradient-primary" },
-            { label: "Preço $WAGE", value: "$0.85", color: "text-gradient-gold" },
-            { label: "Volume 24h", value: "$340K", color: "text-gradient-mine" },
+            { label: "Market Cap", value: "$2.4M", icon: <Activity size={14} className="text-primary" /> },
+            { label: "Preço $WAGE", value: "$0.85", icon: <TrendingUp size={14} className="text-gold" /> },
+            { label: "Volume 24h", value: "$340K", icon: <Flame size={14} className="text-info" /> },
           ].map((stat) => (
-            <div key={stat.label} className="rounded-xl bg-gradient-card border border-border p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body uppercase">{stat.label}</p>
-              <p className={`text-sm font-display font-bold ${stat.color}`}>{stat.value}</p>
+            <div key={stat.label} className="card-clean p-3 text-center">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                {stat.icon}
+                <p className="text-[10px] text-muted-foreground font-body">{stat.label}</p>
+              </div>
+              <p className="text-sm font-display font-bold">{stat.value}</p>
             </div>
           ))}
         </div>
 
-        {/* WageIndex Quick */}
-        <div className="rounded-xl p-4 bg-primary/5 border border-primary/20">
+        {/* WageIndex */}
+        <div className="card-clean p-4 border-primary/20">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-display font-semibold">📡 WageIndex</p>
-              <p className="text-[10px] text-muted-foreground font-body">Supply circulante: 142M / 1B</p>
+              <p className="text-xs font-display font-semibold">WageIndex</p>
+              <p className="text-[11px] text-muted-foreground font-body">Supply circulante: 142M / 1B</p>
             </div>
             <div className="text-right">
-              <p className="text-xs font-display font-bold text-primary">Total Burned: 8.2M $W</p>
-              <p className="text-[10px] text-muted-foreground font-body">DAU: 12,430</p>
+              <p className="text-xs font-display font-bold text-primary">Burned: 8.2M $W</p>
+              <p className="text-[11px] text-muted-foreground font-body">DAU: 12,430</p>
             </div>
           </div>
         </div>
@@ -67,8 +70,10 @@ const MarketPage = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3 py-1.5 rounded-full text-xs font-body whitespace-nowrap tap-shrink ${
-                activeCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-body whitespace-nowrap tap-shrink transition-all ${
+                activeCategory === cat
+                  ? "bg-foreground text-background font-medium"
+                  : "bg-secondary text-muted-foreground"
               }`}
             >
               {cat}
@@ -77,11 +82,11 @@ const MarketPage = () => {
         </div>
 
         {/* Assets Grid */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2.5">
           {filtered.map((asset, i) => (
             <motion.div
               key={asset.name}
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
             >
