@@ -27,7 +27,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="dark">
+        <div className="min-h-screen bg-background text-foreground">
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/mine" element={<MinePage />} />
