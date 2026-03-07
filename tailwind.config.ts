@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        body: ['"DM Sans"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -61,6 +61,7 @@ export default {
         },
         gold: "hsl(var(--gold))",
         info: "hsl(var(--info))",
+        success: "hsl(var(--success))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -92,12 +93,7 @@ export default {
         },
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-6px)" },
-        },
-        "coin-pop": {
-          "0%": { transform: "scale(0) translateY(0)", opacity: "1" },
-          "50%": { transform: "scale(1.2) translateY(-20px)", opacity: "1" },
-          "100%": { transform: "scale(0.8) translateY(-40px)", opacity: "0" },
+          "50%": { transform: "translateY(-4px)" },
         },
       },
       animation: {
@@ -105,7 +101,6 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "float": "float 3s ease-in-out infinite",
-        "coin-pop": "coin-pop 0.6s ease-out forwards",
       },
     },
   },

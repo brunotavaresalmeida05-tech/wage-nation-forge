@@ -2,72 +2,75 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 8%;
+    --foreground: 220 15% 12%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 8%;
-    --card-elevated: 0 0% 95%;
+    --card: 220 14% 97%;
+    --card-foreground: 220 15% 12%;
+    --card-elevated: 220 14% 94%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover-foreground: 220 15% 12%;
 
-    --primary: 145 72% 40%;
+    --primary: 145 80% 42%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 25%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 10% 40%;
 
-    --muted: 0 0% 93%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 50%;
 
-    --accent: 0 0% 8%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 220 15% 12%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 145 72% 40%;
+    --border: 220 14% 92%;
+    --input: 220 14% 92%;
+    --ring: 145 80% 42%;
 
-    --radius: 1rem;
+    --radius: 0.875rem;
 
-    --wage-green: 145 72% 40%;
-    --mine-blue: 210 80% 50%;
-    --mine-cyan: 190 70% 45%;
-    --gold: 38 90% 50%;
+    --wage-green: 145 80% 42%;
+    --mine-blue: 220 70% 55%;
+    --mine-cyan: 195 70% 48%;
+    --gold: 40 92% 52%;
     --danger: 0 72% 50%;
-    --info: 210 80% 50%;
-    --epic: 270 65% 55%;
-    --legendary: 38 90% 50%;
-    --rare: 210 80% 50%;
+    --info: 220 70% 55%;
+    --epic: 265 60% 55%;
+    --legendary: 40 92% 52%;
+    --rare: 220 70% 55%;
+    --success: 145 80% 42%;
 
-    --gradient-primary: linear-gradient(135deg, hsl(145 72% 40%), hsl(155 70% 38%));
-    --gradient-mine: linear-gradient(135deg, hsl(210 80% 50%), hsl(190 70% 45%));
-    --gradient-gold: linear-gradient(135deg, hsl(38 90% 50%), hsl(28 85% 45%));
-    --gradient-epic: linear-gradient(135deg, hsl(270 65% 55%), hsl(290 60% 50%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 98%), hsl(0 0% 96%));
-    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(145 72% 40% / 0.06), transparent 60%);
+    --gradient-primary: linear-gradient(135deg, hsl(145 80% 42%), hsl(160 75% 38%));
+    --gradient-mine: linear-gradient(135deg, hsl(220 70% 55%), hsl(195 70% 48%));
+    --gradient-gold: linear-gradient(135deg, hsl(40 92% 52%), hsl(30 85% 48%));
+    --gradient-epic: linear-gradient(135deg, hsl(265 60% 55%), hsl(285 55% 50%));
+    --gradient-card: linear-gradient(160deg, hsl(220 14% 97%), hsl(220 14% 95%));
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(145 80% 42% / 0.04), transparent 50%);
+    --gradient-hero: linear-gradient(180deg, hsl(145 80% 42% / 0.06) 0%, transparent 40%);
 
-    --shadow-glow-green: 0 0 20px hsl(145 72% 40% / 0.15);
-    --shadow-glow-blue: 0 0 20px hsl(210 80% 50% / 0.15);
-    --shadow-glow-epic: 0 0 20px hsl(270 65% 55% / 0.15);
-    --shadow-glow-gold: 0 0 20px hsl(38 90% 50% / 0.2);
-    --shadow-card: 0 1px 3px hsl(0 0% 0% / 0.06), 0 4px 12px hsl(0 0% 0% / 0.04);
+    --shadow-card: 0 1px 2px hsl(220 15% 12% / 0.04), 0 2px 8px hsl(220 15% 12% / 0.03);
+    --shadow-card-hover: 0 2px 4px hsl(220 15% 12% / 0.06), 0 4px 16px hsl(220 15% 12% / 0.04);
+    --shadow-glow-green: 0 0 16px hsl(145 80% 42% / 0.12);
+    --shadow-glow-blue: 0 0 16px hsl(220 70% 55% / 0.12);
+    --shadow-glow-epic: 0 0 16px hsl(265 60% 55% / 0.12);
+    --shadow-glow-gold: 0 0 16px hsl(40 92% 52% / 0.15);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 25%;
-    --sidebar-primary: 145 72% 40%;
+    --sidebar-background: 220 14% 97%;
+    --sidebar-foreground: 220 10% 40%;
+    --sidebar-primary: 145 80% 42%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 95%;
-    --sidebar-accent-foreground: 0 0% 25%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 145 72% 40%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 220 10% 40%;
+    --sidebar-border: 220 14% 92%;
+    --sidebar-ring: 145 80% 42%;
   }
 }
 
@@ -79,10 +82,12 @@
   body {
     @apply bg-background text-foreground font-body antialiased;
     -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+    @apply font-display tracking-tight;
   }
 }
 
@@ -123,6 +128,10 @@
     background: var(--gradient-glow);
   }
 
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
   .shadow-glow-green {
     box-shadow: var(--shadow-glow-green);
   }
@@ -140,25 +149,16 @@
   }
 
   .tap-shrink {
-    @apply active:scale-95 transition-transform duration-100;
+    @apply active:scale-[0.97] transition-transform duration-100;
   }
 
-  .card-shine {
-    position: relative;
-    overflow: hidden;
+  .card-clean {
+    @apply rounded-2xl bg-card border border-border/60;
+    box-shadow: var(--shadow-card);
   }
-  .card-shine::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, hsl(0 0% 0% / 0.02), transparent);
-    transition: left 0.5s;
-  }
-  .card-shine:hover::before {
-    left: 100%;
+
+  .card-clean:hover {
+    box-shadow: var(--shadow-card-hover);
   }
 
   .safe-bottom {
