@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Building2, BarChart3, PieChart, Landmark, Globe, CreditCard, RefreshCw } from "lucide-react";
+import { ArrowRight, Building2, BarChart3, PieChart, Landmark, Globe, CreditCard, ArrowDownUp, Bell } from "lucide-react";
 import WalletCard from "../components/WalletCard";
 import TapToMine from "../components/TapToMine";
 import DailyStreak from "../components/DailyStreak";
@@ -56,14 +56,12 @@ const Dashboard = () => {
             <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-display font-bold text-sm">W</span>
             </div>
-            <h1 className="font-display font-bold text-base tracking-tight">
-              WageCompany
-            </h1>
+            <h1 className="font-display font-bold text-base tracking-tight">Wage</h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[11px] bg-secondary px-2.5 py-1 rounded-lg font-body text-muted-foreground font-medium">
-              Lv. 3
-            </span>
+            <button className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center tap-shrink">
+              <Bell size={16} className="text-muted-foreground" />
+            </button>
             <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
               <span className="text-xs font-display font-semibold text-muted-foreground">JD</span>
             </div>
@@ -145,7 +143,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-2 gap-2.5">
             {[
               { label: "Imóveis", value: "3", icon: <Building2 size={20} className="text-gold" />, onClick: () => navigate("/real-estate") },
-              { label: "Ações", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
+              { label: "Ações Web3", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
               { label: "ETFs", value: "2", icon: <PieChart size={20} className="text-primary" />, onClick: () => navigate("/etfs") },
               { label: "Vault", value: "700 $W", icon: <Landmark size={20} className="text-foreground" />, onClick: () => navigate("/vault") },
             ].map((item) => (
@@ -173,56 +171,48 @@ const Dashboard = () => {
           <DividendCalendar />
         </section>
 
-        {/* UBI + WagePay Quick Access */}
-        <div className="grid grid-cols-2 gap-2.5">
+        {/* UBI + WagePay + Swap Quick Access */}
+        <div className="grid grid-cols-3 gap-2.5">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => navigate("/ubi")}
-            className="card-clean p-4 text-center cursor-pointer border-primary/20"
+            className="card-clean p-3.5 text-center cursor-pointer border-primary/20"
           >
-            <div className="w-10 h-10 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-2">
-              <Globe size={20} className="text-primary" />
+            <div className="w-9 h-9 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-1.5">
+              <Globe size={18} className="text-primary" />
             </div>
-            <p className="text-xs font-display font-semibold">Renda UBI</p>
-            <p className="text-lg font-display font-bold text-primary mt-0.5">110 $W</p>
-            <p className="text-[10px] text-muted-foreground font-body">/mês • Recolher</p>
+            <p className="text-[11px] font-display font-semibold">UBI</p>
+            <p className="text-sm font-display font-bold text-primary mt-0.5">110 $W</p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.33 }}
             onClick={() => navigate("/wagepay")}
-            className="card-clean p-4 text-center cursor-pointer"
+            className="card-clean p-3.5 text-center cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-2">
-              <CreditCard size={20} className="text-foreground" />
+            <div className="w-9 h-9 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-1.5">
+              <CreditCard size={18} className="text-foreground" />
             </div>
-            <p className="text-xs font-display font-semibold">WagePay</p>
-            <p className="text-lg font-display font-bold mt-0.5">P2P</p>
-            <p className="text-[10px] text-muted-foreground font-body">Enviar & Receber</p>
+            <p className="text-[11px] font-display font-semibold">Pay</p>
+            <p className="text-sm font-display font-bold mt-0.5">P2P</p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.36 }}
+            onClick={() => navigate("/swap")}
+            className="card-clean p-3.5 text-center cursor-pointer border-primary/20"
+          >
+            <div className="w-9 h-9 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-1.5">
+              <ArrowDownUp size={18} className="text-primary" />
+            </div>
+            <p className="text-[11px] font-display font-semibold">Swap</p>
+            <p className="text-sm font-display font-bold text-primary mt-0.5">Instant</p>
           </motion.div>
         </div>
-
-        {/* Exchange CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="card-clean p-5 text-center"
-        >
-          <div className="w-10 h-10 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-3">
-            <RefreshCw size={20} className="text-primary" />
-          </div>
-          <p className="text-sm font-display font-semibold mb-0.5">Converter $MINE → $WAGE</p>
-          <p className="text-xs text-muted-foreground font-body mb-4">
-            Taxa: 1,000 $MINE = 1 $WAGE (5% taxa + 2% burn)
-          </p>
-          <button onClick={() => navigate("/exchange")} className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground font-display font-semibold text-sm tap-shrink">
-            Ir ao Exchange
-          </button>
-        </motion.div>
       </div>
     </div>
   );

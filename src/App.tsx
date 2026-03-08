@@ -17,6 +17,7 @@ import TasksPage from "./pages/TasksPage";
 import VaultPage from "./pages/VaultPage";
 import UBIPage from "./pages/UBIPage";
 import WagePayPage from "./pages/WagePayPage";
+import SwapPage from "./pages/SwapPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/vault" element={<VaultPage />} />
             <Route path="/ubi" element={<UBIPage />} />
             <Route path="/wagepay" element={<WagePayPage />} />
+            <Route path="/swap" element={<SwapPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

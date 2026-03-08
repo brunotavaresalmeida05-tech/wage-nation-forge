@@ -72,11 +72,11 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
           style={{
             transform: `scale(${scale})`,
             transition: "transform 0.1s",
-            boxShadow: energy > 0 ? "0 0 40px hsl(145 80% 42% / 0.08), inset 0 0 20px hsl(145 80% 42% / 0.03)" : "none",
+            boxShadow: energy > 0 ? "0 0 40px hsl(22 100% 52% / 0.12), inset 0 0 20px hsl(22 100% 52% / 0.05)" : "none",
           }}
         >
           <div className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+            <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center">
               <Zap size={28} className="text-primary" />
             </div>
             <span className="text-[10px] text-muted-foreground font-body font-medium mt-1">TAP TO MINE</span>
