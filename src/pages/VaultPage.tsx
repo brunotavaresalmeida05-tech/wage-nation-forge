@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Lock, Unlock, Flame, Landmark, Crown, Gem } from "lucide-react";
+import { Lock, Unlock, Flame, Landmark, Crown, Gem } from "lucide-react";
 
 const VAULT_TIERS = [
   { id: "flex", label: "Flexível", duration: "Sem lock", apy: 5, minAmount: 10, icon: Unlock, popular: false },
@@ -26,17 +26,10 @@ const VaultPage = () => {
   const totalEarned = 14.2;
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center px-5 h-14">
-          <button onClick={() => navigate(-1)} className="mr-3 tap-shrink">
-            <ChevronLeft size={20} className="text-foreground" />
-          </button>
-          <h1 className="font-display font-bold text-base">Vault Soberano</h1>
-        </div>
-      </header>
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-3xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
+        <h1 className="font-display font-bold text-xl">Vault Soberano</h1>
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Summary */}
         <div className="grid grid-cols-3 gap-2.5">
           {[
@@ -45,7 +38,7 @@ const VaultPage = () => {
             { label: "Disponível", value: `${wageBalance} $W` },
           ].map((s) => (
             <div key={s.label} className="card-clean p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body">{s.label}</p>
+              <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">{s.label}</p>
               <p className={`text-sm font-display font-bold mt-0.5 ${s.highlight ? "text-primary" : ""}`}>{s.value}</p>
             </div>
           ))}
@@ -54,7 +47,7 @@ const VaultPage = () => {
         {/* Supply Burn Info */}
         <div className="card-clean p-4 border-primary/20">
           <div className="flex items-center gap-2 mb-3">
-            <Flame size={16} className="text-primary" />
+            <Flame size={16} className="text-destructive" />
             <h3 className="font-display font-semibold text-sm">Escassez Programada</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -102,7 +95,7 @@ const VaultPage = () => {
                       <div className="flex items-center gap-2">
                         <h3 className="font-display font-semibold text-sm">{tier.label}</h3>
                         {tier.popular && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground font-body font-semibold">
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-body font-semibold">
                             POPULAR
                           </span>
                         )}
@@ -133,18 +126,18 @@ const VaultPage = () => {
                             value={stakeAmount}
                             onChange={(e) => setStakeAmount(e.target.value)}
                             placeholder={`Min ${tier.minAmount}`}
-                            className="flex-1 bg-secondary rounded-xl px-3 py-2.5 text-sm font-display font-bold outline-none placeholder:text-muted-foreground"
+                            className="flex-1 bg-secondary rounded-lg px-3 py-2.5 text-sm font-display font-bold outline-none placeholder:text-muted-foreground"
                           />
                           <button
                             onClick={(e) => { e.stopPropagation(); setStakeAmount(wageBalance.toString()); }}
-                            className="text-[11px] text-primary font-body font-semibold px-3 py-2 rounded-xl bg-primary/10 tap-shrink"
+                            className="text-[11px] text-primary font-body font-semibold px-3 py-2 rounded-lg bg-primary/10 tap-shrink"
                           >
                             MAX
                           </button>
                         </div>
                       </div>
                       {parseFloat(stakeAmount) > 0 && (
-                        <div className="rounded-xl bg-secondary p-3 space-y-1.5">
+                        <div className="rounded-lg bg-secondary p-3 space-y-1.5">
                           <div className="flex justify-between text-[11px] font-body">
                             <span className="text-muted-foreground">Rendimento estimado</span>
                             <span className="text-primary font-semibold">
@@ -162,7 +155,7 @@ const VaultPage = () => {
                       <motion.button
                         whileTap={{ scale: 0.97 }}
                         disabled={!stakeAmount || parseFloat(stakeAmount) < tier.minAmount || parseFloat(stakeAmount) > wageBalance}
-                        className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-display font-semibold text-sm disabled:opacity-30 tap-shrink"
+                        className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm disabled:opacity-30 tap-shrink"
                       >
                         Depositar no Vault
                       </motion.button>
@@ -191,7 +184,7 @@ const VaultPage = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
+                  <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
                     <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${v.progress}%` }} />
                   </div>
                   <span className="text-[10px] text-muted-foreground font-body">{v.progress}%</span>
@@ -208,7 +201,7 @@ const VaultPage = () => {
             {VAULT_TIERS.map((t) => (
               <div key={t.id} className="flex items-center gap-2">
                 <span className="text-[11px] w-16 font-body text-muted-foreground">{t.label}</span>
-                <div className="flex-1 h-2.5 rounded-full bg-secondary overflow-hidden">
+                <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(t.apy / 200) * 100}%` }}

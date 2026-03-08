@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { ChevronLeft, Globe, Pickaxe, Users, Flame, Landmark, Mail, IdCard, Fingerprint, Check, Lock } from "lucide-react";
+import { Globe, Pickaxe, Users, Flame, Landmark, Mail, IdCard, Fingerprint, Check, Lock } from "lucide-react";
 
 const UBI_TYPES = [
   { id: "base", label: "UBI Base", amount: 50, frequency: "/mês", icon: Globe, desc: "Verificação de humanidade necessária", unlocked: true },
@@ -24,7 +23,6 @@ const UBI_HISTORY = [
 ];
 
 const UBIPage = () => {
-  const navigate = useNavigate();
   const [claimed, setClaimed] = useState(false);
   const totalUBI = 110;
   const maxUBI = 190;
@@ -33,29 +31,22 @@ const UBIPage = () => {
   const fundRemaining = 97_200_000;
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center px-5 h-14">
-          <button onClick={() => navigate(-1)} className="mr-3 tap-shrink">
-            <ChevronLeft size={20} className="text-foreground" />
-          </button>
-          <h1 className="font-display font-bold text-base">Renda Base Universal</h1>
-        </div>
-      </header>
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-3xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
+        <h1 className="font-display font-bold text-xl">Renda Base Universal</h1>
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Hero Card */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl bg-foreground text-background p-6 text-center"
+          className="rounded-xl bg-foreground text-background p-6 text-center"
         >
           <p className="text-[11px] text-background/50 font-body mb-1">A tua renda mensal</p>
           <p className="text-4xl font-display font-bold text-primary">{totalUBI} $W</p>
           <p className="text-xs text-background/50 font-body mt-1">de {maxUBI} $W possíveis</p>
 
           <div className="flex items-center gap-2 mt-4 px-4">
-            <div className="flex-1 h-2.5 rounded-full bg-background/10 overflow-hidden">
+            <div className="flex-1 h-2 rounded-full bg-background/10 overflow-hidden">
               <div className="h-full rounded-full bg-primary" style={{ width: `${(totalUBI / maxUBI) * 100}%` }} />
             </div>
             <span className="text-[11px] text-background/50 font-body">{Math.round((totalUBI / maxUBI) * 100)}%</span>
@@ -65,10 +56,8 @@ const UBIPage = () => {
             whileTap={{ scale: 0.97 }}
             onClick={() => setClaimed(true)}
             disabled={claimed}
-            className={`mt-5 px-8 py-3 rounded-xl font-display font-semibold text-sm tap-shrink ${
-              claimed
-                ? "bg-background/10 text-background/50"
-                : "bg-primary text-primary-foreground"
+            className={`mt-5 px-8 py-3 rounded-lg font-display font-semibold text-sm tap-shrink ${
+              claimed ? "bg-background/10 text-background/50" : "bg-primary text-primary-foreground"
             }`}
           >
             {claimed ? `Próximo claim: ${nextClaim}` : "Recolher UBI Diário"}
@@ -94,9 +83,6 @@ const UBIPage = () => {
               <p className="text-[10px] text-muted-foreground font-body">Duração</p>
               <p className="text-xs font-display font-bold">~18 anos</p>
             </div>
-          </div>
-          <div className="mt-2.5 h-1.5 rounded-full bg-secondary overflow-hidden">
-            <div className="h-full rounded-full bg-primary" style={{ width: `${(fundRemaining / 100_000_000) * 100}%` }} />
           </div>
         </div>
 
@@ -135,7 +121,7 @@ const UBIPage = () => {
           </div>
         </section>
 
-        {/* Humanity Verification */}
+        {/* Verification */}
         <section>
           <h2 className="font-display font-semibold text-[15px] mb-3">Verificação de Humanidade</h2>
           <div className="card-clean p-4 space-y-3">
@@ -143,7 +129,7 @@ const UBIPage = () => {
               const Icon = phase.icon;
               return (
                 <div key={phase.phase} className="flex items-center gap-3">
-                  <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+                  <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${
                     phase.status === "completed" ? "bg-primary text-primary-foreground" :
                     phase.status === "current" ? "bg-primary/10 border border-primary/30" :
                     "bg-secondary text-muted-foreground"
@@ -154,7 +140,7 @@ const UBIPage = () => {
                     <p className="text-xs font-display font-semibold">{phase.label}</p>
                     <p className="text-[11px] text-muted-foreground font-body">Fase {phase.phase}</p>
                   </div>
-                  <span className={`text-[10px] font-body font-medium px-2 py-0.5 rounded-lg ${
+                  <span className={`text-[10px] font-body font-medium px-2 py-0.5 rounded-md ${
                     phase.status === "completed" ? "bg-primary/10 text-primary" :
                     phase.status === "current" ? "bg-primary/10 text-primary" :
                     "bg-secondary text-muted-foreground"

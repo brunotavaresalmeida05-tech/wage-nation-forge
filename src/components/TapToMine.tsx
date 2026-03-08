@@ -45,7 +45,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         setCoinPops((prev) => prev.filter((c) => c.id !== id));
       }, 600);
 
-      setScale(0.96);
+      setScale(0.94);
       setTimeout(() => setScale(1), 100);
 
       onTap(minePerTap);
@@ -58,7 +58,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
   return (
     <div className="flex flex-col items-center gap-5">
       <div className="text-center">
-        <p className="text-xs text-muted-foreground font-body tracking-wide">Saldo $MINE</p>
+        <p className="text-xs text-muted-foreground font-body tracking-wide uppercase">Saldo $MINE</p>
         <p className="text-4xl font-display font-bold mt-1">
           {mineBalance.toLocaleString()}
         </p>
@@ -68,18 +68,33 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         <button
           onMouseDown={handleTap}
           disabled={energy <= 0}
-          className="relative w-40 h-40 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed border-2 border-border bg-card transition-all"
+          className="relative w-44 h-44 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           style={{
             transform: `scale(${scale})`,
             transition: "transform 0.1s",
-            boxShadow: energy > 0 ? "0 0 40px hsl(22 100% 52% / 0.12), inset 0 0 20px hsl(22 100% 52% / 0.05)" : "none",
           }}
         >
-          <div className="flex flex-col items-center gap-1">
-            <div className="w-14 h-14 rounded-full bg-primary/15 flex items-center justify-center">
-              <Zap size={28} className="text-primary" />
-            </div>
-            <span className="text-[10px] text-muted-foreground font-body font-medium mt-1">TAP TO MINE</span>
+          {/* Outer glow ring */}
+          <div className="absolute inset-0 rounded-full animate-pulse-glow" style={{
+            background: energy > 0 ? "radial-gradient(circle, hsl(214 99% 60% / 0.08) 0%, transparent 70%)" : "none"
+          }} />
+          
+          {/* Coin body */}
+          <div className="relative w-36 h-36 rounded-full border-[3px] border-primary/40 bg-gradient-to-br from-primary/20 via-card to-primary/10 flex items-center justify-center animate-coin-bounce">
+            {/* Inner ring */}
+            <div className="absolute inset-2 rounded-full border border-primary/20" />
+            
+            {/* M Letter */}
+            <span className="text-5xl font-display font-black text-primary drop-shadow-lg select-none" style={{
+              textShadow: "0 0 20px hsl(214 99% 60% / 0.4), 0 2px 4px hsl(0 0% 0% / 0.3)"
+            }}>
+              M
+            </span>
+            
+            {/* Stars decorating the coin */}
+            <span className="absolute top-5 left-7 text-primary/40 text-[8px]">★</span>
+            <span className="absolute top-5 right-7 text-primary/40 text-[8px]">★</span>
+            <span className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-primary/50 font-body font-bold tracking-widest">MINE</span>
           </div>
         </button>
 
@@ -88,7 +103,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
             <motion.div
               key={pop.id}
               initial={{ scale: 0, y: 0, opacity: 1 }}
-              animate={{ scale: 1.1, y: -45, opacity: 0 }}
+              animate={{ scale: 1.2, y: -50, opacity: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="absolute pointer-events-none text-primary font-display font-bold text-base"
@@ -100,6 +115,8 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         </AnimatePresence>
       </div>
 
+      <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Toca para minerar</p>
+
       <div className="w-full max-w-xs">
         <div className="flex justify-between text-[11px] text-muted-foreground mb-1.5 font-body">
           <div className="flex items-center gap-1">
@@ -108,7 +125,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
           </div>
           <span className="font-medium">{energy}/{maxEnergy}</span>
         </div>
-        <div className="h-2 rounded-full bg-secondary overflow-hidden">
+        <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
           <motion.div
             className="h-full rounded-full bg-primary"
             animate={{ width: `${energyPercent}%` }}

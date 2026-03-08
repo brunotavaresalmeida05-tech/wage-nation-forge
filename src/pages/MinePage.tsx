@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Wrench, Battery, Bot, Zap, ChevronLeft } from "lucide-react";
+import { Wrench, Battery, Bot, Zap } from "lucide-react";
 import TapToMine from "../components/TapToMine";
 
 const MinePage = () => {
@@ -32,17 +32,15 @@ const MinePage = () => {
   ];
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center justify-between px-5 h-14">
-          <h1 className="font-display font-bold text-base">Mining Station</h1>
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-3xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
+        <div className="flex items-center justify-between">
+          <h1 className="font-display font-bold text-xl">Mining Station</h1>
           <span className="text-[11px] bg-secondary px-2.5 py-1 rounded-lg font-body text-muted-foreground font-medium">
             Level {level}
           </span>
         </div>
-      </header>
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Stats Row */}
         <div className="grid grid-cols-3 gap-2.5">
           {[
@@ -51,7 +49,7 @@ const MinePage = () => {
             { label: "Level", value: level.toString() },
           ].map((stat) => (
             <div key={stat.label} className="card-clean p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body">{stat.label}</p>
+              <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">{stat.label}</p>
               <p className="text-base font-display font-bold mt-0.5">{stat.value}</p>
             </div>
           ))}

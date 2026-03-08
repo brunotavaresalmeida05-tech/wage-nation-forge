@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Building2, BarChart3, PieChart, Landmark, Globe, CreditCard, ArrowDownUp, Bell } from "lucide-react";
+import { ArrowRight, Building2, BarChart3, PieChart, Landmark, Globe, CreditCard, ArrowDownUp, Wallet } from "lucide-react";
 import WalletCard from "../components/WalletCard";
 import TapToMine from "../components/TapToMine";
 import DailyStreak from "../components/DailyStreak";
@@ -48,170 +48,141 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center justify-between px-5 h-14">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-display font-bold text-sm">W</span>
-            </div>
-            <h1 className="font-display font-bold text-base tracking-tight">Wage</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <button className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center tap-shrink">
-              <Bell size={16} className="text-muted-foreground" />
-            </button>
-            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
-              <span className="text-xs font-display font-semibold text-muted-foreground">JD</span>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4 lg:py-6">
+        {/* Desktop: two-column layout */}
+        <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-6">
+          {/* Main Column */}
+          <div className="space-y-5">
+            {/* Wallet */}
+            <WalletCard mineBalance={mineBalance} wageBalance={wageBalance} wageUsdRate={wageUsdRate} />
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
-        {/* Wallet */}
-        <WalletCard mineBalance={mineBalance} wageBalance={wageBalance} wageUsdRate={wageUsdRate} />
+            {/* Active Event */}
+            <EventBanner event={activeEvent} />
 
-        {/* Active Event */}
-        <EventBanner event={activeEvent} />
+            {/* Quick Mine */}
+            <motion.section
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="card-clean p-6"
+            >
+              <TapToMine mineBalance={mineBalance} energy={energy} maxEnergy={maxEnergy} onTap={handleTap} minePerTap={minePerTap} />
+            </motion.section>
 
-        {/* Daily Streak */}
-        <DailyStreak currentStreak={4} todayCompleted={false} />
-
-        {/* Quick Mine */}
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="card-clean p-6"
-        >
-          <TapToMine mineBalance={mineBalance} energy={energy} maxEnergy={maxEnergy} onTap={handleTap} minePerTap={minePerTap} />
-        </motion.section>
-
-        {/* Quick Tasks */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-display font-semibold text-[15px]">Tarefas Diárias</h2>
-            <button onClick={() => navigate("/tasks")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
-              Ver todas <ArrowRight size={12} />
-            </button>
-          </div>
-          <div className="space-y-2">
-            {QUICK_TASKS.map((task, i) => (
-              <motion.div
-                key={task.id}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.12 + i * 0.03 }}
-                className={`flex items-center gap-3 card-clean p-3 ${task.completed ? "opacity-50" : ""}`}
-              >
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm ${
-                  task.completed ? "bg-primary/10" : "bg-secondary"
-                }`}>
-                  {task.completed ? (
-                    <span className="text-primary font-bold">✓</span>
-                  ) : (
-                    <span className="text-muted-foreground font-display font-bold">{task.id}</span>
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-display font-semibold truncate">{task.title}</p>
-                  {task.progress !== undefined && task.target !== undefined && !task.completed && (
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                        <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${(task.progress / task.target) * 100}%` }} />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground font-body">{task.progress}/{task.target}</span>
+            {/* Portfolio Quick View */}
+            <section>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="font-display font-semibold text-[15px]">Meu Portfolio</h2>
+                <button onClick={() => navigate("/invest")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
+                  Gerir <ArrowRight size={12} />
+                </button>
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+                {[
+                  { label: "Imóveis", value: "3", icon: <Building2 size={20} className="text-gold" />, onClick: () => navigate("/real-estate") },
+                  { label: "Ações Web3", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
+                  { label: "ETFs", value: "2", icon: <PieChart size={20} className="text-primary" />, onClick: () => navigate("/etfs") },
+                  { label: "Vault", value: "700 $W", icon: <Landmark size={20} className="text-foreground" />, onClick: () => navigate("/vault") },
+                ].map((item) => (
+                  <motion.div
+                    key={item.label}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={item.onClick}
+                    className="card-clean p-4 text-center cursor-pointer"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-2">
+                      {item.icon}
                     </div>
-                  )}
-                </div>
-                <span className="text-[11px] font-display font-bold text-primary">{task.reward}</span>
-              </motion.div>
-            ))}
+                    <p className="text-lg font-display font-bold">{item.value}</p>
+                    <p className="text-[11px] text-muted-foreground font-body">{item.label}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
           </div>
-        </section>
 
-        {/* Portfolio Quick View */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-display font-semibold text-[15px]">Meu Portfolio</h2>
-            <button onClick={() => navigate("/invest")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
-              Gerir <ArrowRight size={12} />
-            </button>
-          </div>
-          <div className="grid grid-cols-2 gap-2.5">
-            {[
-              { label: "Imóveis", value: "3", icon: <Building2 size={20} className="text-gold" />, onClick: () => navigate("/real-estate") },
-              { label: "Ações Web3", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
-              { label: "ETFs", value: "2", icon: <PieChart size={20} className="text-primary" />, onClick: () => navigate("/etfs") },
-              { label: "Vault", value: "700 $W", icon: <Landmark size={20} className="text-foreground" />, onClick: () => navigate("/vault") },
-            ].map((item) => (
-              <motion.div
-                key={item.label}
-                whileTap={{ scale: 0.97 }}
-                onClick={item.onClick}
-                className="card-clean p-4 text-center cursor-pointer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-2">
-                  {item.icon}
-                </div>
-                <p className="text-lg font-display font-bold">{item.value}</p>
-                <p className="text-[11px] text-muted-foreground font-body">{item.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+          {/* Right Sidebar (desktop) / Stacked (mobile) */}
+          <div className="space-y-5 mt-5 lg:mt-0">
+            {/* Daily Streak */}
+            <DailyStreak currentStreak={4} todayCompleted={false} />
 
-        {/* Dividends */}
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-display font-semibold text-[15px]">Próximos Dividendos</h2>
-          </div>
-          <DividendCalendar />
-        </section>
+            {/* Quick Tasks */}
+            <section>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="font-display font-semibold text-[15px]">Tarefas Diárias</h2>
+                <button onClick={() => navigate("/tasks")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
+                  Ver todas <ArrowRight size={12} />
+                </button>
+              </div>
+              <div className="space-y-2">
+                {QUICK_TASKS.map((task, i) => (
+                  <motion.div
+                    key={task.id}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.12 + i * 0.03 }}
+                    className={`flex items-center gap-3 card-clean p-3 ${task.completed ? "opacity-50" : ""}`}
+                  >
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${
+                      task.completed ? "bg-primary/10" : "bg-secondary"
+                    }`}>
+                      {task.completed ? (
+                        <span className="text-primary font-bold text-xs">✓</span>
+                      ) : (
+                        <span className="text-muted-foreground font-display font-bold text-xs">{task.id}</span>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-display font-semibold truncate">{task.title}</p>
+                      {task.progress !== undefined && task.target !== undefined && !task.completed && (
+                        <div className="flex items-center gap-2 mt-1">
+                          <div className="flex-1 h-1 rounded-full bg-secondary overflow-hidden">
+                            <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${(task.progress / task.target) * 100}%` }} />
+                          </div>
+                          <span className="text-[10px] text-muted-foreground font-body">{task.progress}/{task.target}</span>
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-[11px] font-display font-bold text-primary">{task.reward}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
 
-        {/* UBI + WagePay + Swap Quick Access */}
-        <div className="grid grid-cols-3 gap-2.5">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            onClick={() => navigate("/ubi")}
-            className="card-clean p-3.5 text-center cursor-pointer border-primary/20"
-          >
-            <div className="w-9 h-9 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-1.5">
-              <Globe size={18} className="text-primary" />
+            {/* Dividends */}
+            <section>
+              <h2 className="font-display font-semibold text-[15px] mb-3">Próximos Dividendos</h2>
+              <DividendCalendar />
+            </section>
+
+            {/* Quick Access */}
+            <div className="grid grid-cols-3 gap-2.5">
+              {[
+                { icon: Globe, label: "UBI", value: "110 $W", route: "/ubi", accent: true },
+                { icon: CreditCard, label: "Pay", value: "P2P", route: "/wagepay", accent: false },
+                { icon: Wallet, label: "Cartões", value: "Banco", route: "/bank-cards", accent: false },
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <motion.div
+                    key={item.label}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + idx * 0.03 }}
+                    onClick={() => navigate(item.route)}
+                    className={`card-clean p-3 text-center cursor-pointer ${item.accent ? "border-primary/20" : ""}`}
+                  >
+                    <div className={`w-8 h-8 rounded-lg mx-auto flex items-center justify-center mb-1.5 ${item.accent ? "bg-primary/10" : "bg-secondary"}`}>
+                      <Icon size={16} className={item.accent ? "text-primary" : "text-foreground"} />
+                    </div>
+                    <p className="text-[11px] font-display font-semibold">{item.label}</p>
+                    <p className={`text-xs font-display font-bold mt-0.5 ${item.accent ? "text-primary" : ""}`}>{item.value}</p>
+                  </motion.div>
+                );
+              })}
             </div>
-            <p className="text-[11px] font-display font-semibold">UBI</p>
-            <p className="text-sm font-display font-bold text-primary mt-0.5">110 $W</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.33 }}
-            onClick={() => navigate("/wagepay")}
-            className="card-clean p-3.5 text-center cursor-pointer"
-          >
-            <div className="w-9 h-9 rounded-xl bg-secondary mx-auto flex items-center justify-center mb-1.5">
-              <CreditCard size={18} className="text-foreground" />
-            </div>
-            <p className="text-[11px] font-display font-semibold">Pay</p>
-            <p className="text-sm font-display font-bold mt-0.5">P2P</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.36 }}
-            onClick={() => navigate("/swap")}
-            className="card-clean p-3.5 text-center cursor-pointer border-primary/20"
-          >
-            <div className="w-9 h-9 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-1.5">
-              <ArrowDownUp size={18} className="text-primary" />
-            </div>
-            <p className="text-[11px] font-display font-semibold">Swap</p>
-            <p className="text-sm font-display font-bold text-primary mt-0.5">Instant</p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
