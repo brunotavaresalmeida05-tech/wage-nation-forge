@@ -45,17 +45,15 @@ const ProfilePage = () => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center justify-between px-5 h-14">
-          <h1 className="font-display font-bold text-base">Perfil</h1>
-          <button className="w-8 h-8 rounded-xl bg-secondary flex items-center justify-center tap-shrink">
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-2xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
+        <div className="flex items-center justify-between">
+          <h1 className="font-display font-bold text-xl">Perfil</h1>
+          <button className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center tap-shrink">
             <Settings size={16} className="text-muted-foreground" />
           </button>
         </div>
-      </header>
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Profile Card */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
@@ -74,7 +72,7 @@ const ProfilePage = () => {
               <span>XP {profile.xp.toLocaleString()}</span>
               <span>{profile.xpNext.toLocaleString()}</span>
             </div>
-            <div className="h-2 rounded-full bg-secondary overflow-hidden">
+            <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
               <motion.div className="h-full rounded-full bg-primary" animate={{ width: `${xpPercent}%` }} />
             </div>
           </div>
@@ -110,12 +108,12 @@ const ProfilePage = () => {
               <p className="text-[11px] text-muted-foreground font-body">Reputação</p>
             </div>
             <p className="text-sm font-display font-bold">{profile.reputationScore}/1000</p>
-            <p className="text-[10px] text-muted-foreground font-body">{profile.reputationTier} — Crédito: 500 $W</p>
+            <p className="text-[10px] text-muted-foreground font-body">{profile.reputationTier}</p>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
           {[
             { label: "Total $MINE", value: profile.totalMined.toLocaleString(), icon: Pickaxe },
             { label: "Total $WAGE", value: profile.totalWage.toFixed(2), icon: Wallet },
@@ -142,11 +140,9 @@ const ProfilePage = () => {
             {streakRewards.map((sr) => (
               <div
                 key={sr.days}
-                className={`flex items-center gap-3 card-clean p-3.5 ${
-                  sr.reached ? "border-primary/20" : ""
-                }`}
+                className={`flex items-center gap-3 card-clean p-3 ${sr.reached ? "border-primary/20" : ""}`}
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-display font-bold ${
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center text-xs font-display font-bold ${
                   sr.reached ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
                 }`}>
                   {sr.days}d

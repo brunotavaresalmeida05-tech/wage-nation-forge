@@ -53,10 +53,9 @@ export default {
           elevated: "hsl(var(--card-elevated))",
         },
         wage: {
-          orange: "hsl(var(--wage-orange))",
+          blue: "hsl(var(--wage-blue))",
         },
         mine: {
-          blue: "hsl(var(--mine-blue))",
           cyan: "hsl(var(--mine-cyan))",
         },
         gold: "hsl(var(--gold))",
@@ -93,7 +92,12 @@ export default {
         },
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-4px)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+        "coin-bounce": {
+          "0%, 100%": { transform: "translateY(0px) scale(1)" },
+          "40%": { transform: "translateY(-12px) scale(1.05)" },
+          "60%": { transform: "translateY(-8px) scale(1.02)" },
         },
       },
       animation: {
@@ -101,6 +105,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "float": "float 3s ease-in-out infinite",
+        "coin-bounce": "coin-bounce 2s ease-in-out infinite",
       },
     },
   },

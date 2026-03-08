@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import BottomNav from "./components/BottomNav";
+import AppLayout from "./components/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import MinePage from "./pages/MinePage";
 import ExchangePage from "./pages/ExchangePage";
@@ -18,6 +18,7 @@ import VaultPage from "./pages/VaultPage";
 import UBIPage from "./pages/UBIPage";
 import WagePayPage from "./pages/WagePayPage";
 import SwapPage from "./pages/SwapPage";
+import BankCardsPage from "./pages/BankCardsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,8 +29,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="min-h-screen bg-background text-foreground">
-          <Routes>
+        <Routes>
+          <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/mine" element={<MinePage />} />
             <Route path="/exchange" element={<ExchangePage />} />
@@ -43,11 +44,11 @@ const App = () => (
             <Route path="/ubi" element={<UBIPage />} />
             <Route path="/wagepay" element={<WagePayPage />} />
             <Route path="/swap" element={<SwapPage />} />
+            <Route path="/bank-cards" element={<BankCardsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <BottomNav />
-        </div>
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

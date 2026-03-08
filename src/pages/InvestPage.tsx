@@ -9,7 +9,7 @@ const modules = [
   { title: "Exchange", description: "Converte $MINE em $WAGE e vice-versa", icon: RefreshCw, route: "/exchange", stats: "1,000 $M = 1 $W", accent: "text-foreground" },
   { title: "WageBonds", description: "Títulos de renda fixa com juros garantidos", icon: FileText, route: "/market", stats: "15-40% APY", accent: "text-[hsl(265_60%_55%)]" },
   { title: "Mercado P2P", description: "Compra e vende ativos entre utilizadores", icon: Users, route: "/market", stats: "Taxa: 2.5%", accent: "text-foreground" },
-  { title: "Vault Soberano", description: "Staking com APY de 5% a 200% conforme duração do lock", icon: Landmark, route: "/vault", stats: "Até 200% APY", accent: "text-primary" },
+  { title: "Vault Soberano", description: "Staking com APY de 5% a 200% conforme duração", icon: Landmark, route: "/vault", stats: "Até 200% APY", accent: "text-primary" },
   { title: "WagePay", description: "Enviar e receber $WAGE via QR e P2P", icon: CreditCard, route: "/wagepay", stats: "Instantâneo", accent: "text-foreground" },
 ];
 
@@ -23,22 +23,18 @@ const InvestPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen pb-20 bg-background">
-      <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
-        <div className="max-w-lg mx-auto flex items-center px-5 h-14">
-          <h1 className="font-display font-bold text-base">Investimentos</h1>
-        </div>
-      </header>
+    <div className="pb-20 lg:pb-6">
+      <div className="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
+        <h1 className="font-display font-bold text-xl lg:text-2xl">Investimentos</h1>
 
-      <div className="max-w-lg mx-auto px-5 py-5 space-y-5">
         {/* Portfolio Overview */}
         <div className="grid grid-cols-3 gap-2.5">
           {portfolio.map((p) => (
             <div key={p.label} className="card-clean p-3 text-center">
-              <p className="text-[10px] text-muted-foreground font-body">{p.label}</p>
+              <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">{p.label}</p>
               <p className="text-sm font-display font-bold mt-0.5">{p.value}</p>
               {p.change && (
-                <p className={`text-[10px] font-body font-medium ${p.positive ? "text-primary" : "text-destructive"}`}>{p.change}</p>
+                <p className={`text-[10px] font-body font-medium ${p.positive ? "text-success" : "text-destructive"}`}>{p.change}</p>
               )}
             </div>
           ))}
