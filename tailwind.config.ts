@@ -53,7 +53,7 @@ export default {
           elevated: "hsl(var(--card-elevated))",
         },
         wage: {
-          green: "hsl(var(--wage-green))",
+          orange: "hsl(var(--wage-orange))",
         },
         mine: {
           blue: "hsl(var(--mine-blue))",

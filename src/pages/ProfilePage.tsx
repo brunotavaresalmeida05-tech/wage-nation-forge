@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
-import { Settings, Award, Shield, Pickaxe, Wallet, PieChart, Flame, Check, Star } from "lucide-react";
+import { Settings, Award, Shield, Pickaxe, Wallet, PieChart, Flame, Check, Star, Sun, Moon } from "lucide-react";
+import { useTheme } from "../hooks/useTheme";
+import { Switch } from "../components/ui/switch";
 
 const profile = {
   name: "Worker #4821",
@@ -40,6 +42,8 @@ const streakRewards = [
 const xpPercent = (profile.xp / profile.xpNext) * 100;
 
 const ProfilePage = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="min-h-screen pb-20 bg-background">
       <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
@@ -58,8 +62,8 @@ const ProfilePage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="card-clean p-5 text-center"
         >
-          <div className="w-16 h-16 rounded-2xl bg-foreground mx-auto flex items-center justify-center mb-3">
-            <span className="text-background font-display font-bold text-xl">W</span>
+          <div className="w-16 h-16 rounded-2xl bg-primary mx-auto flex items-center justify-center mb-3">
+            <span className="text-primary-foreground font-display font-bold text-xl">W</span>
           </div>
           <h2 className="font-display font-bold text-lg">{profile.name}</h2>
           <p className="text-xs text-primary font-body font-medium">{profile.role} • Nível {profile.level}</p>
@@ -75,6 +79,20 @@ const ProfilePage = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* Theme Toggle */}
+        <div className="card-clean p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {theme === "dark" ? <Moon size={18} className="text-primary" /> : <Sun size={18} className="text-primary" />}
+              <div>
+                <p className="text-sm font-display font-semibold">Aparência</p>
+                <p className="text-[11px] text-muted-foreground font-body">{theme === "dark" ? "Modo Escuro" : "Modo Claro"}</p>
+              </div>
+            </div>
+            <Switch checked={theme === "light"} onCheckedChange={toggleTheme} />
+          </div>
+        </div>
 
         {/* WageID & Reputation */}
         <div className="grid grid-cols-2 gap-2.5">
@@ -169,7 +187,7 @@ const ProfilePage = () => {
           <button className="w-full py-3 rounded-xl bg-primary text-primary-foreground font-display font-semibold text-sm tap-shrink">
             Levantar $WAGE
           </button>
-          <button className="w-full py-3 rounded-xl bg-foreground text-background font-display font-semibold text-sm tap-shrink">
+          <button className="w-full py-3 rounded-xl bg-secondary text-foreground font-display font-semibold text-sm tap-shrink">
             Verificar Identidade (KYC)
           </button>
         </div>
