@@ -967,7 +967,7 @@ const JobsPage = () => {
                         </div>
                         {!done && (
                           <div className="flex items-center gap-1 text-[10px] text-primary font-body">
-                            <Coins size={10} />+{Math.floor(activeJob.salary / activeJob.tasksPerDay)}
+                            <Coins size={10} />+{Math.floor(effectiveSalary / activeJob.tasksPerDay)}
                           </div>
                         )}
                       </motion.button>
@@ -979,7 +979,7 @@ const JobsPage = () => {
                   <p className="text-xs text-muted-foreground font-body">Earned today</p>
                   <p className="text-sm font-display font-bold text-primary flex items-center gap-1">
                     <CoinIcon type="mine" size={14} />
-                    {earnedToday} / {activeJob.salary} $MINE
+                    {earnedToday} / {effectiveSalary} $MINE
                   </p>
                 </div>
               </div>
