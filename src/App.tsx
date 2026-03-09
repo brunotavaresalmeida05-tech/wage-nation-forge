@@ -20,6 +20,7 @@ import WagePayPage from "./pages/WagePayPage";
 import SwapPage from "./pages/SwapPage";
 import BankCardsPage from "./pages/BankCardsPage";
 import CreditPage from "./pages/CreditPage";
+import AssetDetailPage from "./pages/AssetDetailPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/mine" element={<MinePage />} />
             <Route path="/exchange" element={<ExchangePage />} />
             <Route path="/market" element={<MarketPage />} />
+            <Route path="/market/:symbol" element={<AssetDetailPage />} />
             <Route path="/invest" element={<InvestPage />} />
             <Route path="/real-estate" element={<RealEstatePage />} />
             <Route path="/sectors" element={<SectorsPage />} />
