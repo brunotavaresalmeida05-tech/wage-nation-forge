@@ -196,6 +196,210 @@ const workTaskTemplates: Record<string, string[]> = {
   ],
 };
 
+/* ── Economic Events System ── */
+interface EconomicEventDef {
+  id: string;
+  title: string;
+  description: string;
+  emoji: string;
+  type: "boom" | "recession" | "strike" | "subsidy" | "crisis" | "golden";
+  isPositive: boolean;
+  /** Salary multiplier (1.0 = no change) */
+  salaryMod: number;
+  /** Affected sector IDs, empty = all sectors */
+  affectedSectors: string[];
+  /** Whether hiring is frozen in affected sectors */
+  hiringFreeze: boolean;
+  /** Duration label */
+  duration: string;
+  /** Extra XP modifier */
+  xpMod: number;
+}
+
+const ALL_ECONOMIC_EVENTS: EconomicEventDef[] = [
+  {
+    id: "tech_boom",
+    title: "Tech Boom",
+    description: "AI revolution drives massive demand for tech workers. Salaries surge across all tech companies.",
+    emoji: "🚀",
+    type: "boom",
+    isPositive: true,
+    salaryMod: 1.35,
+    affectedSectors: ["tech"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.2,
+  },
+  {
+    id: "global_recession",
+    title: "Global Recession",
+    description: "Economic downturn hits all sectors. Companies cut salaries and freeze new hiring.",
+    emoji: "📉",
+    type: "recession",
+    isPositive: false,
+    salaryMod: 0.7,
+    affectedSectors: [],
+    hiringFreeze: true,
+    duration: "72h",
+    xpMod: 0.8,
+  },
+  {
+    id: "mining_strike",
+    title: "Miners' Strike",
+    description: "Workers in Energy & Mining demand better conditions. All mining operations temporarily halted.",
+    emoji: "✊",
+    type: "strike",
+    isPositive: false,
+    salaryMod: 0,
+    affectedSectors: ["energy"],
+    hiringFreeze: true,
+    duration: "24h",
+    xpMod: 0,
+  },
+  {
+    id: "finance_golden",
+    title: "Bull Market Rally",
+    description: "Stock markets hit all-time highs. Finance sector bonuses doubled!",
+    emoji: "🐂",
+    type: "golden",
+    isPositive: true,
+    salaryMod: 1.5,
+    affectedSectors: ["finance"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.5,
+  },
+  {
+    id: "govt_subsidy",
+    title: "Government Subsidy",
+    description: "Treasury announces stimulus package. All workers receive a temporary salary boost.",
+    emoji: "🏛️",
+    type: "subsidy",
+    isPositive: true,
+    salaryMod: 1.2,
+    affectedSectors: [],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.1,
+  },
+  {
+    id: "health_crisis",
+    title: "Health Emergency",
+    description: "Pandemic alert! Healthcare demand spikes but other sectors see reduced activity.",
+    emoji: "🦠",
+    type: "crisis",
+    isPositive: false,
+    salaryMod: 0.8,
+    affectedSectors: ["tech", "logistics", "construction", "energy"],
+    hiringFreeze: false,
+    duration: "72h",
+    xpMod: 0.9,
+  },
+  {
+    id: "healthcare_boom",
+    title: "Healthcare Funding",
+    description: "Massive government investment in healthcare. Medical salaries boosted significantly.",
+    emoji: "💉",
+    type: "boom",
+    isPositive: true,
+    salaryMod: 1.4,
+    affectedSectors: ["healthcare"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.3,
+  },
+  {
+    id: "logistics_surge",
+    title: "Trade Boom",
+    description: "International trade agreements boost global shipping demand. Logistics pays premium!",
+    emoji: "🌍",
+    type: "boom",
+    isPositive: true,
+    salaryMod: 1.3,
+    affectedSectors: ["logistics"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.2,
+  },
+  {
+    id: "construction_freeze",
+    title: "Material Shortage",
+    description: "Global supply chain disruption halts construction projects. Building sites shut down.",
+    emoji: "🚧",
+    type: "crisis",
+    isPositive: false,
+    salaryMod: 0.5,
+    affectedSectors: ["construction"],
+    hiringFreeze: true,
+    duration: "48h",
+    xpMod: 0.5,
+  },
+  {
+    id: "golden_age",
+    title: "Golden Age",
+    description: "Economic prosperity! All sectors flourish with increased wages and new opportunities.",
+    emoji: "✨",
+    type: "golden",
+    isPositive: true,
+    salaryMod: 1.25,
+    affectedSectors: [],
+    hiringFreeze: false,
+    duration: "24h",
+    xpMod: 1.5,
+  },
+  {
+    id: "energy_crisis",
+    title: "Energy Crisis",
+    description: "Oil prices skyrocket. Energy companies profit but all other sectors face higher costs.",
+    emoji: "⛽",
+    type: "crisis",
+    isPositive: false,
+    salaryMod: 0.85,
+    affectedSectors: ["tech", "finance", "logistics", "construction", "healthcare"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 0.9,
+  },
+  {
+    id: "energy_profit",
+    title: "Energy Windfall",
+    description: "Energy sector profits from crisis. Mining and energy workers get massive bonuses.",
+    emoji: "💰",
+    type: "boom",
+    isPositive: true,
+    salaryMod: 1.6,
+    affectedSectors: ["energy"],
+    hiringFreeze: false,
+    duration: "48h",
+    xpMod: 1.4,
+  },
+];
+
+/** Pick 1-3 random active events (simulated) */
+function getActiveEvents(): (EconomicEventDef & { endsIn: string })[] {
+  // Use a seed based on the day so events feel persistent within a session
+  const daySeed = Math.floor(Date.now() / (1000 * 60 * 60 * 12)); // changes every 12h
+  const shuffled = [...ALL_ECONOMIC_EVENTS].sort((a, b) => {
+    const ha = ((daySeed * 31 + a.id.length) % 97) / 97;
+    const hb = ((daySeed * 31 + b.id.length) % 97) / 97;
+    return ha - hb;
+  });
+  const count = (daySeed % 3) + 1; // 1-3 events
+  return shuffled.slice(0, count).map((ev, i) => ({
+    ...ev,
+    endsIn: `${((daySeed + i * 7) % 47) + 1}h`,
+  }));
+}
+
+const eventTypeConfig: Record<EconomicEventDef["type"], { icon: typeof TrendingUp; color: string; bg: string; border: string }> = {
+  boom: { icon: TrendingUp, color: "text-success", bg: "bg-success/10", border: "border-success/20" },
+  recession: { icon: TrendingDown, color: "text-destructive", bg: "bg-destructive/10", border: "border-destructive/20" },
+  strike: { icon: Ban, color: "text-destructive", bg: "bg-destructive/10", border: "border-destructive/20" },
+  subsidy: { icon: Gift, color: "text-primary", bg: "bg-primary/10", border: "border-primary/20" },
+  crisis: { icon: AlertTriangle, color: "text-warning", bg: "bg-warning/10", border: "border-warning/20" },
+  golden: { icon: Sparkles, color: "text-warning", bg: "bg-warning/10", border: "border-warning/20" },
+};
+
 interface ActiveJob {
   companyId: string;
   companyName: string;
