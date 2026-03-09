@@ -4,7 +4,8 @@ import {
   Briefcase, Building2, Clock, Coins, ChevronRight, Star, TrendingUp, TrendingDown,
   CheckCircle2, Lock, Zap, Users, Award, ArrowRight, Timer, Wallet,
   ChevronUp, Trophy, Sparkles, PartyPopper, AlertTriangle, Flame, Snowflake,
-  Ban, Megaphone, ShieldAlert, Gift, Newspaper
+  Ban, Megaphone, ShieldAlert, Gift, Newspaper, Receipt, FileText,
+  ArrowDown, Download, CalendarDays
 } from "lucide-react";
 import CoinIcon from "@/components/CoinIcon";
 
