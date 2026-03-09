@@ -20,6 +20,7 @@ import WagePayPage from "./pages/WagePayPage";
 import SwapPage from "./pages/SwapPage";
 import BankCardsPage from "./pages/BankCardsPage";
 import CreditPage from "./pages/CreditPage";
+import JobsPage from "./pages/JobsPage";
 import AssetDetailPage from "./pages/AssetDetailPage";
 import NotFound from "./pages/NotFound";
 
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/swap" element={<SwapPage />} />
             <Route path="/bank-cards" element={<BankCardsPage />} />
             <Route path="/credit" element={<CreditPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
