@@ -834,6 +834,52 @@ const JobsPage = () => {
           ))}
         </div>
 
+        {/* ══ Weekly Payslip CTA ══ */}
+        {activeJob && (
+          <motion.button
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            onClick={openPayslip}
+            className="w-full card-clean p-4 border-primary/20 tap-shrink text-left relative overflow-hidden"
+          >
+            {/* Pulse indicator if unclaimed */}
+            {!payslipClaimed && (
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-success"
+              />
+            )}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0">
+                <Receipt size={22} className="text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-display font-bold">Weekly Payslip Ready</p>
+                  <span className="text-[9px] bg-success/10 text-success px-1.5 py-0.5 rounded-full font-body font-medium">
+                    {daysWorkedThisWeek} days worked
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground font-body mt-0.5">
+                  Gross: {grossSalary.toLocaleString()} $MINE • Net: <span className="text-primary font-semibold">{netSalary.toLocaleString()} $MINE</span>
+                </p>
+                <div className="flex items-center gap-3 mt-1.5">
+                  <span className="text-[9px] text-muted-foreground font-body flex items-center gap-0.5">
+                    <CalendarDays size={9} /> Week of Mar 3
+                  </span>
+                  {streakBonus > 0 && (
+                    <span className="text-[9px] text-warning font-body font-medium flex items-center gap-0.5">
+                      <Flame size={9} /> +{(streakBonus * 100).toFixed(0)}% streak bonus
+                    </span>
+                  )}
+                </div>
+              </div>
+              <ArrowRight size={18} className="text-muted-foreground flex-shrink-0" />
+            </div>
+          </motion.button>
+        )}
+
         {/* Current Employment */}
         {activeJob && (
           <motion.section
