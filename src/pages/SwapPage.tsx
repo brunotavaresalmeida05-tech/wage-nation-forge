@@ -9,9 +9,9 @@ const TOKENS = [
   { symbol: "USDT", name: "Tether", balance: 0, usdPrice: 1.0, icon: "U" },
   { symbol: "BTC", name: "Bitcoin", balance: 0, usdPrice: 97420, icon: "₿" },
   { symbol: "ETH", name: "Ethereum", balance: 0, usdPrice: 3850, icon: "Ξ" },
-  { symbol: "BRL", name: "Real Brasileiro", balance: 0, usdPrice: 0.17, icon: "R$" },
   { symbol: "EUR", name: "Euro", balance: 0, usdPrice: 1.08, icon: "€" },
   { symbol: "USD", name: "US Dollar", balance: 0, usdPrice: 1.0, icon: "$" },
+  { symbol: "GBP", name: "British Pound", balance: 0, usdPrice: 1.27, icon: "£" },
 ];
 
 // Mock price history
@@ -85,11 +85,11 @@ const SwapPage = () => {
     <div className="pb-20 lg:pb-6">
       <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4 lg:py-6">
         <div className="lg:grid lg:grid-cols-[1fr_380px] lg:gap-6">
-          {/* Price Chart (desktop shows alongside, mobile shows on top) */}
-          <div className="space-y-5">
+          {/* Price Chart */}
+          <div className="space-y-5 min-w-0">
             <div>
               <h1 className="font-display font-bold text-xl lg:text-2xl">Swap</h1>
-              <p className="text-xs text-muted-foreground font-body mt-0.5">Converte qualquer token instantaneamente</p>
+              <p className="text-xs text-muted-foreground font-body mt-0.5">Convert any token instantly</p>
             </div>
 
             {/* Price Chart */}
@@ -147,15 +147,15 @@ const SwapPage = () => {
 
             {/* Fiat Offramp - Desktop */}
             <div className="hidden lg:block card-clean p-5">
-              <h3 className="font-display font-semibold text-base mb-2">Enviar para Banco</h3>
+              <h3 className="font-display font-semibold text-base mb-2">Send to Bank</h3>
               <p className="text-xs text-muted-foreground font-body mb-4">
-                Converte $WAGE para moeda local e envia diretamente para a tua conta bancária.
+                Convert $WAGE to local currency and send directly to your bank account.
               </p>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { currency: "BRL", label: "PIX", flag: "🇧🇷" },
+                  { currency: "USD", label: "ACH / Wire", flag: "🇺🇸" },
                   { currency: "EUR", label: "SEPA", flag: "🇪🇺" },
-                  { currency: "USD", label: "Wire", flag: "🇺🇸" },
+                  { currency: "GBP", label: "Faster Payments", flag: "🇬🇧" },
                 ].map((opt) => (
                   <button key={opt.currency} className="card-clean p-3.5 text-center tap-shrink hover:border-primary/30 transition-colors">
                     <span className="text-xl">{opt.flag}</span>
@@ -168,13 +168,13 @@ const SwapPage = () => {
           </div>
 
           {/* Swap Card */}
-          <div className="space-y-4 mt-5 lg:mt-0">
+          <div className="space-y-4 mt-5 lg:mt-0 min-w-0">
             {/* From */}
             <div className="card-clean p-4">
               <div className="flex items-center justify-between mb-3">
-                <label className="text-xs text-muted-foreground font-body">De</label>
+                <label className="text-xs text-muted-foreground font-body">From</label>
                 <span className="text-[11px] text-muted-foreground font-body">
-                  Saldo: {fromToken.balance} {fromToken.symbol}
+                  Balance: {fromToken.balance} {fromToken.symbol}
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -187,7 +187,7 @@ const SwapPage = () => {
                   type="number" value={fromAmount}
                   onChange={(e) => setFromAmount(e.target.value)}
                   placeholder="0.00"
-                  className="flex-1 text-right bg-transparent outline-none font-display font-bold text-2xl placeholder:text-muted-foreground"
+                  className="flex-1 text-right bg-transparent outline-none font-display font-bold text-2xl placeholder:text-muted-foreground min-w-0"
                 />
               </div>
               <div className="flex gap-2 mt-3">
@@ -217,9 +217,9 @@ const SwapPage = () => {
             {/* To */}
             <div className="card-clean p-4">
               <div className="flex items-center justify-between mb-3">
-                <label className="text-xs text-muted-foreground font-body">Para</label>
+                <label className="text-xs text-muted-foreground font-body">To</label>
                 <span className="text-[11px] text-muted-foreground font-body">
-                  Saldo: {toToken.balance} {toToken.symbol}
+                  Balance: {toToken.balance} {toToken.symbol}
                 </span>
               </div>
               <div className="flex items-center gap-3">
@@ -238,7 +238,7 @@ const SwapPage = () => {
             {fromNum > 0 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="card-clean p-3.5 space-y-2">
                 <div className="flex justify-between text-[11px] font-body">
-                  <span className="text-muted-foreground">Taxa</span>
+                  <span className="text-muted-foreground">Rate</span>
                   <span>1 {fromToken.symbol} = {rate.toFixed(rate >= 1 ? 4 : 8)} {toToken.symbol}</span>
                 </div>
                 <div className="flex justify-between text-[11px] font-body">
@@ -246,7 +246,7 @@ const SwapPage = () => {
                   <span>{fee.toFixed(4)} {fromToken.symbol}</span>
                 </div>
                 <div className="flex justify-between text-xs font-body font-semibold pt-2 border-t border-border">
-                  <span>Recebes</span>
+                  <span>You receive</span>
                   <span className="text-primary">{(toAmount * 0.997).toFixed(toToken.usdPrice >= 1 ? 2 : 6)} {toToken.symbol}</span>
                 </div>
               </motion.div>
@@ -259,23 +259,23 @@ const SwapPage = () => {
               className="w-full py-3.5 rounded-xl bg-primary text-primary-foreground font-display font-bold text-sm disabled:opacity-30 tap-shrink"
             >
               {fromNum > fromToken.balance
-                ? "Saldo insuficiente"
+                ? "Insufficient balance"
                 : fromNum <= 0
-                ? "Inserir montante"
+                ? "Enter amount"
                 : `Swap ${fromToken.symbol} → ${toToken.symbol}`}
             </motion.button>
 
             {/* Mobile Fiat Offramp */}
             <div className="lg:hidden card-clean p-4">
-              <h3 className="font-display font-semibold text-sm mb-2">Enviar para Banco</h3>
+              <h3 className="font-display font-semibold text-sm mb-2">Send to Bank</h3>
               <p className="text-[11px] text-muted-foreground font-body mb-3">
-                Converte para moeda local e envia para o teu banco.
+                Convert to local currency and send to your bank.
               </p>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { currency: "BRL", label: "PIX", flag: "🇧🇷" },
+                  { currency: "USD", label: "ACH / Wire", flag: "🇺🇸" },
                   { currency: "EUR", label: "SEPA", flag: "🇪🇺" },
-                  { currency: "USD", label: "Wire", flag: "🇺🇸" },
+                  { currency: "GBP", label: "Faster Payments", flag: "🇬🇧" },
                 ].map((opt) => (
                   <button key={opt.currency} className="card-clean p-2.5 text-center tap-shrink hover:border-primary/30 transition-colors">
                     <span className="text-lg">{opt.flag}</span>

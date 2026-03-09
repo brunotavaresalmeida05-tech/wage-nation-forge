@@ -58,7 +58,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
   return (
     <div className="flex flex-col items-center gap-5">
       <div className="text-center">
-        <p className="text-xs text-muted-foreground font-body tracking-wide uppercase">Saldo $MINE</p>
+        <p className="text-xs text-muted-foreground font-body tracking-wide uppercase">$MINE Balance</p>
         <p className="text-4xl font-display font-bold mt-1">
           {mineBalance.toLocaleString()}
         </p>
@@ -68,7 +68,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         <button
           onMouseDown={handleTap}
           disabled={energy <= 0}
-          className="relative w-44 h-44 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="relative w-48 h-48 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           style={{
             transform: `scale(${scale})`,
             transition: "transform 0.1s",
@@ -76,26 +76,68 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         >
           {/* Outer glow ring */}
           <div className="absolute inset-0 rounded-full animate-pulse-glow" style={{
-            background: energy > 0 ? "radial-gradient(circle, hsl(214 99% 60% / 0.08) 0%, transparent 70%)" : "none"
+            background: energy > 0 ? "radial-gradient(circle, hsl(214 99% 60% / 0.12) 0%, transparent 70%)" : "none"
           }} />
           
-          {/* Coin body */}
-          <div className="relative w-36 h-36 rounded-full border-[3px] border-primary/40 bg-gradient-to-br from-primary/20 via-card to-primary/10 flex items-center justify-center animate-coin-bounce">
-            {/* Inner ring */}
-            <div className="absolute inset-2 rounded-full border border-primary/20" />
-            
-            {/* M Letter */}
-            <span className="text-5xl font-display font-black text-primary drop-shadow-lg select-none" style={{
-              textShadow: "0 0 20px hsl(214 99% 60% / 0.4), 0 2px 4px hsl(0 0% 0% / 0.3)"
-            }}>
-              M
-            </span>
-            
-            {/* Stars decorating the coin */}
-            <span className="absolute top-5 left-7 text-primary/40 text-[8px]">★</span>
-            <span className="absolute top-5 right-7 text-primary/40 text-[8px]">★</span>
-            <span className="absolute bottom-5 left-1/2 -translate-x-1/2 text-[8px] text-primary/50 font-body font-bold tracking-widest">MINE</span>
+          {/* Greek key pattern outer ring - SVG */}
+          <div className="absolute inset-0 rounded-full animate-coin-bounce">
+            <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: "drop-shadow(0 0 12px hsl(214 99% 60% / 0.3))" }}>
+              {/* Outer circle */}
+              <circle cx="100" cy="100" r="96" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="0.6" />
+              <circle cx="100" cy="100" r="92" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1" opacity="0.3" />
+              
+              {/* Greek key / meander pattern ring */}
+              <g opacity="0.5">
+                {Array.from({ length: 24 }).map((_, i) => {
+                  const angle = (i * 15) * (Math.PI / 180);
+                  const r = 85;
+                  const x1 = 100 + r * Math.cos(angle);
+                  const y1 = 100 + r * Math.sin(angle);
+                  const x2 = 100 + (r - 8) * Math.cos(angle + 0.04);
+                  const y2 = 100 + (r - 8) * Math.sin(angle + 0.04);
+                  const x3 = 100 + (r - 8) * Math.cos(angle + 0.12);
+                  const y3 = 100 + (r - 8) * Math.sin(angle + 0.12);
+                  const x4 = 100 + r * Math.cos(angle + 0.12);
+                  const y4 = 100 + r * Math.sin(angle + 0.12);
+                  return (
+                    <path
+                      key={i}
+                      d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4}`}
+                      fill="none"
+                      stroke="hsl(214, 99%, 60%)"
+                      strokeWidth="1.5"
+                    />
+                  );
+                })}
+              </g>
+              
+              {/* Decorative inner ring */}
+              <circle cx="100" cy="100" r="75" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1.5" opacity="0.4" strokeDasharray="4 3" />
+              <circle cx="100" cy="100" r="70" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1" opacity="0.2" />
+              
+              {/* Inner filled circle */}
+              <circle cx="100" cy="100" r="62" fill="hsl(214, 99%, 60%)" opacity="0.08" />
+              <circle cx="100" cy="100" r="62" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="0.5" />
+              
+              {/* Center white/light circle for the M */}
+              <circle cx="100" cy="100" r="48" fill="hsl(var(--card))" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="1" />
+              
+              {/* Small decorative dots around */}
+              {Array.from({ length: 12 }).map((_, i) => {
+                const angle = (i * 30) * (Math.PI / 180);
+                const x = 100 + 56 * Math.cos(angle);
+                const y = 100 + 56 * Math.sin(angle);
+                return <circle key={`dot-${i}`} cx={x} cy={y} r="1.5" fill="hsl(214, 99%, 60%)" opacity="0.4" />;
+              })}
+            </svg>
           </div>
+
+          {/* M Letter - positioned absolutely on top */}
+          <span className="relative z-10 text-6xl font-display font-black text-primary drop-shadow-lg select-none animate-coin-bounce" style={{
+            textShadow: "0 0 24px hsl(214 99% 60% / 0.5), 0 2px 4px hsl(0 0% 0% / 0.4)"
+          }}>
+            M
+          </span>
         </button>
 
         <AnimatePresence>
@@ -115,13 +157,13 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         </AnimatePresence>
       </div>
 
-      <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Toca para minerar</p>
+      <p className="text-[10px] text-muted-foreground font-body uppercase tracking-wider">Tap to mine</p>
 
       <div className="w-full max-w-xs">
         <div className="flex justify-between text-[11px] text-muted-foreground mb-1.5 font-body">
           <div className="flex items-center gap-1">
             <Zap size={12} className="text-primary" />
-            <span>Energia</span>
+            <span>Energy</span>
           </div>
           <span className="font-medium">{energy}/{maxEnergy}</span>
         </div>
@@ -134,7 +176,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         </div>
       </div>
 
-      <p className="text-[11px] text-muted-foreground font-body">+{minePerTap} $MINE por tap</p>
+      <p className="text-[11px] text-muted-foreground font-body">+{minePerTap} $MINE per tap</p>
     </div>
   );
 };

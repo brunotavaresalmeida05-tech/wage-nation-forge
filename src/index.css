@@ -73,49 +73,49 @@
   }
 
   .light {
-    --background: 0 0% 97%;
-    --foreground: 220 15% 12%;
+    --background: 0 0% 98%;
+    --foreground: 220 15% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 15% 12%;
-    --card-elevated: 220 14% 96%;
+    --card-foreground: 220 15% 10%;
+    --card-elevated: 220 14% 97%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 12%;
+    --popover-foreground: 220 15% 10%;
 
     --primary: 214 99% 50%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 94%;
-    --secondary-foreground: 220 10% 40%;
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 220 10% 35%;
 
-    --muted: 220 14% 92%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 10% 40%;
 
-    --accent: 220 14% 94%;
-    --accent-foreground: 220 15% 12%;
+    --accent: 220 14% 93%;
+    --accent-foreground: 220 15% 10%;
 
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 89%;
-    --input: 220 14% 89%;
+    --border: 220 14% 86%;
+    --input: 220 14% 86%;
     --ring: 214 99% 50%;
 
-    --shadow-card: 0 1px 3px hsl(220 15% 12% / 0.05), 0 2px 8px hsl(220 15% 12% / 0.04);
-    --shadow-card-hover: 0 2px 6px hsl(220 15% 12% / 0.08), 0 4px 16px hsl(220 15% 12% / 0.05);
-    --shadow-glow-primary: 0 0 16px hsl(214 99% 50% / 0.12);
+    --shadow-card: 0 1px 3px hsl(220 15% 10% / 0.06), 0 2px 8px hsl(220 15% 10% / 0.04);
+    --shadow-card-hover: 0 2px 6px hsl(220 15% 10% / 0.1), 0 4px 16px hsl(220 15% 10% / 0.06);
+    --shadow-glow-primary: 0 0 16px hsl(214 99% 50% / 0.15);
     --shadow-glow-blue: 0 0 16px hsl(214 99% 50% / 0.12);
     --shadow-glow-epic: 0 0 16px hsl(265 60% 55% / 0.12);
     --shadow-glow-gold: 0 0 16px hsl(40 92% 52% / 0.15);
 
-    --sidebar-background: 220 14% 97%;
-    --sidebar-foreground: 220 10% 40%;
+    --sidebar-background: 0 0% 99%;
+    --sidebar-foreground: 220 10% 35%;
     --sidebar-primary: 214 99% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 220 14% 94%;
-    --sidebar-accent-foreground: 220 10% 40%;
-    --sidebar-border: 220 14% 89%;
+    --sidebar-accent-foreground: 220 10% 35%;
+    --sidebar-border: 220 14% 86%;
     --sidebar-ring: 214 99% 50%;
   }
 }
@@ -125,11 +125,17 @@
     @apply border-border;
   }
 
+  html {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-background text-foreground font-body antialiased;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -224,4 +230,19 @@
   .rarity-epic { border-color: hsl(var(--epic) / 0.5); }
   .rarity-legendary { border-color: hsl(var(--legendary) / 0.5); }
   .rarity-unique { border-color: hsl(var(--primary) / 0.7); }
+
+  /* Inverted card that works in both themes */
+  .card-inverted {
+    @apply rounded-xl;
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+  }
+
+  .card-inverted .text-inv-muted {
+    color: hsl(var(--background) / 0.5);
+  }
+
+  .card-inverted .text-inv-subtle {
+    color: hsl(var(--background) / 0.4);
+  }
 }

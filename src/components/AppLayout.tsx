@@ -8,11 +8,11 @@ import {
 } from "lucide-react";
 
 const mainNav = [
-  { path: "/", icon: Home, label: "Início" },
+  { path: "/", icon: Home, label: "Home" },
   { path: "/mine", icon: Pickaxe, label: "Mine" },
   { path: "/swap", icon: ArrowDownUp, label: "Swap" },
-  { path: "/market", icon: BarChart3, label: "Mercado" },
-  { path: "/invest", icon: TrendingUp, label: "Investir" },
+  { path: "/market", icon: BarChart3, label: "Market" },
+  { path: "/invest", icon: TrendingUp, label: "Invest" },
 ];
 
 const moreNav = [
@@ -20,9 +20,9 @@ const moreNav = [
   { path: "/ubi", icon: Globe, label: "UBI" },
   { path: "/wagepay", icon: CreditCard, label: "WagePay" },
   { path: "/exchange", icon: RefreshCw, label: "Exchange" },
-  { path: "/bank-cards", icon: Wallet, label: "Cartões" },
-  { path: "/profile", icon: User, label: "Perfil" },
-  { path: "/real-estate", icon: Building2, label: "Imóveis" },
+  { path: "/bank-cards", icon: Wallet, label: "Cards" },
+  { path: "/profile", icon: User, label: "Profile" },
+  { path: "/real-estate", icon: Building2, label: "Real Estate" },
   { path: "/etfs", icon: PieChart, label: "ETFs" },
 ];
 
@@ -35,9 +35,9 @@ const AppLayout = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex">
+    <div className="min-h-screen bg-background text-foreground flex w-full overflow-x-hidden">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex flex-col w-[220px] border-r border-border/50 bg-sidebar fixed h-full z-50">
+      <aside className="hidden lg:flex flex-col w-[220px] min-w-[220px] border-r border-border/50 bg-sidebar fixed h-full z-50">
         <div className="h-16 flex items-center px-5 border-b border-border/30">
           <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center mr-2.5">
             <span className="text-primary-foreground font-display font-bold text-sm">W</span>
@@ -46,7 +46,7 @@ const AppLayout = () => {
         </div>
 
         <nav className="flex-1 py-4 px-3 space-y-0.5 overflow-y-auto">
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-3 mb-2 font-body">Principal</p>
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-3 mb-2 font-body">Main</p>
           {mainNav.map((item) => {
             const Icon = item.icon;
             return (
@@ -66,7 +66,7 @@ const AppLayout = () => {
           })}
 
           <div className="h-px bg-border/30 my-3" />
-          <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-3 mb-2 font-body">Mais</p>
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground px-3 mb-2 font-body">More</p>
           {moreNav.map((item) => {
             const Icon = item.icon;
             return (
@@ -96,7 +96,7 @@ const AppLayout = () => {
             </div>
             <div>
               <p className="text-sm font-display font-medium">Worker #4821</p>
-              <p className="text-[10px] text-muted-foreground font-body">Nível 3</p>
+              <p className="text-[10px] text-muted-foreground font-body">Level 3</p>
             </div>
           </NavLink>
         </div>
@@ -175,17 +175,17 @@ const AppLayout = () => {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Pesquisar ativos, tokens, ações..."
+                    placeholder="Search assets, tokens, stocks..."
                     className="flex-1 bg-transparent outline-none font-body text-sm placeholder:text-muted-foreground"
                   />
                 </div>
                 <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="text-sm font-body text-primary tap-shrink">
-                  Cancelar
+                  Cancel
                 </button>
               </div>
               {!searchQuery && (
                 <div className="space-y-4">
-                  <p className="text-xs text-muted-foreground font-body">Pesquisas populares</p>
+                  <p className="text-xs text-muted-foreground font-body">Popular searches</p>
                   <div className="flex flex-wrap gap-2">
                     {["$WAGE", "Bitcoin", "Ethereum", "Real Estate", "ETFs", "Vault"].map((s) => (
                       <button
@@ -205,7 +205,7 @@ const AppLayout = () => {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="flex-1 lg:ml-[220px] flex flex-col min-h-screen">
+      <div className="flex-1 lg:ml-[220px] flex flex-col min-h-screen w-full min-w-0 overflow-x-hidden">
         {/* Top Header (mobile + desktop) */}
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
           <div className="flex items-center justify-between px-4 lg:px-6 h-14">
@@ -228,7 +228,7 @@ const AppLayout = () => {
                 className="w-full flex items-center gap-2 bg-secondary rounded-lg px-4 py-2 text-sm text-muted-foreground font-body hover:bg-secondary/80 transition-colors"
               >
                 <Search size={16} />
-                Pesquisar ativos, tokens...
+                Search assets, tokens...
               </button>
             </div>
 
@@ -247,7 +247,7 @@ const AppLayout = () => {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1">
+        <main className="flex-1 w-full min-w-0 overflow-x-hidden">
           <Outlet />
         </main>
 

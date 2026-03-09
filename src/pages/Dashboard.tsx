@@ -9,10 +9,10 @@ import EventBanner from "../components/EventBanner";
 import DividendCalendar from "../components/DividendCalendar";
 
 const activeEvent = {
-  title: "Boom Tecnológico",
-  description: "IA Generativa provoca Rally no setor de Tecnologia",
-  sector: "Tecnologia",
-  impact: "+25% preço ações Tech",
+  title: "Tech Boom",
+  description: "Generative AI sparks a rally in the Technology sector",
+  sector: "Technology",
+  impact: "+25% Tech stock prices",
   emoji: "🚀",
   duration: "72h",
   endsIn: "18h",
@@ -20,10 +20,10 @@ const activeEvent = {
 };
 
 const QUICK_TASKS = [
-  { id: 1, title: "Faz 50 taps hoje", reward: "+200 $M", completed: false, progress: 12, target: 50 },
-  { id: 2, title: "Converte $MINE em $WAGE", reward: "+300 $M", completed: false },
-  { id: 3, title: "Recolhe rendas", reward: "+250 $M", completed: true },
-  { id: 4, title: "Visita Mercado de Ações", reward: "+150 $M", completed: false },
+  { id: 1, title: "Tap 50 times today", reward: "+200 $M", completed: false, progress: 12, target: 50 },
+  { id: 2, title: "Convert $MINE to $WAGE", reward: "+300 $M", completed: false },
+  { id: 3, title: "Collect dividends", reward: "+250 $M", completed: true },
+  { id: 4, title: "Visit the Stock Market", reward: "+150 $M", completed: false },
 ];
 
 const Dashboard = () => {
@@ -53,7 +53,7 @@ const Dashboard = () => {
         {/* Desktop: two-column layout */}
         <div className="lg:grid lg:grid-cols-[1fr_340px] lg:gap-6">
           {/* Main Column */}
-          <div className="space-y-5">
+          <div className="space-y-5 min-w-0">
             {/* Wallet */}
             <WalletCard mineBalance={mineBalance} wageBalance={wageBalance} wageUsdRate={wageUsdRate} />
 
@@ -73,15 +73,15 @@ const Dashboard = () => {
             {/* Portfolio Quick View */}
             <section>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="font-display font-semibold text-[15px]">Meu Portfolio</h2>
+                <h2 className="font-display font-semibold text-[15px]">My Portfolio</h2>
                 <button onClick={() => navigate("/invest")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
-                  Gerir <ArrowRight size={12} />
+                  Manage <ArrowRight size={12} />
                 </button>
               </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {[
-                  { label: "Imóveis", value: "3", icon: <Building2 size={20} className="text-gold" />, onClick: () => navigate("/real-estate") },
-                  { label: "Ações Web3", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
+                  { label: "Real Estate", value: "3", icon: <Building2 size={20} className="text-gold" />, onClick: () => navigate("/real-estate") },
+                  { label: "Web3 Stocks", value: "5", icon: <BarChart3 size={20} className="text-info" />, onClick: () => navigate("/sectors") },
                   { label: "ETFs", value: "2", icon: <PieChart size={20} className="text-primary" />, onClick: () => navigate("/etfs") },
                   { label: "Vault", value: "700 $W", icon: <Landmark size={20} className="text-foreground" />, onClick: () => navigate("/vault") },
                 ].map((item) => (
@@ -103,16 +103,16 @@ const Dashboard = () => {
           </div>
 
           {/* Right Sidebar (desktop) / Stacked (mobile) */}
-          <div className="space-y-5 mt-5 lg:mt-0">
+          <div className="space-y-5 mt-5 lg:mt-0 min-w-0">
             {/* Daily Streak */}
             <DailyStreak currentStreak={4} todayCompleted={false} />
 
             {/* Quick Tasks */}
             <section>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="font-display font-semibold text-[15px]">Tarefas Diárias</h2>
+                <h2 className="font-display font-semibold text-[15px]">Daily Tasks</h2>
                 <button onClick={() => navigate("/tasks")} className="text-xs text-primary font-body font-medium tap-shrink flex items-center gap-0.5">
-                  Ver todas <ArrowRight size={12} />
+                  View all <ArrowRight size={12} />
                 </button>
               </div>
               <div className="space-y-2">
@@ -144,7 +144,7 @@ const Dashboard = () => {
                         </div>
                       )}
                     </div>
-                    <span className="text-[11px] font-display font-bold text-primary">{task.reward}</span>
+                    <span className="text-[11px] font-display font-bold text-primary whitespace-nowrap">{task.reward}</span>
                   </motion.div>
                 ))}
               </div>
@@ -152,7 +152,7 @@ const Dashboard = () => {
 
             {/* Dividends */}
             <section>
-              <h2 className="font-display font-semibold text-[15px] mb-3">Próximos Dividendos</h2>
+              <h2 className="font-display font-semibold text-[15px] mb-3">Upcoming Dividends</h2>
               <DividendCalendar />
             </section>
 
@@ -161,7 +161,7 @@ const Dashboard = () => {
               {[
                 { icon: Globe, label: "UBI", value: "110 $W", route: "/ubi", accent: true },
                 { icon: CreditCard, label: "Pay", value: "P2P", route: "/wagepay", accent: false },
-                { icon: Wallet, label: "Cartões", value: "Banco", route: "/bank-cards", accent: false },
+                { icon: Wallet, label: "Cards", value: "Bank", route: "/bank-cards", accent: false },
               ].map((item, idx) => {
                 const Icon = item.icon;
                 return (

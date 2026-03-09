@@ -3,15 +3,15 @@ import { motion } from "framer-motion";
 import { Send, QrCode, Clock, ArrowUp, ArrowDown, Copy, Share2, Download, Check } from "lucide-react";
 
 const CONTACTS = [
-  { name: "Maria S.", initials: "MS", address: "0x1a2b...3c4d", recent: true },
-  { name: "João P.", initials: "JP", address: "0x5e6f...7g8h", recent: true },
-  { name: "Ana R.", initials: "AR", address: "0x9i0j...1k2l", recent: false },
+  { name: "Alex S.", initials: "AS", address: "0x1a2b...3c4d", recent: true },
+  { name: "John P.", initials: "JP", address: "0x5e6f...7g8h", recent: true },
+  { name: "Emma R.", initials: "ER", address: "0x9i0j...1k2l", recent: false },
 ];
 
 const TX_HISTORY = [
-  { type: "sent", to: "Maria S.", amount: 15, date: "2026-03-04", time: "14:32", status: "confirmed" },
-  { type: "received", to: "João P.", amount: 25, date: "2026-03-03", time: "09:15", status: "confirmed" },
-  { type: "sent", to: "Loja QR #42", amount: 8.5, date: "2026-03-02", time: "18:47", status: "confirmed" },
+  { type: "sent", to: "Alex S.", amount: 15, date: "2026-03-04", time: "14:32", status: "confirmed" },
+  { type: "received", to: "John P.", amount: 25, date: "2026-03-03", time: "09:15", status: "confirmed" },
+  { type: "sent", to: "Store QR #42", amount: 8.5, date: "2026-03-02", time: "18:47", status: "confirmed" },
   { type: "received", to: "UBI Claim", amount: 50, date: "2026-03-01", time: "00:01", status: "confirmed" },
 ];
 
@@ -20,7 +20,6 @@ const WagePayPage = () => {
   const [sendAmount, setSendAmount] = useState("");
   const [sendTo, setSendTo] = useState("");
   const wageBalance = 42.5;
-  const qrData = `wagepay://0xMyAddr?amount=${sendAmount || "0"}`;
 
   return (
     <div className="pb-20 lg:pb-6">
@@ -28,18 +27,18 @@ const WagePayPage = () => {
         <h1 className="font-display font-bold text-xl">WagePay</h1>
 
         {/* Balance */}
-        <div className="rounded-xl bg-foreground text-background p-5 text-center">
-          <p className="text-[11px] text-background/50 font-body">Saldo disponível</p>
+        <div className="card-clean p-5 text-center border-primary/20">
+          <p className="text-[11px] text-muted-foreground font-body">Available balance</p>
           <p className="text-3xl font-display font-bold mt-1">{wageBalance} <span className="text-primary">$W</span></p>
-          <p className="text-xs text-background/40 font-body mt-0.5">≈ ${(wageBalance * 0.85).toFixed(2)} USD</p>
+          <p className="text-xs text-muted-foreground font-body mt-0.5">≈ ${(wageBalance * 0.85).toFixed(2)} USD</p>
         </div>
 
         {/* Tabs */}
         <div className="flex rounded-lg bg-secondary p-1">
           {([
-            { key: "send" as const, label: "Enviar", icon: Send },
-            { key: "receive" as const, label: "Receber", icon: QrCode },
-            { key: "history" as const, label: "Histórico", icon: Clock },
+            { key: "send" as const, label: "Send", icon: Send },
+            { key: "receive" as const, label: "Receive", icon: QrCode },
+            { key: "history" as const, label: "History", icon: Clock },
           ]).map((t) => {
             const Icon = t.icon;
             return (
@@ -47,7 +46,7 @@ const WagePayPage = () => {
                 key={t.key}
                 onClick={() => setTab(t.key)}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-md text-xs font-body font-medium transition-all tap-shrink ${
-                  tab === t.key ? "bg-background shadow-sm text-foreground" : "text-muted-foreground"
+                  tab === t.key ? "bg-card shadow-sm text-foreground" : "text-muted-foreground"
                 }`}
               >
                 <Icon size={14} />
@@ -60,10 +59,10 @@ const WagePayPage = () => {
         {tab === "send" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
             <div className="card-clean p-4">
-              <label className="text-[11px] text-muted-foreground font-body block mb-2">Montante</label>
+              <label className="text-[11px] text-muted-foreground font-body block mb-2">Amount</label>
               <div className="flex items-center gap-2">
                 <input type="number" value={sendAmount} onChange={(e) => setSendAmount(e.target.value)} placeholder="0.00"
-                  className="flex-1 bg-secondary rounded-lg px-3 py-3 text-xl font-display font-bold outline-none placeholder:text-muted-foreground" />
+                  className="flex-1 bg-secondary rounded-lg px-3 py-3 text-xl font-display font-bold outline-none placeholder:text-muted-foreground min-w-0" />
                 <span className="text-sm text-muted-foreground font-body">$WAGE</span>
               </div>
               <div className="flex gap-2 mt-2.5">
@@ -77,10 +76,10 @@ const WagePayPage = () => {
             </div>
 
             <div className="card-clean p-4">
-              <label className="text-[11px] text-muted-foreground font-body block mb-2">Destinatário</label>
-              <input type="text" value={sendTo} onChange={(e) => setSendTo(e.target.value)} placeholder="Endereço ou @username"
+              <label className="text-[11px] text-muted-foreground font-body block mb-2">Recipient</label>
+              <input type="text" value={sendTo} onChange={(e) => setSendTo(e.target.value)} placeholder="Address or @username"
                 className="w-full bg-secondary rounded-lg px-3 py-2.5 text-sm font-body outline-none placeholder:text-muted-foreground" />
-              <p className="text-[11px] text-muted-foreground font-body mt-3 mb-2">Contactos recentes</p>
+              <p className="text-[11px] text-muted-foreground font-body mt-3 mb-2">Recent contacts</p>
               <div className="flex gap-3 overflow-x-auto scrollbar-hide">
                 {CONTACTS.filter(c => c.recent).map((c) => (
                   <button key={c.name} onClick={() => setSendTo(c.address)} className="flex flex-col items-center gap-1 tap-shrink min-w-[52px]">
@@ -96,7 +95,7 @@ const WagePayPage = () => {
             <motion.button whileTap={{ scale: 0.97 }}
               disabled={!sendAmount || !sendTo || parseFloat(sendAmount) <= 0 || parseFloat(sendAmount) > wageBalance}
               className="w-full py-3.5 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm disabled:opacity-30 tap-shrink">
-              Enviar $WAGE
+              Send $WAGE
             </motion.button>
           </motion.div>
         )}
@@ -110,24 +109,24 @@ const WagePayPage = () => {
                   <p className="text-[10px] text-muted-foreground font-body">QR Code</p>
                 </div>
               </div>
-              <p className="text-sm font-display font-semibold">O teu QR de Pagamento</p>
-              <p className="text-[11px] text-muted-foreground font-body mt-1">Mostra este QR para receber $WAGE</p>
+              <p className="text-sm font-display font-semibold">Your Payment QR</p>
+              <p className="text-[11px] text-muted-foreground font-body mt-1">Show this QR to receive $WAGE</p>
             </div>
             <div className="card-clean p-4">
-              <p className="text-[11px] text-muted-foreground font-body mb-1.5">O teu endereço WagePay</p>
+              <p className="text-[11px] text-muted-foreground font-body mb-1.5">Your WagePay address</p>
               <div className="flex items-center gap-2 bg-secondary rounded-lg p-2.5">
                 <p className="flex-1 text-xs font-mono text-muted-foreground truncate">0x7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d</p>
-                <button className="tap-shrink p-1.5 rounded-md bg-background">
+                <button className="tap-shrink p-1.5 rounded-md bg-card">
                   <Copy size={14} className="text-muted-foreground" />
                 </button>
               </div>
             </div>
             <div className="flex gap-2.5">
               <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 card-clean font-body font-medium text-xs tap-shrink">
-                <Share2 size={14} /> Partilhar
+                <Share2 size={14} /> Share
               </button>
               <button className="flex-1 flex items-center justify-center gap-1.5 py-2.5 card-clean font-body font-medium text-xs tap-shrink">
-                <Download size={14} /> Guardar QR
+                <Download size={14} /> Save QR
               </button>
             </div>
           </motion.div>
@@ -138,14 +137,14 @@ const WagePayPage = () => {
             {TX_HISTORY.map((tx, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
                 className="flex items-center gap-3 card-clean p-3.5">
-                <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${tx.type === "sent" ? "bg-destructive/10" : "bg-primary/10"}`}>
+                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${tx.type === "sent" ? "bg-destructive/10" : "bg-primary/10"}`}>
                   {tx.type === "sent" ? <ArrowUp size={16} className="text-destructive" /> : <ArrowDown size={16} className="text-primary" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-display font-semibold">{tx.to}</p>
                   <p className="text-[11px] text-muted-foreground font-body">{tx.date} • {tx.time}</p>
                 </div>
-                <p className={`text-sm font-display font-bold ${tx.type === "sent" ? "text-destructive" : "text-primary"}`}>
+                <p className={`text-sm font-display font-bold whitespace-nowrap ${tx.type === "sent" ? "text-destructive" : "text-primary"}`}>
                   {tx.type === "sent" ? "-" : "+"}{tx.amount} $W
                 </p>
               </motion.div>
@@ -155,17 +154,17 @@ const WagePayPage = () => {
 
         {/* Roadmap */}
         <div className="card-clean p-4">
-          <h3 className="font-display font-semibold text-sm mb-3">Roadmap WagePay</h3>
+          <h3 className="font-display font-semibold text-sm mb-3">WagePay Roadmap</h3>
           <div className="space-y-2.5">
             {[
-              { phase: 1, label: "Carteira In-App", status: "active" },
-              { phase: 2, label: "Pagamentos QR P2P", status: "active" },
-              { phase: 3, label: "API para Comerciantes", status: "soon" },
-              { phase: 4, label: "WageCard Virtual", status: "planned" },
-              { phase: 5, label: "WageCard Físico", status: "planned" },
+              { phase: 1, label: "In-App Wallet", status: "active" },
+              { phase: 2, label: "P2P QR Payments", status: "active" },
+              { phase: 3, label: "Merchant API", status: "soon" },
+              { phase: 4, label: "Virtual WageCard", status: "planned" },
+              { phase: 5, label: "Physical WageCard", status: "planned" },
             ].map((p) => (
               <div key={p.phase} className="flex items-center gap-3">
-                <div className={`w-7 h-7 rounded-md flex items-center justify-center text-[11px] font-bold ${
+                <div className={`w-7 h-7 rounded-md flex items-center justify-center text-[11px] font-bold flex-shrink-0 ${
                   p.status === "active" ? "bg-primary text-primary-foreground" :
                   p.status === "soon" ? "bg-primary/10 text-primary" : "bg-secondary text-muted-foreground"
                 }`}>
@@ -173,7 +172,7 @@ const WagePayPage = () => {
                 </div>
                 <p className={`text-xs font-body ${p.status === "planned" ? "text-muted-foreground" : "text-foreground"}`}>{p.label}</p>
                 {p.status === "soon" && (
-                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-body font-semibold ml-auto">EM BREVE</span>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-body font-semibold ml-auto">COMING SOON</span>
                 )}
               </div>
             ))}

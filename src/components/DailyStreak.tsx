@@ -7,15 +7,15 @@ interface DailyStreakProps {
 }
 
 const DailyStreak = ({ currentStreak, todayCompleted }: DailyStreakProps) => {
-  const days = ["S", "T", "Q", "Q", "S", "S", "D"];
+  const days = ["M", "T", "W", "T", "F", "S", "S"];
 
   return (
     <div className="card-clean p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-display font-semibold">Streak Diário</h3>
+        <h3 className="text-sm font-display font-semibold">Daily Streak</h3>
         <div className="flex items-center gap-1 text-xs font-body text-primary font-medium">
           <Flame size={14} className="text-primary" />
-          <span>{currentStreak} dias</span>
+          <span>{currentStreak} days</span>
         </div>
       </div>
       <div className="flex justify-between gap-1.5">
@@ -32,7 +32,7 @@ const DailyStreak = ({ currentStreak, todayCompleted }: DailyStreakProps) => {
                 completed
                   ? "bg-primary/10 text-primary"
                   : isToday && !todayCompleted
-                  ? "bg-foreground text-background ring-2 ring-primary/30"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-secondary text-muted-foreground"
               }`}
             >
