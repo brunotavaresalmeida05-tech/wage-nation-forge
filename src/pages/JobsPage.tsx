@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase, Building2, Clock, Coins, ChevronRight, Star, TrendingUp,
-  CheckCircle2, Lock, Zap, Users, Award, ArrowRight, Timer, Wallet
+  CheckCircle2, Lock, Zap, Users, Award, ArrowRight, Timer, Wallet,
+  ChevronUp, Trophy, Sparkles, PartyPopper
 } from "lucide-react";
 import CoinIcon from "@/components/CoinIcon";
 
@@ -20,9 +21,9 @@ const sectors = [
         logo: "⚡",
         description: "AI & Cloud Infrastructure",
         positions: [
-          { title: "Data Analyst", salary: 320, level: 1, tasks: 5, xp: 50 },
-          { title: "ML Engineer", salary: 580, level: 3, tasks: 7, xp: 90 },
-          { title: "CTO", salary: 1200, level: 8, tasks: 10, xp: 200 },
+          { title: "Data Analyst", salary: 320, level: 1, tasks: 5, xp: 50, promoDays: 7 },
+          { title: "ML Engineer", salary: 580, level: 3, tasks: 7, xp: 90, promoDays: 14 },
+          { title: "CTO", salary: 1200, level: 8, tasks: 10, xp: 200, promoDays: 0 },
         ],
       },
       {
@@ -31,8 +32,8 @@ const sectors = [
         logo: "🔬",
         description: "Quantum Computing Research",
         positions: [
-          { title: "Lab Assistant", salary: 250, level: 1, tasks: 4, xp: 40 },
-          { title: "Researcher", salary: 650, level: 5, tasks: 8, xp: 120 },
+          { title: "Lab Assistant", salary: 250, level: 1, tasks: 4, xp: 40, promoDays: 10 },
+          { title: "Researcher", salary: 650, level: 5, tasks: 8, xp: 120, promoDays: 0 },
         ],
       },
     ],
@@ -49,9 +50,9 @@ const sectors = [
         logo: "🏛️",
         description: "Central Financial Institution",
         positions: [
-          { title: "Teller", salary: 200, level: 1, tasks: 4, xp: 30 },
-          { title: "Loan Officer", salary: 450, level: 3, tasks: 6, xp: 70 },
-          { title: "VP Finance", salary: 1500, level: 10, tasks: 12, xp: 250 },
+          { title: "Teller", salary: 200, level: 1, tasks: 4, xp: 30, promoDays: 5 },
+          { title: "Loan Officer", salary: 450, level: 3, tasks: 6, xp: 70, promoDays: 14 },
+          { title: "VP Finance", salary: 1500, level: 10, tasks: 12, xp: 250, promoDays: 0 },
         ],
       },
       {
@@ -60,8 +61,8 @@ const sectors = [
         logo: "📊",
         description: "Investment & Asset Management",
         positions: [
-          { title: "Analyst", salary: 380, level: 2, tasks: 5, xp: 60 },
-          { title: "Portfolio Manager", salary: 900, level: 6, tasks: 9, xp: 150 },
+          { title: "Analyst", salary: 380, level: 2, tasks: 5, xp: 60, promoDays: 10 },
+          { title: "Portfolio Manager", salary: 900, level: 6, tasks: 9, xp: 150, promoDays: 0 },
         ],
       },
     ],
@@ -78,9 +79,9 @@ const sectors = [
         logo: "🪨",
         description: "Mineral Extraction & Processing",
         positions: [
-          { title: "Miner", salary: 280, level: 1, tasks: 6, xp: 45 },
-          { title: "Foreman", salary: 520, level: 4, tasks: 8, xp: 100 },
-          { title: "Site Director", salary: 1100, level: 7, tasks: 10, xp: 180 },
+          { title: "Miner", salary: 280, level: 1, tasks: 6, xp: 45, promoDays: 7 },
+          { title: "Foreman", salary: 520, level: 4, tasks: 8, xp: 100, promoDays: 14 },
+          { title: "Site Director", salary: 1100, level: 7, tasks: 10, xp: 180, promoDays: 0 },
         ],
       },
     ],
@@ -97,9 +98,9 @@ const sectors = [
         logo: "📦",
         description: "International Shipping & Supply Chain",
         positions: [
-          { title: "Dispatcher", salary: 220, level: 1, tasks: 4, xp: 35 },
-          { title: "Route Manager", salary: 480, level: 3, tasks: 6, xp: 80 },
-          { title: "Operations Chief", salary: 950, level: 6, tasks: 9, xp: 160 },
+          { title: "Dispatcher", salary: 220, level: 1, tasks: 4, xp: 35, promoDays: 7 },
+          { title: "Route Manager", salary: 480, level: 3, tasks: 6, xp: 80, promoDays: 12 },
+          { title: "Operations Chief", salary: 950, level: 6, tasks: 9, xp: 160, promoDays: 0 },
         ],
       },
     ],
@@ -116,9 +117,9 @@ const sectors = [
         logo: "🏠",
         description: "Urban Development & Housing",
         positions: [
-          { title: "Builder", salary: 260, level: 1, tasks: 5, xp: 40 },
-          { title: "Architect", salary: 600, level: 4, tasks: 7, xp: 110 },
-          { title: "Project Lead", salary: 1050, level: 7, tasks: 10, xp: 190 },
+          { title: "Builder", salary: 260, level: 1, tasks: 5, xp: 40, promoDays: 8 },
+          { title: "Architect", salary: 600, level: 4, tasks: 7, xp: 110, promoDays: 14 },
+          { title: "Project Lead", salary: 1050, level: 7, tasks: 10, xp: 190, promoDays: 0 },
         ],
       },
     ],
@@ -135,16 +136,16 @@ const sectors = [
         logo: "💊",
         description: "Pharmaceuticals & Clinics",
         positions: [
-          { title: "Nurse", salary: 300, level: 1, tasks: 5, xp: 50 },
-          { title: "Pharmacist", salary: 550, level: 3, tasks: 7, xp: 95 },
-          { title: "Chief Doctor", salary: 1300, level: 9, tasks: 11, xp: 220 },
+          { title: "Nurse", salary: 300, level: 1, tasks: 5, xp: 50, promoDays: 7 },
+          { title: "Pharmacist", salary: 550, level: 3, tasks: 7, xp: 95, promoDays: 14 },
+          { title: "Chief Doctor", salary: 1300, level: 9, tasks: 11, xp: 220, promoDays: 0 },
         ],
       },
     ],
   },
 ];
 
-/* ── Daily Work Tasks (generated per profession) ── */
+/* ── Daily Work Tasks ── */
 const workTaskTemplates: Record<string, string[]> = {
   tech: [
     "Debug the authentication module",
@@ -199,11 +200,66 @@ interface ActiveJob {
   companyName: string;
   companyLogo: string;
   sectorId: string;
+  positionIndex: number;
   position: string;
   salary: number;
   tasksPerDay: number;
   xpPerDay: number;
+  promoDays: number;
+  consecutiveDays: number;
 }
+
+interface PromotionData {
+  oldPosition: string;
+  newPosition: string;
+  oldSalary: number;
+  newSalary: number;
+  companyName: string;
+  companyLogo: string;
+  bonusReward: number;
+}
+
+/* ── Confetti Particle ── */
+const confettiColors = [
+  "hsl(var(--primary))",
+  "hsl(48, 96%, 53%)",
+  "hsl(142, 71%, 45%)",
+  "hsl(280, 87%, 65%)",
+  "hsl(0, 84%, 60%)",
+  "hsl(199, 89%, 48%)",
+];
+
+const ConfettiParticle = ({ index }: { index: number }) => {
+  const color = confettiColors[index % confettiColors.length];
+  const left = 10 + Math.random() * 80;
+  const delay = Math.random() * 0.5;
+  const rotation = Math.random() * 720 - 360;
+  const size = 6 + Math.random() * 8;
+  const isCircle = index % 3 === 0;
+
+  return (
+    <motion.div
+      initial={{ y: -20, x: 0, opacity: 1, rotate: 0, scale: 1 }}
+      animate={{
+        y: [0, 300 + Math.random() * 200],
+        x: [0, (Math.random() - 0.5) * 150],
+        opacity: [1, 1, 0],
+        rotate: rotation,
+        scale: [1, 0.6],
+      }}
+      transition={{ duration: 2 + Math.random(), delay, ease: "easeOut" }}
+      className="absolute pointer-events-none"
+      style={{
+        left: `${left}%`,
+        top: -10,
+        width: size,
+        height: isCircle ? size : size * 2.5,
+        borderRadius: isCircle ? "50%" : "2px",
+        backgroundColor: color,
+      }}
+    />
+  );
+};
 
 const JobsPage = () => {
   const [activeJob, setActiveJob] = useState<ActiveJob | null>({
@@ -211,10 +267,13 @@ const JobsPage = () => {
     companyName: "NexaCore Systems",
     companyLogo: "⚡",
     sectorId: "tech",
+    positionIndex: 0,
     position: "Data Analyst",
     salary: 320,
     tasksPerDay: 5,
     xpPerDay: 50,
+    promoDays: 7,
+    consecutiveDays: 5,
   });
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
@@ -222,13 +281,19 @@ const JobsPage = () => {
   const [showApplyModal, setShowApplyModal] = useState<{
     company: (typeof sectors)[0]["companies"][0];
     position: (typeof sectors)[0]["companies"][0]["positions"][0];
+    positionIndex: number;
     sectorId: string;
   } | null>(null);
-  const [userLevel] = useState(3);
+  const [showPromotion, setShowPromotion] = useState<PromotionData | null>(null);
+  const [promotionStep, setPromotionStep] = useState(0);
+  const [userLevel, setUserLevel] = useState(3);
   const [weeklyEarnings] = useState(1920);
   const [totalCareerEarnings] = useState(24680);
   const [daysWorked] = useState(47);
-  const [reputation] = useState(78);
+  const [reputation, setReputation] = useState(78);
+  const [promotionHistory, setPromotionHistory] = useState<{ from: string; to: string; company: string; date: string }[]>([
+    { from: "Intern", to: "Data Analyst", company: "NexaCore Systems", date: "2 weeks ago" },
+  ]);
 
   const todayTasks = activeJob
     ? (workTaskTemplates[activeJob.sectorId] || workTaskTemplates.tech).slice(0, activeJob.tasksPerDay)
@@ -239,6 +304,24 @@ const JobsPage = () => {
   const dailyProgress = activeJob ? (completedCount / activeJob.tasksPerDay) * 100 : 0;
   const earnedToday = activeJob ? Math.floor((completedCount / activeJob.tasksPerDay) * activeJob.salary) : 0;
 
+  // Find next position for promotion
+  const getNextPosition = useCallback(() => {
+    if (!activeJob) return null;
+    const sector = sectors.find((s) => s.companies.some((c) => c.id === activeJob.companyId));
+    if (!sector) return null;
+    const company = sector.companies.find((c) => c.id === activeJob.companyId);
+    if (!company) return null;
+    const nextIdx = activeJob.positionIndex + 1;
+    if (nextIdx >= company.positions.length) return null;
+    return { position: company.positions[nextIdx], index: nextIdx, company, sector };
+  }, [activeJob]);
+
+  const nextPromo = getNextPosition();
+  const canPromote = activeJob && activeJob.promoDays > 0 && activeJob.consecutiveDays >= activeJob.promoDays && nextPromo && userLevel >= nextPromo.position.level;
+  const promoProgress = activeJob && activeJob.promoDays > 0
+    ? Math.min(100, (activeJob.consecutiveDays / activeJob.promoDays) * 100)
+    : 0;
+
   const handleCompleteTask = (index: number) => {
     setCompletedTasks((prev) => {
       const next = new Set(prev);
@@ -247,18 +330,76 @@ const JobsPage = () => {
     });
   };
 
+  // Check if all tasks done → increment consecutive days (simulated)
+  useEffect(() => {
+    if (allDone && activeJob) {
+      // Simulate incrementing consecutive days on all-tasks-done
+      const timer = setTimeout(() => {
+        setActiveJob((prev) => prev ? { ...prev, consecutiveDays: prev.consecutiveDays + 1 } : null);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [allDone]);
+
+  const handlePromote = useCallback(() => {
+    if (!activeJob || !nextPromo) return;
+    const bonusReward = Math.floor(nextPromo.position.salary * 2);
+
+    setShowPromotion({
+      oldPosition: activeJob.position,
+      newPosition: nextPromo.position.title,
+      oldSalary: activeJob.salary,
+      newSalary: nextPromo.position.salary,
+      companyName: activeJob.companyName,
+      companyLogo: activeJob.companyLogo,
+      bonusReward,
+    });
+    setPromotionStep(0);
+
+    // Animate steps
+    setTimeout(() => setPromotionStep(1), 600);
+    setTimeout(() => setPromotionStep(2), 1400);
+    setTimeout(() => setPromotionStep(3), 2200);
+  }, [activeJob, nextPromo]);
+
+  const confirmPromotion = useCallback(() => {
+    if (!activeJob || !nextPromo || !showPromotion) return;
+
+    setActiveJob({
+      ...activeJob,
+      positionIndex: nextPromo.index,
+      position: nextPromo.position.title,
+      salary: nextPromo.position.salary,
+      tasksPerDay: nextPromo.position.tasks,
+      xpPerDay: nextPromo.position.xp,
+      promoDays: nextPromo.position.promoDays,
+      consecutiveDays: 0,
+    });
+    setCompletedTasks(new Set());
+    setReputation((r) => Math.min(100, r + 5));
+    setPromotionHistory((prev) => [
+      { from: showPromotion.oldPosition, to: showPromotion.newPosition, company: showPromotion.companyName, date: "Just now" },
+      ...prev,
+    ]);
+    setShowPromotion(null);
+    setPromotionStep(0);
+  }, [activeJob, nextPromo, showPromotion]);
+
   const handleApply = () => {
     if (!showApplyModal) return;
-    const { company, position, sectorId } = showApplyModal;
+    const { company, position, positionIndex, sectorId } = showApplyModal;
     setActiveJob({
       companyId: company.id,
       companyName: company.name,
       companyLogo: company.logo,
       sectorId,
+      positionIndex,
       position: position.title,
       salary: position.salary,
       tasksPerDay: position.tasks,
       xpPerDay: position.xp,
+      promoDays: position.promoDays,
+      consecutiveDays: 0,
     });
     setCompletedTasks(new Set());
     setShowApplyModal(null);
@@ -332,6 +473,67 @@ const JobsPage = () => {
                 </div>
               </div>
 
+              {/* Promotion Progress */}
+              {activeJob.promoDays > 0 && nextPromo && (
+                <div className="px-4 pt-3 pb-1">
+                  <div className="bg-gradient-to-r from-warning/5 to-warning/10 border border-warning/20 rounded-xl p-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-warning/15 flex items-center justify-center">
+                          <ChevronUp size={14} className="text-warning" />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-display font-semibold flex items-center gap-1">
+                            Next: {nextPromo.position.title}
+                            <Sparkles size={10} className="text-warning" />
+                          </p>
+                          <p className="text-[9px] text-muted-foreground font-body">
+                            {activeJob.consecutiveDays}/{activeJob.promoDays} days consistent work
+                          </p>
+                        </div>
+                      </div>
+                      {canPromote ? (
+                        <motion.button
+                          onClick={handlePromote}
+                          initial={{ scale: 1 }}
+                          animate={{ scale: [1, 1.05, 1] }}
+                          transition={{ repeat: Infinity, duration: 1.5 }}
+                          className="px-3 py-1.5 rounded-lg bg-warning text-warning-foreground text-[10px] font-body font-bold tap-shrink flex items-center gap-1"
+                        >
+                          <Trophy size={11} />
+                          Claim Promotion!
+                        </motion.button>
+                      ) : (
+                        <span className="text-[10px] font-display font-bold text-warning">
+                          {Math.round(promoProgress)}%
+                        </span>
+                      )}
+                    </div>
+                    <div className="h-1.5 rounded-full bg-warning/10 overflow-hidden">
+                      <motion.div
+                        className="h-full rounded-full bg-warning"
+                        animate={{ width: `${promoProgress}%` }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-[9px] text-muted-foreground font-body">
+                      <span>Salary: {activeJob.salary} → {nextPromo.position.salary} $MINE</span>
+                      <span>+{((nextPromo.position.salary - activeJob.salary) / activeJob.salary * 100).toFixed(0)}% raise</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* At max position badge */}
+              {activeJob.promoDays === 0 && (
+                <div className="px-4 pt-3 pb-1">
+                  <div className="flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-xl p-2.5">
+                    <Trophy size={14} className="text-primary" />
+                    <p className="text-[10px] font-body text-primary font-medium">Top position — you've reached the highest rank at this company</p>
+                  </div>
+                </div>
+              )}
+
               {/* Daily Tasks */}
               <div className="p-4 space-y-3">
                 <div className="flex items-center justify-between mb-1">
@@ -348,7 +550,6 @@ const JobsPage = () => {
                   </div>
                 </div>
 
-                {/* Progress bar */}
                 <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
                   <motion.div
                     className="h-full rounded-full bg-primary"
@@ -400,7 +601,6 @@ const JobsPage = () => {
                   })}
                 </div>
 
-                {/* Daily earnings summary */}
                 <div className="flex items-center justify-between pt-2 border-t border-border/30">
                   <p className="text-xs text-muted-foreground font-body">Earned today</p>
                   <p className="text-sm font-display font-bold text-primary flex items-center gap-1">
@@ -411,6 +611,40 @@ const JobsPage = () => {
               </div>
             </div>
           </motion.section>
+        )}
+
+        {/* Promotion History */}
+        {promotionHistory.length > 0 && (
+          <section>
+            <h2 className="font-display font-semibold text-[15px] mb-3 flex items-center gap-2">
+              <Trophy size={15} className="text-warning" />
+              Promotion History
+            </h2>
+            <div className="space-y-2">
+              {promotionHistory.map((promo, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="card-clean p-3 flex items-center gap-3"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-warning/10 flex items-center justify-center">
+                    <ChevronUp size={14} className="text-warning" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-body">
+                      <span className="text-muted-foreground">{promo.from}</span>
+                      <ArrowRight size={10} className="inline mx-1.5 text-warning" />
+                      <span className="font-semibold">{promo.to}</span>
+                    </p>
+                    <p className="text-[9px] text-muted-foreground font-body">{promo.company}</p>
+                  </div>
+                  <span className="text-[9px] text-muted-foreground font-body">{promo.date}</span>
+                </motion.div>
+              ))}
+            </div>
+          </section>
         )}
 
         {/* Economy Flow Diagram */}
@@ -449,7 +683,6 @@ const JobsPage = () => {
             </div>
           </div>
 
-          {/* Sector chips */}
           <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-none">
             <button
               onClick={() => { setSelectedSector(null); setSelectedCompany(null); }}
@@ -472,7 +705,6 @@ const JobsPage = () => {
             ))}
           </div>
 
-          {/* Company listings */}
           <div className="space-y-2.5">
             {sectors
               .filter((s) => !selectedSector || s.id === selectedSector)
@@ -516,7 +748,7 @@ const JobsPage = () => {
                           className="overflow-hidden"
                         >
                           <div className="px-3.5 pb-3.5 space-y-2 border-t border-border/30 pt-3">
-                            {company.positions.map((pos) => {
+                            {company.positions.map((pos, posIdx) => {
                               const locked = userLevel < pos.level;
                               const isCurrentJob = activeJob?.companyId === company.id && activeJob?.position === pos.title;
                               return (
@@ -550,6 +782,11 @@ const JobsPage = () => {
                                       <span className="text-[10px] text-muted-foreground font-body">
                                         Lvl {pos.level}+
                                       </span>
+                                      {pos.promoDays > 0 && (
+                                        <span className="text-[10px] text-warning font-body flex items-center gap-0.5">
+                                          <ChevronUp size={9} /> {pos.promoDays}d promo
+                                        </span>
+                                      )}
                                     </div>
                                   </div>
                                   <div className="text-right flex-shrink-0">
@@ -563,7 +800,7 @@ const JobsPage = () => {
                                     <button
                                       onClick={(e) => {
                                         e.stopPropagation();
-                                        setShowApplyModal({ company, position: pos, sectorId: sector.id });
+                                        setShowApplyModal({ company, position: pos, positionIndex: posIdx, sectorId: sector.id });
                                       }}
                                       className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-body font-medium tap-shrink"
                                     >
@@ -583,16 +820,17 @@ const JobsPage = () => {
           </div>
         </section>
 
-        {/* Tax & Economy Info */}
+        {/* Economy Info */}
         <div className="card-clean p-4 space-y-3">
           <p className="text-xs font-display font-semibold">How Wage Economy Works</p>
           <div className="space-y-2.5">
             {[
               { icon: "💼", title: "Work Daily", desc: "Complete tasks at your company to earn $MINE salary" },
+              { icon: "📈", title: "Get Promoted", desc: "Work consistently to unlock higher positions & salaries" },
               { icon: "💰", title: "Earn & Spend", desc: "Use $MINE for upgrades, swaps, staking, and more" },
               { icon: "🏛️", title: "Taxes Sustain", desc: "5% salary tax + transaction fees fund the Treasury" },
               { icon: "🔄", title: "Treasury Reinvests", desc: "Funds flow back into UBI, rewards & liquidity pools" },
-              { icon: "📈", title: "Convert to $WAGE", desc: "Swap earned $MINE to scarce $WAGE for real value" },
+              { icon: "💎", title: "Convert to $WAGE", desc: "Swap earned $MINE to scarce $WAGE for real value" },
             ].map((item) => (
               <div key={item.title} className="flex items-start gap-3">
                 <span className="text-base mt-0.5">{item.icon}</span>
@@ -648,6 +886,12 @@ const JobsPage = () => {
                   <span className="text-muted-foreground">XP/Day</span>
                   <span>{showApplyModal.position.xp}</span>
                 </div>
+                {showApplyModal.position.promoDays > 0 && (
+                  <div className="flex justify-between text-xs font-body">
+                    <span className="text-muted-foreground">Promotion after</span>
+                    <span className="text-warning font-medium">{showApplyModal.position.promoDays} days</span>
+                  </div>
+                )}
               </div>
 
               {activeJob && (
@@ -670,6 +914,147 @@ const JobsPage = () => {
                   Accept Job
                 </button>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══════ PROMOTION CEREMONY MODAL ══════ */}
+      <AnimatePresence>
+        {showPromotion && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-background/90 backdrop-blur-xl flex items-center justify-center p-6 overflow-hidden"
+          >
+            {/* Confetti */}
+            {promotionStep >= 2 && (
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {Array.from({ length: 40 }).map((_, i) => (
+                  <ConfettiParticle key={i} index={i} />
+                ))}
+              </div>
+            )}
+
+            <motion.div
+              initial={{ scale: 0.7, opacity: 0, y: 40 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 20, stiffness: 200 }}
+              className="card-clean p-8 w-full max-w-sm space-y-5 text-center relative z-10"
+            >
+              {/* Step 0: Trophy appears */}
+              <motion.div
+                initial={{ scale: 0, rotate: -30 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", delay: 0.2, damping: 12 }}
+                className="w-20 h-20 rounded-3xl bg-gradient-to-br from-warning/20 to-warning/5 flex items-center justify-center mx-auto"
+              >
+                <motion.div
+                  animate={promotionStep >= 2 ? { rotate: [0, -10, 10, -5, 5, 0], scale: [1, 1.1, 1] } : {}}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Trophy size={40} className="text-warning" />
+                </motion.div>
+              </motion.div>
+
+              {/* Step 1: Title */}
+              <AnimatePresence mode="wait">
+                {promotionStep >= 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ type: "spring", damping: 20 }}
+                  >
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <PartyPopper size={18} className="text-warning" />
+                      <h2 className="font-display font-bold text-xl">Promotion!</h2>
+                      <PartyPopper size={18} className="text-warning" style={{ transform: "scaleX(-1)" }} />
+                    </div>
+                    <p className="text-xs text-muted-foreground font-body">{showPromotion.companyName}</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Step 2: Details */}
+              <AnimatePresence>
+                {promotionStep >= 2 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-3"
+                  >
+                    {/* Position change */}
+                    <div className="flex items-center justify-center gap-3">
+                      <div className="bg-secondary/60 rounded-xl px-3 py-2 text-center">
+                        <p className="text-[9px] text-muted-foreground font-body uppercase">From</p>
+                        <p className="text-xs font-display font-semibold">{showPromotion.oldPosition}</p>
+                      </div>
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ repeat: Infinity, duration: 1 }}
+                      >
+                        <ArrowRight size={18} className="text-warning" />
+                      </motion.div>
+                      <div className="bg-warning/10 border border-warning/30 rounded-xl px-3 py-2 text-center">
+                        <p className="text-[9px] text-warning font-body uppercase">To</p>
+                        <p className="text-xs font-display font-bold text-warning">{showPromotion.newPosition}</p>
+                      </div>
+                    </div>
+
+                    {/* Salary increase */}
+                    <motion.div
+                      initial={{ scale: 0.8 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.3, type: "spring" }}
+                      className="bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20 rounded-xl p-3"
+                    >
+                      <p className="text-[9px] text-muted-foreground font-body uppercase mb-1">Salary Increase</p>
+                      <div className="flex items-center justify-center gap-2">
+                        <span className="text-sm text-muted-foreground font-display line-through">{showPromotion.oldSalary}</span>
+                        <ArrowRight size={14} className="text-primary" />
+                        <span className="text-lg font-display font-bold text-primary">{showPromotion.newSalary}</span>
+                        <span className="text-xs text-muted-foreground font-body">$MINE/day</span>
+                      </div>
+                      <p className="text-[10px] text-success font-body font-medium mt-1">
+                        +{((showPromotion.newSalary - showPromotion.oldSalary) / showPromotion.oldSalary * 100).toFixed(0)}% raise!
+                      </p>
+                    </motion.div>
+
+                    {/* Bonus */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="flex items-center justify-center gap-2 text-sm"
+                    >
+                      <Sparkles size={14} className="text-warning" />
+                      <span className="font-body text-muted-foreground">Promotion Bonus:</span>
+                      <span className="font-display font-bold text-primary flex items-center gap-1">
+                        <CoinIcon type="mine" size={14} />
+                        {showPromotion.bonusReward} $MINE
+                      </span>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Step 3: Accept button */}
+              <AnimatePresence>
+                {promotionStep >= 3 && (
+                  <motion.button
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ type: "spring", damping: 15 }}
+                    onClick={confirmPromotion}
+                    className="w-full py-3 rounded-xl bg-warning text-warning-foreground font-display font-bold text-sm tap-shrink flex items-center justify-center gap-2"
+                  >
+                    <Trophy size={16} />
+                    Accept Promotion
+                  </motion.button>
+                )}
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         )}
