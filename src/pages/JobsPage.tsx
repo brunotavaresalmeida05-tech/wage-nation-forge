@@ -500,7 +500,44 @@ const JobsPage = () => {
     { from: "Intern", to: "Data Analyst", company: "NexaCore Systems", date: "2 weeks ago" },
   ]);
 
-  const todayTasks = activeJob
+  const [activeEvents] = useState(() => getActiveEvents());
+  const [dismissedEvents, setDismissedEvents] = useState<Set<string>>(new Set());
+  const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
+
+  // Calculate salary modifier for a given sector
+  const getSectorModifiers = useCallback((sectorId: string) => {
+    let salaryMod = 1;
+    let xpMod = 1;
+    let hiringFrozen = false;
+    let strikeActive = false;
+
+    for (const ev of activeEvents) {
+      const affects = ev.affectedSectors.length === 0 || ev.affectedSectors.includes(sectorId);
+      if (affects) {
+        if (ev.salaryMod === 0) {
+          strikeActive = true;
+          salaryMod = 0;
+          xpMod = 0;
+        } else {
+          salaryMod *= ev.salaryMod;
+          xpMod *= ev.xpMod;
+        }
+        if (ev.hiringFreeze) hiringFrozen = true;
+      }
+    }
+    return { salaryMod: Math.round(salaryMod * 100) / 100, xpMod: Math.round(xpMod * 100) / 100, hiringFrozen, strikeActive };
+  }, [activeEvents]);
+
+  // Get effective salary for display
+  const getEffectiveSalary = useCallback((baseSalary: number, sectorId: string) => {
+    const { salaryMod } = getSectorModifiers(sectorId);
+    return Math.floor(baseSalary * salaryMod);
+  }, [getSectorModifiers]);
+
+  const currentJobMods = activeJob ? getSectorModifiers(activeJob.sectorId) : { salaryMod: 1, xpMod: 1, hiringFrozen: false, strikeActive: false };
+  const effectiveSalary = activeJob ? getEffectiveSalary(activeJob.salary, activeJob.sectorId) : 0;
+
+  const todayTasks = activeJob && !currentJobMods.strikeActive
     ? (workTaskTemplates[activeJob.sectorId] || workTaskTemplates.tech).slice(0, activeJob.tasksPerDay)
     : [];
 
