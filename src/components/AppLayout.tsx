@@ -249,7 +249,7 @@ const AppLayout = () => {
 
         {/* Mobile Bottom Nav */}
         <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/40 safe-bottom">
-          <div className="flex items-center justify-around h-[58px] max-w-lg mx-auto px-2">
+          <div className="grid grid-cols-5 h-[58px] max-w-lg mx-auto">
             {mainNav.map((item) => {
               const active = isActive(item.path);
               const Icon = item.icon;
@@ -258,12 +258,12 @@ const AppLayout = () => {
                 <NavLink
                   key={item.path}
                   to={item.path}
-                  className="relative flex flex-col items-center gap-0.5 py-1.5 px-3 tap-shrink"
+                  className="relative flex flex-col items-center justify-center gap-0.5 tap-shrink"
                 >
                   {active && !isSwap && (
                     <motion.div
                       layoutId="nav-active"
-                      className="absolute -top-[1px] left-1/2 -translate-x-1/2 w-5 h-[2px] rounded-full bg-primary"
+                      className="absolute top-0 w-8 h-[2px] rounded-full bg-primary"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
