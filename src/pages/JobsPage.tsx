@@ -544,7 +544,7 @@ const JobsPage = () => {
   const completedCount = completedTasks.size;
   const allDone = activeJob ? completedCount >= activeJob.tasksPerDay : false;
   const dailyProgress = activeJob ? (completedCount / activeJob.tasksPerDay) * 100 : 0;
-  const earnedToday = activeJob ? Math.floor((completedCount / activeJob.tasksPerDay) * activeJob.salary) : 0;
+  const earnedToday = activeJob ? Math.floor((completedCount / activeJob.tasksPerDay) * effectiveSalary) : 0;
 
   // Find next position for promotion
   const getNextPosition = useCallback(() => {
