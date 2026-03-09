@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, Pickaxe, ArrowDownUp, BarChart3, User, Building2, PieChart,
   Landmark, Globe, CreditCard, TrendingUp, Menu, X, Search, Bell,
-  Wallet, RefreshCw, HandCoins, Briefcase
+  Wallet, RefreshCw, HandCoins, Briefcase, CircleDollarSign
 } from "lucide-react";
 import CoinIcon from "./CoinIcon";
 
@@ -24,6 +24,7 @@ const moreNav = [
   { path: "/bank-cards", icon: Wallet, label: "Cards" },
   { path: "/credit", icon: HandCoins, label: "Credit" },
   { path: "/jobs", icon: Briefcase, label: "Jobs" },
+  { path: "/economics", icon: CircleDollarSign, label: "Economics" },
   { path: "/profile", icon: User, label: "Profile" },
   { path: "/real-estate", icon: Building2, label: "Real Estate" },
   { path: "/etfs", icon: PieChart, label: "ETFs" },

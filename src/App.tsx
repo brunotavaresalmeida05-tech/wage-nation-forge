@@ -22,6 +22,7 @@ import BankCardsPage from "./pages/BankCardsPage";
 import CreditPage from "./pages/CreditPage";
 import JobsPage from "./pages/JobsPage";
 import AssetDetailPage from "./pages/AssetDetailPage";
+import EconomicsPage from "./pages/EconomicsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/bank-cards" element={<BankCardsPage />} />
             <Route path="/credit" element={<CreditPage />} />
             <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/economics" element={<EconomicsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
