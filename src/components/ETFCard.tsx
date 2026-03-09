@@ -4,7 +4,7 @@ export interface ETF {
   name: string;
   ticker: string;
   emoji: string;
-  profile: "Crescimento" | "Conservador" | "Dividendos";
+  profile: string;
   targetYield: number;
   composition: { sector: string; pct: number }[];
   minInvestment: number;
@@ -12,14 +12,16 @@ export interface ETF {
   change7d: number;
 }
 
-const profileConfig = {
-  Crescimento: { color: "text-primary", bg: "bg-primary/10", border: "border-primary/30" },
-  Conservador: { color: "text-info", bg: "bg-info/10", border: "border-info/30" },
-  Dividendos: { color: "text-gold", bg: "bg-gold/10", border: "border-gold/30" },
+const profileColors: Record<string, { color: string; bg: string; border: string }> = {
+  Growth: { color: "text-primary", bg: "bg-primary/10", border: "border-primary/30" },
+  Conservative: { color: "text-info", bg: "bg-info/10", border: "border-info/30" },
+  Dividend: { color: "text-gold", bg: "bg-gold/10", border: "border-gold/30" },
+  Thematic: { color: "text-success", bg: "bg-success/10", border: "border-success/30" },
+  Balanced: { color: "text-foreground", bg: "bg-secondary", border: "border-border" },
 };
 
 const ETFCard = ({ etf, onBuy }: { etf: ETF; onBuy?: () => void }) => {
-  const config = profileConfig[etf.profile];
+  const config = profileColors[etf.profile] || profileColors.Balanced;
   const isPositive = etf.change7d >= 0;
 
   return (
@@ -44,24 +46,24 @@ const ETFCard = ({ etf, onBuy }: { etf: ETF; onBuy?: () => void }) => {
 
       <div className="grid grid-cols-3 gap-3 mb-3 text-center">
         <div>
-          <p className="text-[10px] text-muted-foreground font-body">Yield alvo</p>
-          <p className={`text-lg font-display font-bold ${config.color}`}>{etf.targetYield}%<span className="text-[10px]">/dia</span></p>
+          <p className="text-[10px] text-muted-foreground font-body">Target Yield</p>
+          <p className={`text-lg font-display font-bold ${config.color}`}>{etf.targetYield}%<span className="text-[10px]">/day</span></p>
         </div>
         <div>
           <p className="text-[10px] text-muted-foreground font-body">7d</p>
-          <p className={`text-lg font-display font-bold ${isPositive ? "text-primary" : "text-destructive"}`}>
+          <p className={`text-lg font-display font-bold ${isPositive ? "text-success" : "text-destructive"}`}>
             {isPositive ? "+" : ""}{etf.change7d.toFixed(1)}%
           </p>
         </div>
         <div>
-          <p className="text-[10px] text-muted-foreground font-body">AUM Total</p>
+          <p className="text-[10px] text-muted-foreground font-body">Total AUM</p>
           <p className="text-lg font-display font-bold">{(etf.totalAUM / 1000).toFixed(0)}K</p>
         </div>
       </div>
 
       {/* Composition bar */}
       <div className="mb-3">
-        <p className="text-[10px] text-muted-foreground font-body mb-1">Composição</p>
+        <p className="text-[10px] text-muted-foreground font-body mb-1">Composition</p>
         <div className="flex h-2 rounded-full overflow-hidden bg-secondary">
           {etf.composition.map((c, i) => (
             <div
@@ -85,7 +87,7 @@ const ETFCard = ({ etf, onBuy }: { etf: ETF; onBuy?: () => void }) => {
       </div>
 
       <button className="w-full py-2.5 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm tap-shrink">
-        Comprar cotas — Min. {etf.minInvestment} $WAGE
+        Buy Shares — Min. {etf.minInvestment} $WAGE
       </button>
     </motion.div>
   );

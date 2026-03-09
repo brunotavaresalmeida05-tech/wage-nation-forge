@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Wallet, ArrowUpRight, ArrowDownLeft, ArrowDownUp } from "lucide-react";
+import { ArrowUpRight, ArrowDownLeft, ArrowDownUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import CoinIcon from "./CoinIcon";
 
 interface WalletCardProps {
   mineBalance: number;
@@ -21,7 +22,7 @@ const WalletCard = ({ mineBalance, wageBalance, wageUsdRate }: WalletCardProps) 
     >
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          <Wallet size={16} className="text-muted-foreground" />
+          <CoinIcon type="wage" size={20} />
           <span className="text-xs font-body text-muted-foreground tracking-wide">Wallet</span>
         </div>
         <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15">
@@ -32,12 +33,18 @@ const WalletCard = ({ mineBalance, wageBalance, wageUsdRate }: WalletCardProps) 
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <p className="text-[10px] text-muted-foreground font-body mb-0.5">$MINE</p>
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <CoinIcon type="mine" size={14} />
+            <p className="text-[10px] text-muted-foreground font-body">$MINE</p>
+          </div>
           <p className="text-2xl font-display font-bold">{mineBalance.toLocaleString()}</p>
           <p className="text-[10px] text-muted-foreground font-body mt-0.5">Internal token</p>
         </div>
         <div>
-          <p className="text-[10px] text-muted-foreground font-body mb-0.5">$WAGE</p>
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <CoinIcon type="wage" size={14} />
+            <p className="text-[10px] text-muted-foreground font-body">$WAGE</p>
+          </div>
           <p className="text-2xl font-display font-bold text-primary">{wageBalance.toLocaleString()}</p>
           <p className="text-[10px] text-muted-foreground font-body mt-0.5">≈ ${usdValue} USD</p>
         </div>
