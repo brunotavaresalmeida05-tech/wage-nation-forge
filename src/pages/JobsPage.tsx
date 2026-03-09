@@ -511,7 +511,7 @@ const JobsPage = () => {
   const weeklyBaseSalary = activeJob ? activeJob.salary * 7 : 0;
   const streakBonus = streakDays >= 7 ? 0.15 : streakDays >= 5 ? 0.10 : streakDays >= 3 ? 0.05 : 0;
   const streakBonusAmt = Math.floor(weeklyBaseSalary * streakBonus);
-  const eventBonus = activeJob ? Math.floor(weeklyBaseSalary * Math.max(0, currentJobMods?.salaryMod - 1 || 0)) : 0;
+  const eventBonus = activeJob ? Math.floor(weeklyBaseSalary * Math.max(0, (getSectorModifiers(activeJob.sectorId)?.salaryMod || 1) - 1)) : 0;
   const grossSalary = weeklyBaseSalary + streakBonusAmt + eventBonus;
   const companyTax = Math.floor(grossSalary * 0.10);   // 10% company fee
   const treasuryBurn = Math.floor(grossSalary * 0.05); // 5% burn
