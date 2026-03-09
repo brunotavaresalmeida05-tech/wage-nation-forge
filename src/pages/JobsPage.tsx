@@ -1122,68 +1122,112 @@ const JobsPage = () => {
                           className="overflow-hidden"
                         >
                           <div className="px-3.5 pb-3.5 space-y-2 border-t border-border/30 pt-3">
-                            {company.positions.map((pos, posIdx) => {
-                              const locked = userLevel < pos.level;
-                              const isCurrentJob = activeJob?.companyId === company.id && activeJob?.position === pos.title;
+                            {(() => {
+                              const sectorMods = getSectorModifiers(sector.id);
                               return (
-                                <div
-                                  key={pos.title}
-                                  className={`flex items-center gap-3 p-3 rounded-xl ${
-                                    isCurrentJob
-                                      ? "bg-primary/10 border border-primary/30"
-                                      : locked
-                                      ? "bg-secondary/30 opacity-50"
-                                      : "bg-secondary/50"
-                                  }`}
-                                >
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-center gap-1.5">
-                                      <p className="text-xs font-display font-semibold">{pos.title}</p>
-                                      {locked && <Lock size={10} className="text-muted-foreground" />}
-                                      {isCurrentJob && (
-                                        <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-body">
-                                          Current
-                                        </span>
-                                      )}
+                                <>
+                                  {/* Sector event indicator */}
+                                  {(sectorMods.salaryMod !== 1 || sectorMods.hiringFrozen || sectorMods.strikeActive) && (
+                                    <div className={`flex items-center gap-2 p-2 rounded-lg text-[9px] font-body ${
+                                      sectorMods.strikeActive
+                                        ? "bg-destructive/10 border border-destructive/20 text-destructive"
+                                        : sectorMods.salaryMod > 1
+                                        ? "bg-success/10 border border-success/20 text-success"
+                                        : "bg-warning/10 border border-warning/20 text-warning"
+                                    }`}>
+                                      {sectorMods.strikeActive ? <Ban size={10} /> : sectorMods.salaryMod > 1 ? <TrendingUp size={10} /> : <AlertTriangle size={10} />}
+                                      <span>
+                                        {sectorMods.strikeActive
+                                          ? "Strike active — work halted"
+                                          : sectorMods.hiringFrozen
+                                          ? `Hiring frozen · Salary ${Math.round((sectorMods.salaryMod - 1) * 100)}%`
+                                          : `Event active · Salary ${sectorMods.salaryMod > 1 ? "+" : ""}${Math.round((sectorMods.salaryMod - 1) * 100)}%`}
+                                      </span>
                                     </div>
-                                    <div className="flex items-center gap-3 mt-1">
-                                      <span className="text-[10px] text-muted-foreground font-body flex items-center gap-0.5">
-                                        <Timer size={9} /> {pos.tasks} tasks/day
-                                      </span>
-                                      <span className="text-[10px] text-muted-foreground font-body flex items-center gap-0.5">
-                                        <Zap size={9} /> {pos.xp} XP/day
-                                      </span>
-                                      <span className="text-[10px] text-muted-foreground font-body">
-                                        Lvl {pos.level}+
-                                      </span>
-                                      {pos.promoDays > 0 && (
-                                        <span className="text-[10px] text-warning font-body flex items-center gap-0.5">
-                                          <ChevronUp size={9} /> {pos.promoDays}d promo
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="text-right flex-shrink-0">
-                                    <p className="text-xs font-display font-bold text-primary flex items-center gap-1 justify-end">
-                                      <CoinIcon type="mine" size={13} />
-                                      {pos.salary}
-                                    </p>
-                                    <p className="text-[9px] text-muted-foreground font-body">per day</p>
-                                  </div>
-                                  {!isCurrentJob && !locked && (
-                                    <button
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowApplyModal({ company, position: pos, positionIndex: posIdx, sectorId: sector.id });
-                                      }}
-                                      className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-body font-medium tap-shrink"
-                                    >
-                                      Apply
-                                    </button>
                                   )}
-                                </div>
+                                  {company.positions.map((pos, posIdx) => {
+                                    const locked = userLevel < pos.level;
+                                    const isCurrentJob = activeJob?.companyId === company.id && activeJob?.position === pos.title;
+                                    const eventSalary = Math.floor(pos.salary * sectorMods.salaryMod);
+                                    const canApply = !isCurrentJob && !locked && !sectorMods.hiringFrozen && !sectorMods.strikeActive;
+                                    return (
+                                      <div
+                                        key={pos.title}
+                                        className={`flex items-center gap-3 p-3 rounded-xl ${
+                                          sectorMods.strikeActive
+                                            ? "bg-destructive/5 opacity-60"
+                                            : isCurrentJob
+                                            ? "bg-primary/10 border border-primary/30"
+                                            : locked || sectorMods.hiringFrozen
+                                            ? "bg-secondary/30 opacity-50"
+                                            : "bg-secondary/50"
+                                        }`}
+                                      >
+                                        <div className="flex-1 min-w-0">
+                                          <div className="flex items-center gap-1.5">
+                                            <p className="text-xs font-display font-semibold">{pos.title}</p>
+                                            {locked && <Lock size={10} className="text-muted-foreground" />}
+                                            {sectorMods.strikeActive && <Ban size={10} className="text-destructive" />}
+                                            {sectorMods.hiringFrozen && !sectorMods.strikeActive && <Snowflake size={10} className="text-info" />}
+                                            {isCurrentJob && (
+                                              <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full font-body">
+                                                Current
+                                              </span>
+                                            )}
+                                          </div>
+                                          <div className="flex items-center gap-3 mt-1">
+                                            <span className="text-[10px] text-muted-foreground font-body flex items-center gap-0.5">
+                                              <Timer size={9} /> {pos.tasks} tasks/day
+                                            </span>
+                                            <span className="text-[10px] text-muted-foreground font-body flex items-center gap-0.5">
+                                              <Zap size={9} /> {Math.floor(pos.xp * sectorMods.xpMod)} XP/day
+                                            </span>
+                                            <span className="text-[10px] text-muted-foreground font-body">
+                                              Lvl {pos.level}+
+                                            </span>
+                                            {pos.promoDays > 0 && (
+                                              <span className="text-[10px] text-warning font-body flex items-center gap-0.5">
+                                                <ChevronUp size={9} /> {pos.promoDays}d promo
+                                              </span>
+                                            )}
+                                          </div>
+                                        </div>
+                                        <div className="text-right flex-shrink-0">
+                                          <p className="text-xs font-display font-bold text-primary flex items-center gap-1 justify-end">
+                                            <CoinIcon type="mine" size={13} />
+                                            {sectorMods.strikeActive ? "—" : eventSalary}
+                                          </p>
+                                          {sectorMods.salaryMod !== 1 && !sectorMods.strikeActive && (
+                                            <p className={`text-[8px] font-body ${sectorMods.salaryMod > 1 ? "text-success" : "text-destructive"}`}>
+                                              <span className="line-through text-muted-foreground">{pos.salary}</span>
+                                            </p>
+                                          )}
+                                          {sectorMods.salaryMod === 1 && !sectorMods.strikeActive && (
+                                            <p className="text-[9px] text-muted-foreground font-body">per day</p>
+                                          )}
+                                        </div>
+                                        {canApply && (
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setShowApplyModal({ company, position: pos, positionIndex: posIdx, sectorId: sector.id });
+                                            }}
+                                            className="flex-shrink-0 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[10px] font-body font-medium tap-shrink"
+                                          >
+                                            Apply
+                                          </button>
+                                        )}
+                                        {sectorMods.hiringFrozen && !isCurrentJob && !locked && !sectorMods.strikeActive && (
+                                          <span className="flex-shrink-0 px-2 py-1 rounded-lg bg-secondary text-[9px] font-body text-muted-foreground">
+                                            Frozen
+                                          </span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </>
                               );
-                            })}
+                            })()}
                           </div>
                         </motion.div>
                       )}
