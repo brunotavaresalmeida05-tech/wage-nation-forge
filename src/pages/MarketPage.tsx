@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Star, Search } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 const CATEGORIES = ["All", "Watchlist", "Crypto", "Commodities", "Bonds", "Web3 Stocks", "Forex", "Indices"];
 
@@ -56,6 +57,7 @@ const ALL_ASSETS = [
 const MarketPage = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   const filtered = ALL_ASSETS.filter((a) => {
     const catMatch = activeCategory === "All" ? true : activeCategory === "Watchlist" ? a.watched : a.category === activeCategory;
@@ -139,6 +141,7 @@ const MarketPage = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.015 }}
                 className="flex items-center lg:grid lg:grid-cols-[2fr_1fr_1fr_1fr_120px_40px] gap-3 lg:gap-4 px-4 py-3.5 border-b border-border/30 last:border-0 hover:bg-secondary/30 transition-colors cursor-pointer"
+                onClick={() => navigate(`/market/${asset.symbol.replace("$", "")}`)}
               >
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
