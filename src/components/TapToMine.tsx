@@ -74,70 +74,75 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
             transition: "transform 0.1s",
           }}
         >
-          {/* Outer glow ring */}
-          <div className="absolute inset-0 rounded-full animate-pulse-glow" style={{
-            background: energy > 0 ? "radial-gradient(circle, hsl(214 99% 60% / 0.12) 0%, transparent 70%)" : "none"
-          }} />
-          
-          {/* Greek key pattern outer ring - SVG */}
-          <div className="absolute inset-0 rounded-full animate-coin-bounce">
-            <svg viewBox="0 0 200 200" className="w-full h-full" style={{ filter: "drop-shadow(0 0 12px hsl(214 99% 60% / 0.3))" }}>
-              {/* Outer circle */}
-              <circle cx="100" cy="100" r="96" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="0.6" />
-              <circle cx="100" cy="100" r="92" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1" opacity="0.3" />
-              
-              {/* Greek key / meander pattern ring */}
-              <g opacity="0.5">
-                {Array.from({ length: 24 }).map((_, i) => {
-                  const angle = (i * 15) * (Math.PI / 180);
-                  const r = 85;
-                  const x1 = 100 + r * Math.cos(angle);
-                  const y1 = 100 + r * Math.sin(angle);
-                  const x2 = 100 + (r - 8) * Math.cos(angle + 0.04);
-                  const y2 = 100 + (r - 8) * Math.sin(angle + 0.04);
-                  const x3 = 100 + (r - 8) * Math.cos(angle + 0.12);
-                  const y3 = 100 + (r - 8) * Math.sin(angle + 0.12);
-                  const x4 = 100 + r * Math.cos(angle + 0.12);
-                  const y4 = 100 + r * Math.sin(angle + 0.12);
-                  return (
-                    <path
-                      key={i}
-                      d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4}`}
-                      fill="none"
-                      stroke="hsl(214, 99%, 60%)"
-                      strokeWidth="1.5"
-                    />
-                  );
-                })}
-              </g>
-              
-              {/* Decorative inner ring */}
-              <circle cx="100" cy="100" r="75" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1.5" opacity="0.4" strokeDasharray="4 3" />
-              <circle cx="100" cy="100" r="70" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="1" opacity="0.2" />
-              
-              {/* Inner filled circle */}
-              <circle cx="100" cy="100" r="62" fill="hsl(214, 99%, 60%)" opacity="0.08" />
-              <circle cx="100" cy="100" r="62" fill="none" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="0.5" />
-              
-              {/* Center white/light circle for the M */}
-              <circle cx="100" cy="100" r="48" fill="hsl(var(--card))" stroke="hsl(214, 99%, 60%)" strokeWidth="2" opacity="1" />
-              
-              {/* Small decorative dots around */}
-              {Array.from({ length: 12 }).map((_, i) => {
-                const angle = (i * 30) * (Math.PI / 180);
-                const x = 100 + 56 * Math.cos(angle);
-                const y = 100 + 56 * Math.sin(angle);
-                return <circle key={`dot-${i}`} cx={x} cy={y} r="1.5" fill="hsl(214, 99%, 60%)" opacity="0.4" />;
-              })}
-            </svg>
-          </div>
+          {/* Coin SVG - static, matching reference design */}
+          <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full" style={{ filter: energy > 0 ? "drop-shadow(0 0 16px hsl(214 99% 60% / 0.25))" : "none" }}>
+            {/* Outer border ring */}
+            <circle cx="100" cy="100" r="97" fill="none" stroke="currentColor" strokeWidth="3" className="text-foreground" opacity="0.9" />
+            <circle cx="100" cy="100" r="93" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" opacity="0.5" />
 
-          {/* M Letter - positioned absolutely on top */}
-          <span className="relative z-10 text-6xl font-display font-black text-primary drop-shadow-lg select-none animate-coin-bounce" style={{
-            textShadow: "0 0 24px hsl(214 99% 60% / 0.5), 0 2px 4px hsl(0 0% 0% / 0.4)"
-          }}>
-            M
-          </span>
+            {/* Greek key meander pattern band */}
+            <defs>
+              <clipPath id="meanderRing">
+                <path d="M100,12 A88,88 0 1,1 99.9,12 Z M100,30 A70,70 0 1,0 99.9,30 Z" />
+              </clipPath>
+            </defs>
+            <g clipPath="url(#meanderRing)" className="text-foreground" opacity="0.8">
+              {Array.from({ length: 32 }).map((_, i) => {
+                const angle = (i * 11.25) * (Math.PI / 180);
+                const cx = 100;
+                const cy = 100;
+                const r1 = 89;
+                const r2 = 80;
+                const r3 = 34;
+                const aStep = 5.625 * (Math.PI / 180);
+                
+                const x1 = cx + r1 * Math.cos(angle);
+                const y1 = cy + r1 * Math.sin(angle);
+                const x2 = cx + r1 * Math.cos(angle + aStep * 0.5);
+                const y2 = cy + r1 * Math.sin(angle + aStep * 0.5);
+                const x3 = cx + r2 * Math.cos(angle + aStep * 0.5);
+                const y3 = cy + r2 * Math.sin(angle + aStep * 0.5);
+                const x4 = cx + r2 * Math.cos(angle + aStep);
+                const y4 = cy + r2 * Math.sin(angle + aStep);
+                const x5 = cx + (r2 + 5) * Math.cos(angle + aStep);
+                const y5 = cy + (r2 + 5) * Math.sin(angle + aStep);
+                const x6 = cx + (r2 + 5) * Math.cos(angle + aStep * 1.5);
+                const y6 = cy + (r2 + 5) * Math.sin(angle + aStep * 1.5);
+                const x7 = cx + r1 * Math.cos(angle + aStep * 1.5);
+                const y7 = cy + r1 * Math.sin(angle + aStep * 1.5);
+
+                return (
+                  <path
+                    key={i}
+                    d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4} L${x5},${y5} L${x6},${y6} L${x7},${y7}`}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                  />
+                );
+              })}
+            </g>
+
+            {/* Inner decorative rings */}
+            <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" opacity="0.5" />
+            <circle cx="100" cy="100" r="66" fill="none" stroke="currentColor" strokeWidth="1" className="text-foreground" opacity="0.3" />
+
+            {/* Center filled circle */}
+            <circle cx="100" cy="100" r="58" fill="hsl(var(--card))" stroke="currentColor" strokeWidth="2.5" className="text-foreground" opacity="1" />
+
+            {/* M letter */}
+            <text
+              x="100"
+              y="100"
+              textAnchor="middle"
+              dominantBaseline="central"
+              className="fill-foreground"
+              style={{ fontSize: "58px", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, letterSpacing: "-2px" }}
+            >
+              M
+            </text>
+          </svg>
         </button>
 
         <AnimatePresence>
