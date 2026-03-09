@@ -501,6 +501,47 @@ const JobsPage = () => {
     { from: "Intern", to: "Data Analyst", company: "NexaCore Systems", date: "2 weeks ago" },
   ]);
 
+  // ── Payslip system ──
+  const [showPayslip, setShowPayslip] = useState(false);
+  const [payslipClaimed, setPayslipClaimed] = useState(false);
+  const [payslipStep, setPayslipStep] = useState(0);
+
+  // Mock payslip data — 7 days worked this week
+  const streakDays = 5;
+  const weeklyBaseSalary = activeJob ? activeJob.salary * 7 : 0;
+  const streakBonus = streakDays >= 7 ? 0.15 : streakDays >= 5 ? 0.10 : streakDays >= 3 ? 0.05 : 0;
+  const streakBonusAmt = Math.floor(weeklyBaseSalary * streakBonus);
+  const eventBonus = activeJob ? Math.floor(weeklyBaseSalary * Math.max(0, currentJobMods?.salaryMod - 1 || 0)) : 0;
+  const grossSalary = weeklyBaseSalary + streakBonusAmt + eventBonus;
+  const companyTax = Math.floor(grossSalary * 0.10);   // 10% company fee
+  const treasuryBurn = Math.floor(grossSalary * 0.05); // 5% burn
+  const netSalary = grossSalary - companyTax - treasuryBurn;
+  const daysWorkedThisWeek = Math.min(7, streakDays);
+
+  const pastPayslips = [
+    { week: "Week of Feb 24", gross: 2380, net: 1999, streak: 7, bonus: 357 },
+    { week: "Week of Feb 17", gross: 2240, net: 1882, streak: 5, bonus: 224 },
+    { week: "Week of Feb 10", gross: 2240, net: 1882, streak: 6, bonus: 224 },
+  ];
+
+  const openPayslip = () => {
+    setShowPayslip(true);
+    setPayslipStep(0);
+    setTimeout(() => setPayslipStep(1), 400);
+    setTimeout(() => setPayslipStep(2), 900);
+    setTimeout(() => setPayslipStep(3), 1500);
+    setTimeout(() => setPayslipStep(4), 2100);
+  };
+
+  const claimPayslip = () => {
+    setPayslipClaimed(true);
+    setTimeout(() => {
+      setShowPayslip(false);
+      setPayslipClaimed(false);
+      setPayslipStep(0);
+    }, 1800);
+  };
+
   const [activeEvents] = useState(() => getActiveEvents());
   const [dismissedEvents, setDismissedEvents] = useState<Set<string>>(new Set());
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
