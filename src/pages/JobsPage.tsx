@@ -816,12 +816,36 @@ const JobsPage = () => {
                   <div className="text-right">
                     <p className="text-sm font-display font-bold text-primary flex items-center gap-1">
                       <CoinIcon type="mine" size={16} />
-                      {activeJob.salary}
+                      {effectiveSalary}
                     </p>
-                    <p className="text-[9px] text-muted-foreground font-body">daily salary</p>
+                    {currentJobMods.salaryMod !== 1 && !currentJobMods.strikeActive && (
+                      <p className={`text-[9px] font-body font-medium ${currentJobMods.salaryMod > 1 ? "text-success" : "text-destructive"}`}>
+                        <span className="line-through text-muted-foreground mr-1">{activeJob.salary}</span>
+                        ({currentJobMods.salaryMod > 1 ? "+" : ""}{Math.round((currentJobMods.salaryMod - 1) * 100)}% event)
+                      </p>
+                    )}
+                    {currentJobMods.strikeActive && (
+                      <p className="text-[9px] font-body font-medium text-destructive">⛔ Strike Active</p>
+                    )}
+                    {!currentJobMods.strikeActive && currentJobMods.salaryMod === 1 && (
+                      <p className="text-[9px] text-muted-foreground font-body">daily salary</p>
+                    )}
                   </div>
                 </div>
               </div>
+
+              {/* Strike Warning Banner */}
+              {currentJobMods.strikeActive && (
+                <div className="mx-4 mt-3 p-3 bg-destructive/10 border border-destructive/20 rounded-xl flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-destructive/15 flex items-center justify-center flex-shrink-0">
+                    <Ban size={20} className="text-destructive" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-display font-bold text-destructive">Work Suspended</p>
+                    <p className="text-[10px] text-muted-foreground font-body">Your sector is on strike. Tasks are unavailable until the event ends.</p>
+                  </div>
+                </div>
+              )}
 
               {/* Promotion Progress */}
               {activeJob.promoDays > 0 && nextPromo && (
