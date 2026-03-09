@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Flame, ArrowRight, Building2, Users, Landmark, TrendingUp, ChevronDown,
   Coins, Shield, Globe, Zap, Crown, ArrowDownUp, Wallet, BadgePercent,
   CircleDollarSign, Factory, Pickaxe, Briefcase, HandCoins, Gift,
-  Lock, Unlock, Scale, Eye, PiggyBank, Target, Banknote
+  Lock, Unlock, Scale, Eye, PiggyBank, Target, Banknote, Activity, Clock
 } from "lucide-react";
 import CoinIcon from "@/components/CoinIcon";
 
@@ -130,6 +130,68 @@ const EconomicsPage = () => {
   const [expandedStream, setExpandedStream] = useState<string | null>("task_fees");
   const [showFullSupply, setShowFullSupply] = useState(false);
 
+  // Real-time metrics simulation
+  const [livePrice, setLivePrice] = useState(0.85);
+  const [dailyActiveUsers, setDailyActiveUsers] = useState(12847);
+
+  // Calculate time until next halving (180 days from launch)
+  const LAUNCH_DATE = new Date("2024-09-01T00:00:00Z");
+  const HALVING_INTERVAL = 180 * 24 * 60 * 60 * 1000; // 180 days in ms
+  
+  const [timeToHalving, setTimeToHalving] = useState(() => {
+    const now = Date.now();
+    const timeSinceLaunch = now - LAUNCH_DATE.getTime();
+    const halvingNumber = Math.floor(timeSinceLaunch / HALVING_INTERVAL);
+    const nextHalving = LAUNCH_DATE.getTime() + (halvingNumber + 1) * HALVING_INTERVAL;
+    return nextHalving - now;
+  });
+
+  // Update countdown every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      const timeSinceLaunch = now - LAUNCH_DATE.getTime();
+      const halvingNumber = Math.floor(timeSinceLaunch / HALVING_INTERVAL);
+      const nextHalving = LAUNCH_DATE.getTime() + (halvingNumber + 1) * HALVING_INTERVAL;
+      setTimeToHalving(nextHalving - now);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Simulate live price changes
+  useEffect(() => {
+    const priceInterval = setInterval(() => {
+      setLivePrice((prev) => {
+        const change = (Math.random() - 0.48) * 0.005; // Slight upward bias
+        const newPrice = Math.max(0.5, Math.min(1.5, prev + change));
+        return Number(newPrice.toFixed(4));
+      });
+    }, 3000);
+    return () => clearInterval(priceInterval);
+  }, []);
+
+  // Simulate DAU changes
+  useEffect(() => {
+    const dauInterval = setInterval(() => {
+      setDailyActiveUsers((prev) => {
+        const change = Math.floor((Math.random() - 0.5) * 50);
+        return Math.max(10000, Math.min(20000, prev + change));
+      });
+    }, 8000);
+    return () => clearInterval(dauInterval);
+  }, []);
+
+  // Format time to halving
+  const formatTimeToHalving = (ms: number) => {
+    const days = Math.floor(ms / (24 * 60 * 60 * 1000));
+    const hours = Math.floor((ms % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
+    const seconds = Math.floor((ms % (60 * 1000)) / 1000);
+    return { days, hours, minutes, seconds };
+  };
+
+  const { days, hours, minutes, seconds } = formatTimeToHalving(timeToHalving);
+
   return (
     <div className="pb-20 lg:pb-6">
       <div className="max-w-3xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-6">
@@ -141,6 +203,135 @@ const EconomicsPage = () => {
             How $MINE and $WAGE power a self-sustaining economy — and generate real revenue.
           </p>
         </div>
+
+        {/* ══ WageIndex Live Dashboard ══ */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card-clean p-4 space-y-4 border-primary/30 bg-gradient-to-br from-primary/5 to-transparent"
+        >
+          <div className="flex items-center justify-between">
+            <h2 className="font-display font-semibold text-sm flex items-center gap-2">
+              <Activity size={15} className="text-primary" />
+              WageIndex — Live Metrics
+            </h2>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
+              <span className="text-[9px] text-success font-body font-medium">LIVE</span>
+            </div>
+          </div>
+
+          {/* Main Metrics Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            {/* Total Supply */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-card-elevated rounded-xl p-3 border border-border/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Coins size={14} className="text-primary" />
+                <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wide">Total Supply</p>
+              </div>
+              <p className="text-lg font-display font-bold text-gradient-primary">1.00B</p>
+              <p className="text-[8px] text-muted-foreground font-body">Hard Cap (Max Ever)</p>
+            </motion.div>
+
+            {/* Tokens Burned */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-card-elevated rounded-xl p-3 border border-border/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Flame size={14} className="text-destructive" />
+                <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wide">Burned Forever</p>
+              </div>
+              <p className="text-lg font-display font-bold text-destructive">
+                {(BURNED / 1_000_000).toFixed(2)}M
+              </p>
+              <p className="text-[8px] text-muted-foreground font-body">
+                {((BURNED / TOTAL_SUPPLY) * 100).toFixed(2)}% of supply
+              </p>
+            </motion.div>
+
+            {/* DAU */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-card-elevated rounded-xl p-3 border border-border/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Users size={14} className="text-info" />
+                <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wide">Daily Active Users</p>
+              </div>
+              <motion.p
+                key={dailyActiveUsers}
+                initial={{ scale: 1.1, color: "hsl(var(--info))" }}
+                animate={{ scale: 1, color: "hsl(var(--foreground))" }}
+                className="text-lg font-display font-bold"
+              >
+                {dailyActiveUsers.toLocaleString()}
+              </motion.p>
+              <p className="text-[8px] text-muted-foreground font-body">Last 24 hours</p>
+            </motion.div>
+
+            {/* $WAGE Price */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-card-elevated rounded-xl p-3 border border-border/50"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp size={14} className="text-success" />
+                <p className="text-[9px] text-muted-foreground font-body uppercase tracking-wide">$WAGE Price</p>
+              </div>
+              <motion.p
+                key={livePrice}
+                initial={{ scale: 1.05 }}
+                animate={{ scale: 1 }}
+                className="text-lg font-display font-bold text-gradient-gold"
+              >
+                ${livePrice.toFixed(4)}
+              </motion.p>
+              <p className="text-[8px] text-muted-foreground font-body">Market rate (simulated)</p>
+            </motion.div>
+          </div>
+
+          {/* Halving Countdown */}
+          <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent border border-primary/20 rounded-xl p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Clock size={14} className="text-primary" />
+                <p className="text-xs font-display font-semibold">Next WageHalving™</p>
+              </div>
+              <div className="px-2 py-0.5 bg-primary/20 rounded-md">
+                <p className="text-[8px] font-body font-bold text-primary">-50% Emission</p>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { label: "Days", value: days },
+                { label: "Hours", value: hours },
+                { label: "Mins", value: minutes },
+                { label: "Secs", value: seconds },
+              ].map((unit) => (
+                <div key={unit.label} className="bg-card rounded-lg p-2 text-center">
+                  <motion.p
+                    key={unit.value}
+                    initial={{ scale: 1.2, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="text-xl font-display font-bold text-primary"
+                  >
+                    {String(unit.value).padStart(2, "0")}
+                  </motion.p>
+                  <p className="text-[8px] text-muted-foreground font-body uppercase">{unit.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[9px] text-muted-foreground font-body text-center mt-3">
+              Every 180 days, new $WAGE emission is cut in half — increasing scarcity forever.
+            </p>
+          </div>
+        </motion.section>
 
         {/* ══ Dual Token Overview ══ */}
         <div className="grid grid-cols-2 gap-3">
