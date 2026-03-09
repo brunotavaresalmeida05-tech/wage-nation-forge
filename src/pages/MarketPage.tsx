@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Star, Search } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
-const CATEGORIES = ["Todos", "Watchlist", "Crypto", "Commodities", "Bonds", "Ações Web3"];
+const CATEGORIES = ["All", "Watchlist", "Crypto", "Commodities", "Bonds", "Web3 Stocks"];
 
-// Mini sparkline data generator
 const spark = (trend: "up" | "down") => {
   const base = trend === "up" ? 40 : 60;
   return Array.from({ length: 20 }, (_, i) => ({
@@ -19,21 +18,21 @@ const ALL_ASSETS = [
   { name: "Bitcoin", symbol: "BTC", category: "Crypto", price: 97420, change24h: -3.21, marketCap: "2.3T", volume: "42B", sparkData: spark("down"), watched: true },
   { name: "Ethereum", symbol: "ETH", category: "Crypto", price: 3850, change24h: 0.39, marketCap: "367B", volume: "18B", sparkData: spark("up"), watched: true },
   { name: "Solana", symbol: "SOL", category: "Crypto", price: 160.2, change24h: -3.18, marketCap: "86B", volume: "4.2B", sparkData: spark("down"), watched: false },
-  { name: "Ouro", symbol: "XAU", category: "Commodities", price: 1200, change24h: 2.3, marketCap: "--", volume: "890K", sparkData: spark("up"), watched: false },
-  { name: "Prata", symbol: "XAG", category: "Commodities", price: 320, change24h: -0.5, marketCap: "--", volume: "120K", sparkData: spark("down"), watched: false },
-  { name: "Petróleo", symbol: "OIL", category: "Commodities", price: 450, change24h: -1.2, marketCap: "--", volume: "540K", sparkData: spark("down"), watched: false },
+  { name: "Gold", symbol: "XAU", category: "Commodities", price: 1200, change24h: 2.3, marketCap: "--", volume: "890K", sparkData: spark("up"), watched: false },
+  { name: "Silver", symbol: "XAG", category: "Commodities", price: 320, change24h: -0.5, marketCap: "--", volume: "120K", sparkData: spark("down"), watched: false },
+  { name: "Oil", symbol: "OIL", category: "Commodities", price: 450, change24h: -1.2, marketCap: "--", volume: "540K", sparkData: spark("down"), watched: false },
   { name: "WageBond 6M", symbol: "WB6M", category: "Bonds", price: 100, change24h: 0.0, marketCap: "--", volume: "12K", sparkData: spark("up"), watched: false, yield: 15 },
   { name: "WageBond 1Y", symbol: "WB1Y", category: "Bonds", price: 500, change24h: 0.0, marketCap: "--", volume: "8K", sparkData: spark("up"), watched: false, yield: 25 },
-  { name: "WageTech Corp", symbol: "WTC", category: "Ações Web3", price: 84.5, change24h: 8.4, marketCap: "845K", volume: "52K", sparkData: spark("up"), watched: false },
-  { name: "WageEnergy", symbol: "WEN", category: "Ações Web3", price: 32.1, change24h: -2.1, marketCap: "321K", volume: "18K", sparkData: spark("down"), watched: false },
+  { name: "WageTech Corp", symbol: "WTC", category: "Web3 Stocks", price: 84.5, change24h: 8.4, marketCap: "845K", volume: "52K", sparkData: spark("up"), watched: false },
+  { name: "WageEnergy", symbol: "WEN", category: "Web3 Stocks", price: 32.1, change24h: -2.1, marketCap: "321K", volume: "18K", sparkData: spark("down"), watched: false },
 ];
 
 const MarketPage = () => {
-  const [activeCategory, setActiveCategory] = useState("Todos");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = ALL_ASSETS.filter((a) => {
-    const catMatch = activeCategory === "Todos" ? true : activeCategory === "Watchlist" ? a.watched : a.category === activeCategory;
+    const catMatch = activeCategory === "All" ? true : activeCategory === "Watchlist" ? a.watched : a.category === activeCategory;
     const searchMatch = !searchQuery || a.name.toLowerCase().includes(searchQuery.toLowerCase()) || a.symbol.toLowerCase().includes(searchQuery.toLowerCase());
     return catMatch && searchMatch;
   });
@@ -41,20 +40,19 @@ const MarketPage = () => {
   return (
     <div className="pb-20 lg:pb-6">
       <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
-        {/* Page title + search (mobile) */}
         <div className="flex items-center justify-between">
-          <h1 className="font-display font-bold text-xl lg:text-2xl">Mercado</h1>
+          <h1 className="font-display font-bold text-xl lg:text-2xl">Market</h1>
         </div>
 
         {/* Search */}
         <div className="flex items-center gap-2 bg-secondary rounded-lg px-3 py-2.5">
-          <Search size={16} className="text-muted-foreground" />
+          <Search size={16} className="text-muted-foreground flex-shrink-0" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Pesquisar ativos..."
-            className="flex-1 bg-transparent outline-none font-body text-sm placeholder:text-muted-foreground"
+            placeholder="Search assets..."
+            className="flex-1 bg-transparent outline-none font-body text-sm placeholder:text-muted-foreground min-w-0"
           />
         </div>
 
@@ -98,11 +96,11 @@ const MarketPage = () => {
         <div className="card-clean overflow-hidden">
           {/* Table header */}
           <div className="hidden lg:grid grid-cols-[2fr_1fr_1fr_1fr_120px_40px] gap-4 px-4 py-3 border-b border-border/50 text-[10px] uppercase tracking-wider text-muted-foreground font-body">
-            <span>Ativo</span>
-            <span className="text-right">Preço</span>
+            <span>Asset</span>
+            <span className="text-right">Price</span>
             <span className="text-right">24h</span>
             <span className="text-right">Market Cap</span>
-            <span className="text-center">Gráfico 7d</span>
+            <span className="text-center">7d Chart</span>
             <span></span>
           </div>
 
@@ -169,7 +167,7 @@ const MarketPage = () => {
                 </div>
 
                 {/* Mobile change indicator */}
-                <span className={`lg:hidden text-xs font-body font-medium ${isPositive ? "text-success" : "text-destructive"}`}>
+                <span className={`lg:hidden text-xs font-body font-medium whitespace-nowrap ${isPositive ? "text-success" : "text-destructive"}`}>
                   {isPositive ? "+" : ""}{asset.change24h.toFixed(2)}%
                 </span>
               </motion.div>
@@ -180,13 +178,13 @@ const MarketPage = () => {
         {/* Reward-generating assets (desktop sidebar-style) */}
         <div className="hidden lg:block">
           <div className="card-clean p-5">
-            <h3 className="font-display font-semibold text-base mb-1">Ativos geradores de recompensas</h3>
-            <p className="text-xs text-muted-foreground font-body mb-4">Ganhe recompensas comprando e fazendo staking de ativos qualificados</p>
+            <h3 className="font-display font-semibold text-base mb-1">Reward-generating assets</h3>
+            <p className="text-xs text-muted-foreground font-body mb-4">Earn rewards by buying and staking eligible assets</p>
             <div className="space-y-3">
               {[
-                { name: "Vault Flexível", symbol: "FLEX", apy: "5.00%" },
-                { name: "Vault 90 Dias", symbol: "V90D", apy: "35.00%" },
-                { name: "Vault 1 Ano", symbol: "V1Y", apy: "100.00%" },
+                { name: "Flexible Vault", symbol: "FLEX", apy: "5.00%" },
+                { name: "90-Day Vault", symbol: "V90D", apy: "35.00%" },
+                { name: "1-Year Vault", symbol: "V1Y", apy: "100.00%" },
                 { name: "WageBond 6M", symbol: "WB6M", apy: "15.00%" },
               ].map((a) => (
                 <div key={a.symbol} className="flex items-center justify-between py-2">
@@ -199,7 +197,7 @@ const MarketPage = () => {
                       <p className="text-[11px] text-muted-foreground font-body">{a.symbol}</p>
                     </div>
                   </div>
-                  <span className="text-sm font-display font-bold text-primary">{a.apy} a.a.</span>
+                  <span className="text-sm font-display font-bold text-primary">{a.apy} APY</span>
                 </div>
               ))}
             </div>

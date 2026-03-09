@@ -20,7 +20,7 @@ const EventBanner = ({ event }: { event: EconomicEvent }) => {
       className="card-clean p-4"
     >
       <div className="flex items-start gap-3">
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
           event.isPositive ? "bg-primary/10" : "bg-destructive/10"
         }`}>
           {event.isPositive ? (
@@ -45,7 +45,7 @@ const EventBanner = ({ event }: { event: EconomicEvent }) => {
             </span>
             <span className="flex items-center gap-1 text-muted-foreground">
               <Clock size={10} />
-              {event.endsIn} restantes
+              {event.endsIn} remaining
             </span>
           </div>
         </div>

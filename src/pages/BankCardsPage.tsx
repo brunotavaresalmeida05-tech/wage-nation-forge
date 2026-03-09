@@ -6,14 +6,14 @@ interface BankCard {
   id: string;
   bankName: string;
   lastFour: string;
-  type: "visa" | "mastercard" | "pix";
+  type: "visa" | "mastercard" | "ach";
   label: string;
   isDefault: boolean;
 }
 
 const MOCK_CARDS: BankCard[] = [
-  { id: "1", bankName: "Nubank", lastFour: "4821", type: "mastercard", label: "Conta Principal", isDefault: true },
-  { id: "2", bankName: "Banco do Brasil", lastFour: "7392", type: "visa", label: "Poupança", isDefault: false },
+  { id: "1", bankName: "Chase", lastFour: "4821", type: "visa", label: "Checking Account", isDefault: true },
+  { id: "2", bankName: "Wise", lastFour: "7392", type: "mastercard", label: "Multi-currency", isDefault: false },
 ];
 
 const BankCardsPage = () => {
@@ -25,15 +25,15 @@ const BankCardsPage = () => {
       <div className="max-w-2xl mx-auto px-4 lg:px-6 py-4 lg:py-6 space-y-5">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="font-display font-bold text-xl">Cartões & Bancos</h1>
-            <p className="text-xs text-muted-foreground font-body mt-0.5">Gere os teus métodos de depósito e retirada</p>
+            <h1 className="font-display font-bold text-xl">Cards & Banks</h1>
+            <p className="text-xs text-muted-foreground font-body mt-0.5">Manage your deposit and withdrawal methods</p>
           </div>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-body font-medium tap-shrink"
           >
             <Plus size={14} />
-            Adicionar
+            Add
           </button>
         </div>
 
@@ -43,15 +43,15 @@ const BankCardsPage = () => {
             <div className="w-10 h-10 rounded-xl bg-success/10 mx-auto flex items-center justify-center mb-2">
               <ArrowDownLeft size={20} className="text-success" />
             </div>
-            <p className="text-sm font-display font-semibold">Depositar</p>
-            <p className="text-[11px] text-muted-foreground font-body">Do banco → Wage</p>
+            <p className="text-sm font-display font-semibold">Deposit</p>
+            <p className="text-[11px] text-muted-foreground font-body">Bank → Wage</p>
           </button>
           <button className="card-clean p-4 text-center tap-shrink hover:border-primary/30 transition-colors">
             <div className="w-10 h-10 rounded-xl bg-primary/10 mx-auto flex items-center justify-center mb-2">
               <ArrowUpRight size={20} className="text-primary" />
             </div>
-            <p className="text-sm font-display font-semibold">Retirar</p>
-            <p className="text-[11px] text-muted-foreground font-body">Wage → Banco</p>
+            <p className="text-sm font-display font-semibold">Withdraw</p>
+            <p className="text-[11px] text-muted-foreground font-body">Wage → Bank</p>
           </button>
         </div>
 
@@ -62,13 +62,13 @@ const BankCardsPage = () => {
             animate={{ opacity: 1, height: "auto" }}
             className="card-clean p-5 space-y-4"
           >
-            <h3 className="font-display font-semibold text-sm">Adicionar novo método</h3>
+            <h3 className="font-display font-semibold text-sm">Add new method</h3>
 
             <div className="grid grid-cols-3 gap-2">
               {[
-                { type: "pix", label: "PIX", desc: "Instantâneo" },
-                { type: "visa", label: "Cartão", desc: "Visa/MC" },
-                { type: "wire", label: "SEPA/Wire", desc: "Transferência" },
+                { type: "ach", label: "ACH", desc: "US Bank" },
+                { type: "card", label: "Card", desc: "Visa/MC" },
+                { type: "wire", label: "SEPA/Wire", desc: "Transfer" },
               ].map((m) => (
                 <button key={m.type} className="card-clean p-3 text-center tap-shrink hover:border-primary/30 transition-colors">
                   <CreditCard size={20} className="text-primary mx-auto mb-1.5" />
@@ -80,31 +80,31 @@ const BankCardsPage = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="text-[11px] text-muted-foreground font-body block mb-1">Nome do banco</label>
+                <label className="text-[11px] text-muted-foreground font-body block mb-1">Bank name</label>
                 <input
                   type="text"
-                  placeholder="Ex: Nubank, Wise, Revolut"
+                  placeholder="e.g. Chase, Wise, Revolut"
                   className="w-full bg-secondary rounded-lg px-3 py-2.5 text-sm font-body outline-none placeholder:text-muted-foreground"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-muted-foreground font-body block mb-1">IBAN / Chave PIX / Nº Cartão</label>
+                <label className="text-[11px] text-muted-foreground font-body block mb-1">IBAN / Routing Number / Card Number</label>
                 <input
                   type="text"
-                  placeholder="Insere os dados da conta"
+                  placeholder="Enter account details"
                   className="w-full bg-secondary rounded-lg px-3 py-2.5 text-sm font-body outline-none placeholder:text-muted-foreground"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-muted-foreground font-body block mb-1">Nome/Label (opcional)</label>
+                <label className="text-[11px] text-muted-foreground font-body block mb-1">Label (optional)</label>
                 <input
                   type="text"
-                  placeholder="Ex: Conta Principal"
+                  placeholder="e.g. Checking Account"
                   className="w-full bg-secondary rounded-lg px-3 py-2.5 text-sm font-body outline-none placeholder:text-muted-foreground"
                 />
               </div>
               <button className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-semibold text-sm tap-shrink">
-                Guardar Método
+                Save Method
               </button>
             </div>
           </motion.div>
@@ -112,7 +112,7 @@ const BankCardsPage = () => {
 
         {/* Saved Cards */}
         <section>
-          <h2 className="font-display font-semibold text-[15px] mb-3">Métodos guardados</h2>
+          <h2 className="font-display font-semibold text-[15px] mb-3">Saved methods</h2>
           <div className="space-y-2.5">
             {cards.map((card, i) => (
               <motion.div
@@ -123,7 +123,7 @@ const BankCardsPage = () => {
                 className={`card-clean p-4 ${card.isDefault ? "border-primary/30" : ""}`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-secondary flex items-center justify-center">
+                  <div className="w-11 h-11 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0">
                     <Building2 size={20} className="text-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -131,7 +131,7 @@ const BankCardsPage = () => {
                       <h3 className="font-display font-semibold text-sm">{card.bankName}</h3>
                       {card.isDefault && (
                         <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-body font-semibold">
-                          PADRÃO
+                          DEFAULT
                         </span>
                       )}
                     </div>
@@ -152,22 +152,22 @@ const BankCardsPage = () => {
         <div className="card-clean p-4">
           <div className="flex items-center gap-2 mb-2">
             <Shield size={16} className="text-primary" />
-            <h3 className="font-display font-semibold text-sm">Segurança</h3>
+            <h3 className="font-display font-semibold text-sm">Security</h3>
           </div>
           <p className="text-[11px] text-muted-foreground font-body leading-relaxed">
-            Os teus dados bancários são encriptados e nunca armazenados nos nossos servidores.
-            Todas as transações são processadas via parceiros licenciados com conformidade regulatória total.
+            Your bank details are encrypted and never stored on our servers.
+            All transactions are processed through licensed partners with full regulatory compliance.
           </p>
         </div>
 
         {/* Supported methods */}
         <div className="card-clean p-4">
-          <h3 className="font-display font-semibold text-sm mb-3">Métodos suportados</h3>
+          <h3 className="font-display font-semibold text-sm mb-3">Supported methods</h3>
           <div className="grid grid-cols-3 gap-3">
             {[
-              { method: "PIX", region: "🇧🇷 Brasil", speed: "Instantâneo" },
-              { method: "SEPA", region: "🇪🇺 Europa", speed: "1-2 dias" },
-              { method: "Wire", region: "🇺🇸 EUA", speed: "2-3 dias" },
+              { method: "ACH", region: "🇺🇸 United States", speed: "1-3 days" },
+              { method: "SEPA", region: "🇪🇺 Europe", speed: "1-2 days" },
+              { method: "Wire", region: "🌍 International", speed: "2-5 days" },
             ].map((m) => (
               <div key={m.method} className="text-center p-2.5 rounded-lg bg-secondary/50">
                 <p className="text-lg">{m.region.split(" ")[0]}</p>

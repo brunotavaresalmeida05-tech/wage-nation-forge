@@ -18,32 +18,32 @@ const ExchangePage = () => {
 
         {/* Rate Info */}
         <div className="card-clean p-5 text-center">
-          <p className="text-xs text-muted-foreground font-body mb-1.5">Taxa de câmbio atual</p>
+          <p className="text-xs text-muted-foreground font-body mb-1.5">Current exchange rate</p>
           <p className="text-2xl font-display font-bold">
             <span className="text-info">1,000 $MINE</span>
             <span className="text-muted-foreground mx-2">=</span>
             <span className="text-primary">1 $WAGE</span>
           </p>
-          <p className="text-[11px] text-muted-foreground font-body mt-2">Comissão: 5% • Destino: Treasury</p>
+          <p className="text-[11px] text-muted-foreground font-body mt-2">Fee: 5% • Destination: Treasury</p>
         </div>
 
         {/* Exchange Form */}
         <div className="card-clean p-5 space-y-4">
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs text-muted-foreground font-body">Tu envias</label>
-              <span className="text-[11px] text-muted-foreground font-body">Saldo: {mineBalance.toLocaleString()} $MINE</span>
+              <label className="text-xs text-muted-foreground font-body">You send</label>
+              <span className="text-[11px] text-muted-foreground font-body">Balance: {mineBalance.toLocaleString()} $MINE</span>
             </div>
             <div className="flex items-center gap-3 rounded-lg bg-secondary p-3">
-              <div className="w-8 h-8 rounded-md bg-info/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-info/10 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-display font-bold text-info">M</span>
               </div>
               <input type="number" value={mineAmount} onChange={(e) => setMineAmount(e.target.value)} placeholder="0"
-                className="flex-1 bg-transparent outline-none font-display font-bold text-xl placeholder:text-muted-foreground" />
+                className="flex-1 bg-transparent outline-none font-display font-bold text-xl placeholder:text-muted-foreground min-w-0" />
               <span className="text-xs text-muted-foreground font-body">$MINE</span>
             </div>
             <button onClick={() => setMineAmount(mineBalance.toString())} className="text-[11px] text-primary font-body font-medium mt-1.5 tap-shrink">
-              Usar máximo
+              Use max
             </button>
           </div>
 
@@ -54,9 +54,9 @@ const ExchangePage = () => {
           </div>
 
           <div>
-            <label className="text-xs text-muted-foreground font-body mb-2 block">Tu recebes</label>
+            <label className="text-xs text-muted-foreground font-body mb-2 block">You receive</label>
             <div className="flex items-center gap-3 rounded-lg bg-secondary p-3">
-              <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <span className="text-xs font-display font-bold text-primary">W</span>
               </div>
               <span className="flex-1 font-display font-bold text-xl text-primary">{wageOut.toFixed(4)}</span>
@@ -66,7 +66,7 @@ const ExchangePage = () => {
 
           <div className="space-y-1.5 pt-3 border-t border-border">
             <div className="flex justify-between text-[11px] font-body text-muted-foreground">
-              <span>Comissão (5%)</span><span>{feeAmount.toFixed(4)} $WAGE</span>
+              <span>Fee (5%)</span><span>{feeAmount.toFixed(4)} $WAGE</span>
             </div>
             <div className="flex justify-between text-[11px] font-body text-muted-foreground">
               <span>Treasury Burn (1%)</span><span>{((mineNum / rate) * 0.01).toFixed(4)} $WAGE</span>
@@ -75,15 +75,15 @@ const ExchangePage = () => {
 
           <motion.button whileTap={{ scale: 0.97 }} disabled={mineNum <= 0 || mineNum > mineBalance}
             className="w-full py-3 rounded-lg font-display font-semibold text-sm disabled:opacity-30 tap-shrink bg-primary text-primary-foreground">
-            Converter para $WAGE
+            Convert to $WAGE
           </motion.button>
         </div>
 
         {/* Info Cards */}
         <div className="grid grid-cols-2 gap-2.5">
           {[
-            { icon: <Landmark size={18} className="text-foreground" />, title: "Treasury", desc: "Comissão sustenta o ecossistema" },
-            { icon: <Flame size={18} className="text-destructive" />, title: "Burn", desc: "Token burn cria escassez e valor" },
+            { icon: <Landmark size={18} className="text-foreground" />, title: "Treasury", desc: "Fees sustain the ecosystem" },
+            { icon: <Flame size={18} className="text-destructive" />, title: "Burn", desc: "Token burn creates scarcity and value" },
           ].map((item) => (
             <div key={item.title} className="card-clean p-3.5">
               <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center mb-2">{item.icon}</div>
