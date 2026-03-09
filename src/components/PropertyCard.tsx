@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 export interface Property {
   id: string;
   name: string;
-  type: "Residencial" | "Comercial" | "Industrial" | "Turismo" | "Prime";
+  type: "Residential" | "Commercial" | "Industrial" | "Hospitality" | "Prime" | "Mixed-Use" | "Luxury" | "Data Center";
   location: string;
+  region: string;
   price: number;
   dailyYield: number;
   rarity: "common" | "rare" | "epic" | "legendary" | "unique";
@@ -13,11 +14,11 @@ export interface Property {
 }
 
 const rarityConfig = {
-  common: { label: "★ Comum", bg: "bg-secondary", text: "text-muted-foreground", border: "rarity-common" },
-  rare: { label: "★★ Raro", bg: "bg-info/10", text: "text-info", border: "rarity-rare" },
-  epic: { label: "★★★ Épico", bg: "bg-[hsl(var(--epic)/.1)]", text: "text-[hsl(var(--epic))]", border: "rarity-epic" },
-  legendary: { label: "★★★★ Lendário", bg: "bg-gold/10", text: "text-gold", border: "rarity-legendary" },
-  unique: { label: "★★★★★ Único", bg: "bg-primary/10", text: "text-primary", border: "rarity-unique" },
+  common: { label: "★ Common", bg: "bg-secondary", text: "text-muted-foreground", border: "rarity-common" },
+  rare: { label: "★★ Rare", bg: "bg-info/10", text: "text-info", border: "rarity-rare" },
+  epic: { label: "★★★ Epic", bg: "bg-[hsl(var(--epic)/.1)]", text: "text-[hsl(var(--epic))]", border: "rarity-epic" },
+  legendary: { label: "★★★★ Legendary", bg: "bg-gold/10", text: "text-gold", border: "rarity-legendary" },
+  unique: { label: "★★★★★ Unique", bg: "bg-primary/10", text: "text-primary", border: "rarity-unique" },
 };
 
 const PropertyCard = ({ property, onBuy }: { property: Property; onBuy?: () => void }) => {
@@ -41,18 +42,19 @@ const PropertyCard = ({ property, onBuy }: { property: Property; onBuy?: () => v
 
       <h3 className="font-display font-semibold text-sm">{property.name}</h3>
       <p className="text-[10px] text-muted-foreground font-body">{property.type} — {property.location}</p>
+      <p className="text-[9px] text-muted-foreground/70 font-body">{property.region}</p>
 
       <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] font-body">
         <div>
-          <p className="text-muted-foreground">Preço</p>
+          <p className="text-muted-foreground">Price</p>
           <p className="font-display font-bold text-primary">{property.price.toLocaleString()} $W</p>
         </div>
         <div>
-          <p className="text-muted-foreground">Renda/dia</p>
+          <p className="text-muted-foreground">Rent/day</p>
           <p className="font-display font-bold text-primary">{property.dailyYield} $W</p>
         </div>
         <div>
-          <p className="text-muted-foreground">Renda/mês</p>
+          <p className="text-muted-foreground">Rent/month</p>
           <p className="font-display font-bold">{monthlyYield.toFixed(1)} $W</p>
         </div>
         <div>
@@ -62,8 +64,8 @@ const PropertyCard = ({ property, onBuy }: { property: Property; onBuy?: () => v
       </div>
 
       <div className="mt-2 pt-2 border-t border-border/50 flex items-center justify-between text-[10px] text-muted-foreground font-body">
-        <span>Condomínio: {property.condoFee} $W/dia</span>
-        <span className="text-primary font-medium">Comprar →</span>
+        <span>HOA: {property.condoFee} $W/day</span>
+        <span className="text-primary font-medium">Buy →</span>
       </div>
     </motion.div>
   );

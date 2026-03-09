@@ -19,6 +19,14 @@ const volatilityColors: Record<string, string> = {
   "Muito Alta": "text-destructive",
 };
 
+const volatilityLabels: Record<string, string> = {
+  "Muito Baixa": "Very Low",
+  "Baixa": "Low",
+  "Média": "Medium",
+  "Alta": "High",
+  "Muito Alta": "Very High",
+};
+
 const SectorCard = ({ sector, onBuy }: { sector: Sector; onBuy?: () => void }) => {
   const isPositive = sector.change24h >= 0;
 
@@ -38,7 +46,7 @@ const SectorCard = ({ sector, onBuy }: { sector: Sector; onBuy?: () => void }) =
           <p className="text-[10px] text-muted-foreground font-body truncate">{sector.companies[0]}, {sector.companies[1]}</p>
         </div>
         <div className="text-right">
-          <p className={`text-xs font-display font-bold ${isPositive ? "text-primary" : "text-destructive"}`}>
+          <p className={`text-xs font-display font-bold ${isPositive ? "text-success" : "text-destructive"}`}>
             {isPositive ? "+" : ""}{sector.change24h.toFixed(1)}%
           </p>
         </div>
@@ -46,22 +54,22 @@ const SectorCard = ({ sector, onBuy }: { sector: Sector; onBuy?: () => void }) =
 
       <div className="grid grid-cols-3 gap-2 text-[10px] font-body">
         <div>
-          <p className="text-muted-foreground">Preço/ação</p>
+          <p className="text-muted-foreground">Price/share</p>
           <p className="font-display font-bold text-sm">{sector.pricePerShare} $W</p>
         </div>
         <div>
-          <p className="text-muted-foreground">Yield/dia</p>
+          <p className="text-muted-foreground">Yield/day</p>
           <p className="font-display font-bold text-sm text-primary">{sector.dailyYield}%</p>
         </div>
         <div>
-          <p className="text-muted-foreground">Volatilidade</p>
-          <p className={`font-display font-bold text-sm ${volatilityColors[sector.volatility]}`}>{sector.volatility}</p>
+          <p className="text-muted-foreground">Volatility</p>
+          <p className={`font-display font-bold text-sm ${volatilityColors[sector.volatility]}`}>{volatilityLabels[sector.volatility]}</p>
         </div>
       </div>
 
       <div className="mt-3 pt-2 border-t border-border/50 flex items-center justify-between">
         <span className="text-[10px] text-muted-foreground font-body">{sector.cycle}</span>
-        <button className="text-[10px] text-primary font-display font-medium tap-shrink">Comprar ação →</button>
+        <button className="text-[10px] text-primary font-display font-medium tap-shrink">Buy shares →</button>
       </div>
     </motion.div>
   );
