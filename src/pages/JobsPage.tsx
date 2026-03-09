@@ -1,9 +1,10 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Briefcase, Building2, Clock, Coins, ChevronRight, Star, TrendingUp,
+  Briefcase, Building2, Clock, Coins, ChevronRight, Star, TrendingUp, TrendingDown,
   CheckCircle2, Lock, Zap, Users, Award, ArrowRight, Timer, Wallet,
-  ChevronUp, Trophy, Sparkles, PartyPopper
+  ChevronUp, Trophy, Sparkles, PartyPopper, AlertTriangle, Flame, Snowflake,
+  Ban, Megaphone, ShieldAlert, Gift, Newspaper
 } from "lucide-react";
 import CoinIcon from "@/components/CoinIcon";
 
