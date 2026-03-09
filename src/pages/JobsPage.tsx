@@ -665,6 +665,114 @@ const JobsPage = () => {
           </div>
         </div>
 
+        {/* ══ Active Economic Events ══ */}
+        {activeEvents.length > 0 && (
+          <section className="space-y-2">
+            <div className="flex items-center gap-2 mb-1">
+              <Newspaper size={14} className="text-primary" />
+              <p className="text-xs font-display font-semibold">Economic Events</p>
+              <span className="text-[9px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-body">{activeEvents.length} active</span>
+            </div>
+            {activeEvents.filter((ev) => !dismissedEvents.has(ev.id)).map((ev) => {
+              const config = eventTypeConfig[ev.type];
+              const EventIcon = config.icon;
+              const affectedLabel = ev.affectedSectors.length === 0
+                ? "All Sectors"
+                : ev.affectedSectors.map((s) => sectors.find((sec) => sec.id === s)?.name || s).join(", ");
+              const salaryLabel = ev.salaryMod === 0
+                ? "Halted"
+                : ev.salaryMod > 1
+                ? `+${Math.round((ev.salaryMod - 1) * 100)}%`
+                : `${Math.round((ev.salaryMod - 1) * 100)}%`;
+
+              return (
+                <motion.div
+                  key={ev.id}
+                  initial={{ opacity: 0, y: -8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={`card-clean overflow-hidden border ${config.border}`}
+                >
+                  <button
+                    onClick={() => setExpandedEvent(expandedEvent === ev.id ? null : ev.id)}
+                    className="w-full p-3 flex items-start gap-3 tap-shrink text-left"
+                  >
+                    <div className={`w-9 h-9 rounded-xl ${config.bg} flex items-center justify-center flex-shrink-0`}>
+                      <span className="text-base">{ev.emoji}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <p className="text-xs font-display font-bold">{ev.title}</p>
+                        <span className={`text-[9px] uppercase tracking-wider font-body px-1.5 py-0.5 rounded-md ${config.bg} ${config.color}`}>
+                          {ev.type}
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-muted-foreground font-body line-clamp-1">{ev.description}</p>
+                      <div className="flex items-center gap-3 mt-1.5">
+                        <span className={`text-[10px] font-display font-bold ${ev.isPositive ? "text-success" : "text-destructive"}`}>
+                          Salary: {salaryLabel}
+                        </span>
+                        {ev.hiringFreeze && (
+                          <span className="text-[9px] text-destructive font-body flex items-center gap-0.5">
+                            <Ban size={8} /> Hiring Frozen
+                          </span>
+                        )}
+                        <span className="text-[9px] text-muted-foreground font-body flex items-center gap-0.5 ml-auto">
+                          <Clock size={8} /> {ev.endsIn}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {expandedEvent === ev.id && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-3 pb-3 border-t border-border/30 pt-2.5 space-y-2">
+                          <p className="text-[10px] text-muted-foreground font-body">{ev.description}</p>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="bg-secondary/50 rounded-lg p-2">
+                              <p className="text-[9px] text-muted-foreground font-body">Affected</p>
+                              <p className="text-[10px] font-display font-semibold">{affectedLabel}</p>
+                            </div>
+                            <div className="bg-secondary/50 rounded-lg p-2">
+                              <p className="text-[9px] text-muted-foreground font-body">Duration</p>
+                              <p className="text-[10px] font-display font-semibold">{ev.duration}</p>
+                            </div>
+                            <div className="bg-secondary/50 rounded-lg p-2">
+                              <p className="text-[9px] text-muted-foreground font-body">Salary Impact</p>
+                              <p className={`text-[10px] font-display font-bold ${ev.isPositive ? "text-success" : "text-destructive"}`}>
+                                {ev.salaryMod === 0 ? "⛔ Halted" : `×${ev.salaryMod}`}
+                              </p>
+                            </div>
+                            <div className="bg-secondary/50 rounded-lg p-2">
+                              <p className="text-[9px] text-muted-foreground font-body">XP Impact</p>
+                              <p className={`text-[10px] font-display font-bold ${ev.xpMod >= 1 ? "text-success" : "text-destructive"}`}>
+                                ×{ev.xpMod}
+                              </p>
+                            </div>
+                          </div>
+                          {ev.hiringFreeze && (
+                            <div className="flex items-center gap-2 bg-destructive/5 border border-destructive/20 rounded-lg p-2">
+                              <ShieldAlert size={12} className="text-destructive" />
+                              <p className="text-[9px] font-body text-destructive">New applications are frozen during this event</p>
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
+          </section>
+        )}
+
         {/* Career Stats */}
         <div className="grid grid-cols-4 gap-2">
           {[
