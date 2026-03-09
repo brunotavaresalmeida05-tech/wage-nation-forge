@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
-import coinMDark from "@/assets/coin-m-dark.png";
+import CoinIcon from "./CoinIcon";
 
 interface CoinPop {
   id: number;
@@ -76,12 +76,7 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
             filter: energy > 0 ? "drop-shadow(0 0 20px hsl(214 99% 60% / 0.3))" : "none",
           }}
         >
-          <img
-            src={coinMDark}
-            alt="$MINE Coin"
-            className="w-full h-full object-contain pointer-events-none"
-            draggable={false}
-          />
+          <CoinIcon type="mine" size={192} />
         </button>
 
         <AnimatePresence>
