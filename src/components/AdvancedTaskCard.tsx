@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export interface AdvancedTask {
   id: number;
   title: string;
-  category: "Trabalho" | "Exchange" | "Real Estate" | "ETF" | "Setores" | "Upgrade" | "Educação" | "Social" | "Hábito" | "Gestão" | "Trading" | "Streak" | "Capital" | "P2P" | "Crescimento";
+  category: string;
   rewardMine: number | string;
   rewardXP: number | string;
   completed: boolean;
@@ -12,10 +12,10 @@ export interface AdvancedTask {
 }
 
 const categoryEmojis: Record<string, string> = {
-  Trabalho: "⛏️", Exchange: "🔄", "Real Estate": "🏠", ETF: "📊",
-  Setores: "📈", Upgrade: "⚙️", Educação: "📚", Social: "👥",
-  Hábito: "⏰", Gestão: "🎯", Trading: "💹", Streak: "🔥",
-  Capital: "💰", P2P: "🤝", Crescimento: "📈",
+  Mining: "⛏️", Exchange: "🔄", "Real Estate": "🏠", ETF: "📊",
+  Sectors: "📈", Upgrade: "⚙️", Education: "📚", Social: "👥",
+  Habit: "⏰", Management: "🎯", Trading: "💹", Streak: "🔥",
+  Capital: "💰", P2P: "🤝", Growth: "📈",
 };
 
 const categoryColors: Record<string, string> = {
