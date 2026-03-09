@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap } from "lucide-react";
+import coinMDark from "@/assets/coin-m-dark.png";
 
 interface CoinPop {
   id: number;
@@ -68,81 +69,19 @@ const TapToMine = ({ mineBalance, energy, maxEnergy, onTap, minePerTap }: TapToM
         <button
           onMouseDown={handleTap}
           disabled={energy <= 0}
-          className="relative w-48 h-48 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+          className="relative w-48 h-48 rounded-full flex items-center justify-center tap-shrink select-none disabled:opacity-30 disabled:cursor-not-allowed"
           style={{
             transform: `scale(${scale})`,
             transition: "transform 0.1s",
+            filter: energy > 0 ? "drop-shadow(0 0 20px hsl(214 99% 60% / 0.3))" : "none",
           }}
         >
-          {/* Coin SVG - static, matching reference design */}
-          <svg viewBox="0 0 200 200" className="absolute inset-0 w-full h-full" style={{ filter: energy > 0 ? "drop-shadow(0 0 16px hsl(214 99% 60% / 0.25))" : "none" }}>
-            {/* Outer border ring */}
-            <circle cx="100" cy="100" r="97" fill="none" stroke="currentColor" strokeWidth="3" className="text-foreground" opacity="0.9" />
-            <circle cx="100" cy="100" r="93" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" opacity="0.5" />
-
-            {/* Greek key meander pattern band */}
-            <defs>
-              <clipPath id="meanderRing">
-                <path d="M100,12 A88,88 0 1,1 99.9,12 Z M100,30 A70,70 0 1,0 99.9,30 Z" />
-              </clipPath>
-            </defs>
-            <g clipPath="url(#meanderRing)" className="text-foreground" opacity="0.8">
-              {Array.from({ length: 32 }).map((_, i) => {
-                const angle = (i * 11.25) * (Math.PI / 180);
-                const cx = 100;
-                const cy = 100;
-                const r1 = 89;
-                const r2 = 80;
-                const r3 = 34;
-                const aStep = 5.625 * (Math.PI / 180);
-                
-                const x1 = cx + r1 * Math.cos(angle);
-                const y1 = cy + r1 * Math.sin(angle);
-                const x2 = cx + r1 * Math.cos(angle + aStep * 0.5);
-                const y2 = cy + r1 * Math.sin(angle + aStep * 0.5);
-                const x3 = cx + r2 * Math.cos(angle + aStep * 0.5);
-                const y3 = cy + r2 * Math.sin(angle + aStep * 0.5);
-                const x4 = cx + r2 * Math.cos(angle + aStep);
-                const y4 = cy + r2 * Math.sin(angle + aStep);
-                const x5 = cx + (r2 + 5) * Math.cos(angle + aStep);
-                const y5 = cy + (r2 + 5) * Math.sin(angle + aStep);
-                const x6 = cx + (r2 + 5) * Math.cos(angle + aStep * 1.5);
-                const y6 = cy + (r2 + 5) * Math.sin(angle + aStep * 1.5);
-                const x7 = cx + r1 * Math.cos(angle + aStep * 1.5);
-                const y7 = cy + r1 * Math.sin(angle + aStep * 1.5);
-
-                return (
-                  <path
-                    key={i}
-                    d={`M${x1},${y1} L${x2},${y2} L${x3},${y3} L${x4},${y4} L${x5},${y5} L${x6},${y6} L${x7},${y7}`}
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="square"
-                  />
-                );
-              })}
-            </g>
-
-            {/* Inner decorative rings */}
-            <circle cx="100" cy="100" r="70" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-foreground" opacity="0.5" />
-            <circle cx="100" cy="100" r="66" fill="none" stroke="currentColor" strokeWidth="1" className="text-foreground" opacity="0.3" />
-
-            {/* Center filled circle */}
-            <circle cx="100" cy="100" r="58" fill="hsl(var(--card))" stroke="currentColor" strokeWidth="2.5" className="text-foreground" opacity="1" />
-
-            {/* M letter */}
-            <text
-              x="100"
-              y="100"
-              textAnchor="middle"
-              dominantBaseline="central"
-              className="fill-foreground"
-              style={{ fontSize: "58px", fontFamily: "'DM Sans', sans-serif", fontWeight: 800, letterSpacing: "-2px" }}
-            >
-              M
-            </text>
-          </svg>
+          <img
+            src={coinMDark}
+            alt="$MINE Coin"
+            className="w-full h-full object-contain pointer-events-none"
+            draggable={false}
+          />
         </button>
 
         <AnimatePresence>

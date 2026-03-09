@@ -3,9 +3,10 @@ import { NavLink, useLocation, Outlet } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, Pickaxe, ArrowDownUp, BarChart3, User, Building2, PieChart,
-  Landmark, Globe, CreditCard, TrendingUp, Menu, X, Search, Bell, Settings,
+  Landmark, Globe, CreditCard, TrendingUp, Menu, X, Search, Bell,
   Wallet, RefreshCw
 } from "lucide-react";
+import CoinIcon from "./CoinIcon";
 
 const mainNav = [
   { path: "/", icon: Home, label: "Home" },
@@ -39,9 +40,7 @@ const AppLayout = () => {
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col w-[220px] min-w-[220px] border-r border-border/50 bg-sidebar fixed h-full z-50">
         <div className="h-16 flex items-center px-5 border-b border-border/30">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center mr-2.5">
-            <span className="text-primary-foreground font-display font-bold text-sm">W</span>
-          </div>
+          <CoinIcon type="wage" size={30} className="mr-2.5" />
           <span className="font-display font-bold text-lg">Wage</span>
         </div>
 
@@ -122,9 +121,7 @@ const AppLayout = () => {
             >
               <div className="h-14 flex items-center justify-between px-5 border-b border-border/30">
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                    <span className="text-primary-foreground font-display font-bold text-xs">W</span>
-                  </div>
+                  <CoinIcon type="wage" size={26} />
                   <span className="font-display font-bold">Wage</span>
                 </div>
                 <button onClick={() => setSidebarOpen(false)} className="tap-shrink p-1">
@@ -206,7 +203,7 @@ const AppLayout = () => {
 
       {/* Main Content */}
       <div className="flex-1 lg:ml-[220px] flex flex-col min-h-screen w-full min-w-0 overflow-x-hidden">
-        {/* Top Header (mobile + desktop) */}
+        {/* Top Header */}
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur-xl border-b border-border/40">
           <div className="flex items-center justify-between px-4 lg:px-6 h-14">
             <div className="flex items-center gap-3">
@@ -214,9 +211,7 @@ const AppLayout = () => {
                 <Menu size={22} className="text-foreground" />
               </button>
               <div className="flex items-center gap-2 lg:hidden">
-                <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-display font-bold text-xs">W</span>
-                </div>
+                <CoinIcon type="wage" size={26} />
                 <span className="font-display font-bold text-[15px]">Wage</span>
               </div>
             </div>
