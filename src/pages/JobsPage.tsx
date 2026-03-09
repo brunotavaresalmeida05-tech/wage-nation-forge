@@ -1565,6 +1565,270 @@ const JobsPage = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ══════ WEEKLY PAYSLIP MODAL ══════ */}
+      <AnimatePresence>
+        {showPayslip && activeJob && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-background/95 backdrop-blur-xl flex items-center justify-center p-4 overflow-y-auto"
+            onClick={() => !payslipClaimed && setShowPayslip(false)}
+          >
+            {/* Confetti on claim */}
+            {payslipClaimed && (
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {Array.from({ length: 30 }).map((_, i) => (
+                  <ConfettiParticle key={i} index={i} />
+                ))}
+              </div>
+            )}
+
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              onClick={(e) => e.stopPropagation()}
+              className="card-clean w-full max-w-md overflow-hidden relative"
+            >
+              {/* Header */}
+              <div className="bg-gradient-to-r from-primary/10 to-transparent p-5 border-b border-border/30">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center">
+                      <FileText size={24} className="text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-display font-bold">Weekly Payslip</p>
+                      <p className="text-xs text-muted-foreground font-body">Week of March 3, 2026</p>
+                    </div>
+                  </div>
+                  <CoinIcon type="mine" size={32} />
+                </div>
+              </div>
+
+              <div className="p-5 space-y-4">
+                {/* Employee Info */}
+                <AnimatePresence>
+                  {payslipStep >= 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-secondary/40 rounded-xl p-3 space-y-1.5"
+                    >
+                      <div className="flex justify-between text-xs font-body">
+                        <span className="text-muted-foreground">Employee</span>
+                        <span className="font-semibold">Worker #4821</span>
+                      </div>
+                      <div className="flex justify-between text-xs font-body">
+                        <span className="text-muted-foreground">Company</span>
+                        <span className="font-semibold">{activeJob.companyName}</span>
+                      </div>
+                      <div className="flex justify-between text-xs font-body">
+                        <span className="text-muted-foreground">Position</span>
+                        <span className="font-semibold">{activeJob.position}</span>
+                      </div>
+                      <div className="flex justify-between text-xs font-body">
+                        <span className="text-muted-foreground">Days Worked</span>
+                        <span className="font-semibold">{daysWorkedThisWeek} / 7</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Earnings Breakdown */}
+                <AnimatePresence>
+                  {payslipStep >= 2 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                    >
+                      <p className="text-xs font-display font-semibold text-muted-foreground uppercase tracking-wider">Earnings</p>
+                      
+                      {/* Base Salary */}
+                      <div className="flex items-center justify-between p-2.5 bg-secondary/30 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <Wallet size={14} className="text-muted-foreground" />
+                          <span className="text-xs font-body">Base Salary (7 days × {activeJob.salary})</span>
+                        </div>
+                        <span className="text-xs font-display font-bold">{weeklyBaseSalary.toLocaleString()}</span>
+                      </div>
+
+                      {/* Streak Bonus */}
+                      {streakBonusAmt > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className="flex items-center justify-between p-2.5 bg-warning/10 border border-warning/20 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Flame size={14} className="text-warning" />
+                            <span className="text-xs font-body text-warning">Streak Bonus ({streakDays} days = +{(streakBonus * 100).toFixed(0)}%)</span>
+                          </div>
+                          <span className="text-xs font-display font-bold text-warning">+{streakBonusAmt.toLocaleString()}</span>
+                        </motion.div>
+                      )}
+
+                      {/* Event Bonus */}
+                      {eventBonus > 0 && (
+                        <motion.div
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 }}
+                          className="flex items-center justify-between p-2.5 bg-success/10 border border-success/20 rounded-lg"
+                        >
+                          <div className="flex items-center gap-2">
+                            <TrendingUp size={14} className="text-success" />
+                            <span className="text-xs font-body text-success">Economic Event Bonus</span>
+                          </div>
+                          <span className="text-xs font-display font-bold text-success">+{eventBonus.toLocaleString()}</span>
+                        </motion.div>
+                      )}
+
+                      {/* Gross Total */}
+                      <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg border border-border/30">
+                        <span className="text-sm font-display font-semibold">Gross Salary</span>
+                        <span className="text-sm font-display font-bold">{grossSalary.toLocaleString()} $MINE</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Deductions */}
+                <AnimatePresence>
+                  {payslipStep >= 3 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-2"
+                    >
+                      <p className="text-xs font-display font-semibold text-muted-foreground uppercase tracking-wider">Deductions</p>
+                      
+                      {/* Company Tax */}
+                      <div className="flex items-center justify-between p-2.5 bg-destructive/5 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <Building2 size={14} className="text-destructive/70" />
+                          <div>
+                            <span className="text-xs font-body text-foreground">Company Service Fee</span>
+                            <p className="text-[9px] text-muted-foreground">10% — Platform operations</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-display font-bold text-destructive">-{companyTax.toLocaleString()}</span>
+                      </div>
+
+                      {/* Treasury Burn */}
+                      <div className="flex items-center justify-between p-2.5 bg-destructive/5 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <Flame size={14} className="text-destructive/70" />
+                          <div>
+                            <span className="text-xs font-body text-foreground">Treasury Burn</span>
+                            <p className="text-[9px] text-muted-foreground">5% — Token scarcity → value</p>
+                          </div>
+                        </div>
+                        <span className="text-xs font-display font-bold text-destructive">-{treasuryBurn.toLocaleString()}</span>
+                      </div>
+
+                      {/* Total Deductions */}
+                      <div className="flex items-center justify-between px-3 py-2">
+                        <span className="text-xs font-body text-muted-foreground">Total Deductions (15%)</span>
+                        <span className="text-xs font-display font-semibold text-destructive">-{(companyTax + treasuryBurn).toLocaleString()}</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Net Salary */}
+                <AnimatePresence>
+                  {payslipStep >= 4 && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ type: "spring", damping: 15 }}
+                    >
+                      <div className="bg-gradient-to-r from-primary/15 to-primary/5 border border-primary/30 rounded-xl p-4 text-center">
+                        <p className="text-xs text-muted-foreground font-body uppercase tracking-wider mb-1">Net Salary (You Receive)</p>
+                        <div className="flex items-center justify-center gap-2">
+                          <CoinIcon type="mine" size={28} />
+                          <span className="text-2xl font-display font-bold text-primary">{netSalary.toLocaleString()}</span>
+                          <span className="text-sm font-body text-muted-foreground">$MINE</span>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground font-body mt-2">
+                          After 10% company fee + 5% treasury burn
+                        </p>
+                      </div>
+
+                      {/* Breakdown bar */}
+                      <div className="mt-3 h-2.5 rounded-full overflow-hidden flex">
+                        <div className="bg-primary h-full" style={{ width: "85%" }} />
+                        <div className="bg-warning h-full" style={{ width: "10%" }} />
+                        <div className="bg-destructive h-full" style={{ width: "5%" }} />
+                      </div>
+                      <div className="flex justify-between text-[8px] text-muted-foreground font-body mt-1">
+                        <span>85% You</span>
+                        <span>10% Platform</span>
+                        <span>5% Burn</span>
+                      </div>
+
+                      {/* Claim button */}
+                      {!payslipClaimed ? (
+                        <motion.button
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 }}
+                          onClick={claimPayslip}
+                          className="w-full mt-4 py-3 rounded-xl bg-primary text-primary-foreground font-display font-bold text-sm tap-shrink flex items-center justify-center gap-2"
+                        >
+                          <Download size={16} />
+                          Claim {netSalary.toLocaleString()} $MINE
+                        </motion.button>
+                      ) : (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="w-full mt-4 py-3 rounded-xl bg-success/20 border border-success/30 font-display font-bold text-sm text-success flex items-center justify-center gap-2"
+                        >
+                          <CheckCircle2 size={16} />
+                          Salary Deposited!
+                        </motion.div>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Past Payslips */}
+                {payslipStep >= 4 && !payslipClaimed && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    className="pt-3 border-t border-border/30"
+                  >
+                    <p className="text-[10px] font-display font-semibold text-muted-foreground uppercase tracking-wider mb-2">Previous Weeks</p>
+                    <div className="space-y-1.5">
+                      {pastPayslips.map((p, i) => (
+                        <div key={i} className="flex items-center justify-between text-[10px] font-body py-1.5 px-2 bg-secondary/20 rounded-lg">
+                          <span className="text-muted-foreground">{p.week}</span>
+                          <div className="flex items-center gap-3">
+                            {p.bonus > 0 && (
+                              <span className="text-warning flex items-center gap-0.5">
+                                <Flame size={8} /> +{p.bonus}
+                              </span>
+                            )}
+                            <span className="font-medium">{p.net.toLocaleString()} $MINE</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
