@@ -1,46 +1,34 @@
-# Wage Nation Forge
+# Wage — The Money App
 
-## Project info
+Sistema económico digital play-to-earn. Ganha $MINE, converte em $WAGE, investe em ativos sintéticos.
 
-This is a Vite-based React project with TypeScript, shadcn/ui, and Tailwind CSS.
+## Stack
 
-## How can I edit this code?
+- Vite + React + TypeScript
+- shadcn/ui + Tailwind CSS
+- Supabase (base de dados + auth)
+- wagmi (blockchain Base)
 
-If you want to work locally, you can clone this repo and push changes.
-
-The only requirement is having Node.js & npm installed.
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## Instalação
+```bash
+npm install
 npm run dev
 ```
 
-## What technologies are used for this project?
+## Variáveis de ambiente
 
-This project is built with:
+Cria um ficheiro `.env.local` na raiz com:
+```
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+VITE_CLERK_PUBLISHABLE_KEY=
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-You can deploy this project using any modern web hosting service that supports static sites, such as Vercel, Netlify, or GitHub Pages.
-
-```sh
-# Build the project
-npm run build
+## Estrutura
+```
+src/
+  components/     # Componentes reutilizáveis
+  pages/          # Páginas da aplicação
+  hooks/          # Custom hooks
+  lib/            # Utilitários
 ```
