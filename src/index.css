@@ -72,52 +72,29 @@
     --sidebar-ring: 214 99% 60%;
   }
 
-  .light {
-    --background: 0 0% 98%;
-    --foreground: 220 15% 10%;
+  /* ═══════════════════════════════════════════
+     NOVAS CORES WAGECOMPANY
+     #181818 — Wage Black (dark mode body)
+     #00C22C — Wage Green ($MINE / sucesso)
+═══════════════════════════════════════════ */
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 10%;
-    --card-elevated: 220 14% 97%;
+  /* Wage Black — escala completa */
+  --wage-black:     #181818;
+  --wage-black-50:  #0D0D0D;
+  --wage-black-100: #111111;
+  --wage-black-200: #141414;
+  --wage-black-400: #1F1F1F;
+  --wage-black-500: #252525;
+  --wage-black-600: #2C2C2C;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 10%;
-
-    --primary: 214 99% 50%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 14% 93%;
-    --secondary-foreground: 220 10% 35%;
-
-    --muted: 220 14% 90%;
-    --muted-foreground: 220 10% 40%;
-
-    --accent: 220 14% 93%;
-    --accent-foreground: 220 15% 10%;
-
-    --destructive: 0 72% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 14% 86%;
-    --input: 220 14% 86%;
-    --ring: 214 99% 50%;
-
-    --shadow-card: 0 1px 3px hsl(220 15% 10% / 0.06), 0 2px 8px hsl(220 15% 10% / 0.04);
-    --shadow-card-hover: 0 2px 6px hsl(220 15% 10% / 0.1), 0 4px 16px hsl(220 15% 10% / 0.06);
-    --shadow-glow-primary: 0 0 16px hsl(214 99% 50% / 0.15);
-    --shadow-glow-blue: 0 0 16px hsl(214 99% 50% / 0.12);
-    --shadow-glow-epic: 0 0 16px hsl(265 60% 55% / 0.12);
-    --shadow-glow-gold: 0 0 16px hsl(40 92% 52% / 0.15);
-
-    --sidebar-background: 0 0% 99%;
-    --sidebar-foreground: 220 10% 35%;
-    --sidebar-primary: 214 99% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 94%;
-    --sidebar-accent-foreground: 220 10% 35%;
-    --sidebar-border: 220 14% 86%;
-    --sidebar-ring: 214 99% 50%;
-  }
+  /* Wage Green — escala completa */
+  --wage-green:     #00C22C;
+  --wage-green-50:  #E6FFF0;
+  --wage-green-100: #B3FFD0;
+  --wage-green-200: #66FF99;
+  --wage-green-300: #33E05C;
+  --wage-green-600: #009E24;
+  --wage-green-700: #007A1C;
 }
 
 @layer base {
