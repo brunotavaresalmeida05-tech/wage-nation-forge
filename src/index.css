@@ -97,6 +97,13 @@
   --wage-green-700: #007A1C;
 }
 
+.dark {
+  /* ← Já existia, só alterar este valor: */
+  --background: 0 0% 9.4%;   /* #181818 em HSL */
+
+  /* Todas as outras variáveis .dark mantêm-se iguais */
+}
+
 @layer base {
   * {
     @apply border-border;
