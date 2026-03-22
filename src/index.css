@@ -98,10 +98,34 @@
 }
 
 .dark {
-  /* ← Já existia, só alterar este valor: */
-  --background: 0 0% 9.4%;   /* #181818 em HSL */
-
-  /* Todas as outras variáveis .dark mantêm-se iguais */
+  --background: 0 0% 9.4%;
+  --foreground: 0 0% 95%;
+  --card: 220 12% 8%;
+  --card-foreground: 0 0% 95%;
+  --card-elevated: 220 12% 11%;
+  --popover: 220 12% 8%;
+  --popover-foreground: 0 0% 95%;
+  --primary: 214 99% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 12% 13%;
+  --secondary-foreground: 0 0% 70%;
+  --muted: 220 12% 15%;
+  --muted-foreground: 0 0% 50%;
+  --accent: 220 12% 13%;
+  --accent-foreground: 0 0% 95%;
+  --destructive: 0 72% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 12% 14%;
+  --input: 220 12% 14%;
+  --ring: 214 99% 60%;
+  --sidebar-background: 220 12% 6%;
+  --sidebar-foreground: 0 0% 65%;
+  --sidebar-primary: 214 99% 60%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 220 12% 12%;
+  --sidebar-accent-foreground: 0 0% 70%;
+  --sidebar-border: 220 12% 14%;
+  --sidebar-ring: 214 99% 60%;
 }
 
 @layer base {
