@@ -1,0 +1,57 @@
+# WageCompany — Cursor Rules
+# Este ficheiro é lido automaticamente pelo Cursor AI
+# Funciona também como referência para outros agentes
+
+## Contexto do Projecto
+Lê sempre AI_CONTEXT.md na raiz antes de qualquer tarefa.
+
+## Stack
+Vite + React 18 + TypeScript strict + shadcn/ui + Tailwind + Supabase + Clerk + wagmi
+
+## Regras Principais
+
+### TypeScript
+- Strict mode sempre activo
+- Nunca usar `any` sem comentário justificativo
+- Interfaces em vez de Types para objectos
+- Exportações named (não default) para componentes partilhados
+
+### Segurança (CRÍTICO)
+- Toda a lógica financeira em Supabase Edge Functions — NUNCA no React
+- Variáveis sem VITE_ nunca chegam ao browser
+- Inputs sempre validados com Zod antes de usar
+- Verificar auth Clerk ANTES de qualquer operação em Edge Functions
+
+### Base de Dados
+- RLS activo em TODAS as tabelas Supabase
+- Campos sensíveis (email, wallet) encriptados com pgcrypto
+- Audit log obrigatório em operações financeiras
+- Transacções SQL para operações multi-tabela
+
+### React
+- Hooks personalizados em src/hooks/ com prefixo "use"
+- Componentes em src/components/ em PascalCase
+- Páginas em src/pages/ com sufixo "Page"
+- Loading states obrigatórios em operações async
+- Nunca fetch directo em componentes — usar hooks
+
+### Constantes Económicas (IMUTÁVEIS — não alterar)
+- MINE_PER_TAP_BASE = 1
+- TREASURY_RATE = 0.005 (0.5%)
+- BURN_RATE = 0.02 (2%)
+- EXCHANGE_RATE = 1000 ($MINE por $WAGE)
+- TOTAL_SUPPLY = 1_000_000_000
+
+### Package Manager
+- Usar SEMPRE npm — nunca bun ou yarn
+
+### Commits
+- feat / fix / security / test / docs / chore / refactor
+
+## Skills Disponíveis
+- Segurança:   .ai/skills/security-audit/SKILL.md
+- Base dados:  .ai/skills/database/SKILL.md
+- Frontend:    .ai/skills/frontend-ui/SKILL.md
+- Economia:    .ai/skills/economy-logic/SKILL.md
+- Blockchain:  .ai/skills/blockchain/SKILL.md
+- Testes:      .ai/skills/testing/SKILL.md
